@@ -2,10 +2,11 @@ const mongoose = require("mongoose");
 const express = require("express");
 const cors = require("cors");
 const fs = require("fs");
-const app = express();
 const https = require("https");
+const basic = require("./routes/basic");
 const key = fs.readFileSync("./ssl/backend.key");
 const cert = fs.readFileSync("./ssl/backend.crt");
+const app = express();
 const port = env.PORT || 3001;
 const options = {
   key: key,
@@ -16,6 +17,7 @@ const options = {
 
 app.use(express.json());
 app.use(cors());
+app.use("/", basic);
 
 //////////////////////////////////
 
