@@ -1,7 +1,16 @@
 const mongoose = require("mongoose");
 const express = require("express");
 const cors = require("cors");
+const fs = require("fs");
 const app = express();
+const https = require("https");
+const key = fs.readFileSync("./ssl/backend.key");
+const cert = fs.readFileSync("./ssl/backend.crt");
+const port = env.PORT || 3001;
+const options = {
+  key: key,
+  cert: cert
+};
 
 //////////////////////////////////
 
@@ -19,3 +28,9 @@ mongoose
   )
   .then(() => console.log("Connected to MongoDB..."))
   .catch(e => console.error(`Could not connect ${e.message}`));
+
+const server = https.createServer(options, app);
+
+server.listen(port, () => {
+  console.log(`server start on port ${port}`);
+});
