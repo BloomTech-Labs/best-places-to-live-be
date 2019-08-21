@@ -11,7 +11,7 @@ router.get("/all", (req, res) => {
   res.json(result);
 });
 
-router.post("/all", (req, res) => {
+router.post("/add", (req, res) => {
   const basic = new Basic({
     name: req.body.name
   });
