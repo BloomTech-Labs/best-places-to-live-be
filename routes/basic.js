@@ -11,4 +11,12 @@ router.get("/all", (req, res) => {
   res.json(result);
 });
 
+router.post("/all", (req, res) => {
+  const basic = new Basic({
+    name: req.body.name
+  });
+  basic.save();
+  res.json(basic);
+});
+
 module.exports = router;
