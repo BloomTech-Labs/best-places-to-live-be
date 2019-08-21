@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { Basic } = require("../models/");
+const { Basic } = require("../models/basic");
 
 router.get("/", (req, res) => {
   res.json("welcome to our backend api");
