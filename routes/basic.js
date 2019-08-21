@@ -6,8 +6,8 @@ router.get("/", (req, res) => {
   res.json("welcome to our backend api");
 });
 
-router.get("/all", (req, res) => {
-  const result = Basic.find().sort("name");
+router.get("/all", async (req, res) => {
+  const result = await Basic.find().sort("name");
   res.json(result);
 });
 
