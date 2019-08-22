@@ -4,7 +4,7 @@
   "description": "🚫 Note: All lines that start with 🚫 are instructions and should be deleted before this is posted to your portfolio. This is intended to be a guideline. Feel free to add your own flare to it.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -22,5 +22,8 @@
     "fs": "0.0.1-security",
     "https": "^1.0.0",
     "mongoose": "^5.6.10"
+  },
+  "devDependencies": {
+    "jest": "^24.9.0"
   }
 }
