@@ -4,6 +4,8 @@
   "description": "🚫 Note: All lines that start with 🚫 are instructions and should be deleted before this is posted to your portfolio. This is intended to be a guideline. Feel free to add your own flare to it.",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
+    "startnodemon": "nodemon index.js",
     "test": "jest"
   },
   "repository": {
@@ -24,6 +26,7 @@
     "mongoose": "^5.6.10"
   },
   "devDependencies": {
-    "jest": "^24.9.0"
+    "jest": "^24.9.0",
+    "nodemon": "^1.19.1"
   }
 }
