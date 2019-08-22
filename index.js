@@ -15,7 +15,7 @@ mongoose
   .connect(
     `mongodb://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@${
       process.env.MONGO_HOSTNAME
-    }:${process.env.MONGO_PORT}/${MONGO_DB}?authSource=admin`,
+    }:${process.env.MONGO_PORT}/${process.env.MONGO_DB}?authSource=admin`,
     {useNewUrlParser: true},
   )
   .then(() => console.log('Connected to MongoDB...'))
