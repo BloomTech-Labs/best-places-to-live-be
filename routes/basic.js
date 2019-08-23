@@ -19,6 +19,15 @@ router.post('/add', (req, res) => {
   res.json(basic);
 });
 
+router.delete('/delete/:id', async (req, res) => {
+  try {
+    const result = await Basic.findByIdAndRemove({_id: req.params.id});
+    res.json(result);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 router.get('/allusers', async (req, res) => {
   const result = await User.find().sort('name');
   res.json(result);
