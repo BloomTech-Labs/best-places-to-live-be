@@ -1,4 +1,4 @@
-const includeCoverage = process.env.DATABASE_ENVIRONMENT === 'testing';
+const includeCoverage = process.env.TESTING_MONGO_DB === 'testing';
 // For a detailed explanation regarding each configuration property, visit:
 // https://jestjs.io/docs/en/configuration.html
 
@@ -92,7 +92,7 @@ module.exports = {
   // notifyMode: "failure-change",
 
   // A preset that is used as a base for Jest's configuration
-  // preset: null,
+  preset: '@shelf/jest-mongodb',
 
   // Run tests from one or more projects
   // projects: null,

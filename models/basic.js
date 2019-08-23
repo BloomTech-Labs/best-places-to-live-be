@@ -1,13 +1,30 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const Basic = mongoose.model(
-  "Basic",
+  'Basic',
   new mongoose.Schema({
     name: {
       type: String,
-      required: true
-    }
-  })
+      required: true,
+    },
+  }),
 );
 
-exports.Basic = Basic;
+const User = mongoose.model(
+  'User',
+  new mongoose.Schema({
+    name: {
+      type: String,
+      required: false,
+    },
+    email: {
+      type: String,
+      required: true,
+    },
+  }),
+);
+
+module.exports = {
+  Basic,
+  User,
+};

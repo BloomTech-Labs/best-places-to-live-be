@@ -13,10 +13,8 @@ app.use('/', basic);
 
 mongoose
   .connect(
-    `mongodb://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@${
-      process.env.MONGO_HOSTNAME
-    }:${process.env.MONGO_PORT}/${process.env.MONGO_DB}?authSource=admin`,
-    {useNewUrlParser: true},
+    `mongodb://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_HOSTNAME}:${process.env.MONGO_PORT}/${process.env.MONGO_DB}?authSource=admin`,
+    {useNewUrlParser: true, useFindAndModify: false},
   )
   .then(() => console.log('Connected to MongoDB...'))
   .catch((e) => console.error(`Could not connect ${e.message}`));
