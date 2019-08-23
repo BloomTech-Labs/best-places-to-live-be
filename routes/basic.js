@@ -19,6 +19,11 @@ router.post('/add', (req, res) => {
   res.json(basic);
 });
 
+router.get('/allusers', async (req, res) => {
+  const result = await User.find().sort('name');
+  res.json(result);
+});
+
 router.post('/user', async (req, res) => {
   const newUser = new User({
     name: req.body.name || null,
@@ -27,6 +32,15 @@ router.post('/user', async (req, res) => {
   try {
     const userCreated = await newUser.save();
     res.json(`Welcome ${userCreated.name}!`);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.delete('/user/:id', async (req, res) => {
+  try {
+    const result = await User.findByIdAndRemove({_id: req.params.id});
+    res.json(result);
   } catch (error) {
     console.log(error);
   }
