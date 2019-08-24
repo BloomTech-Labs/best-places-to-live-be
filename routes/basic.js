@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const {Basic, User} = require('../models/basic');
+const {Basic} = require('../models/basic');
+const {User} = require('../models/User');
 
 router.get('/', (req, res) => {
   res.render('welcome');
