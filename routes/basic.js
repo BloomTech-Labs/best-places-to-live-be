@@ -3,7 +3,7 @@ const router = express.Router();
 const {Basic, User} = require('../models/basic');
 
 router.get('/', (req, res) => {
-  res.json('welcome to our backend api');
+  res.render('welcome');
 });
 
 router.get('/all', async (req, res) => {

@@ -1,6 +1,7 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
 const express = require('express');
+const expressLayouts = require('express-ejs-layouts');
 const cors = require('cors');
 const basic = require('./routes/basic');
 const users = require('./routes/users');
@@ -11,6 +12,11 @@ const port = process.env.PORT || 3001;
 app.use(express.json());
 app.use(cors());
 
+//EJS
+app.use(expressLayouts);
+app.set('view engine', 'ejs');
+
+// Routes
 app.use('/', basic);
 app.use('/users', users);
 
