@@ -6,6 +6,8 @@ const cors = require('cors');
 const basic = require('./routes/basic');
 const users = require('./routes/users');
 const db = require('./config/keys')
+const flash = require('connect-flash');
+const session = require('express-session');
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -19,6 +21,23 @@ app.set('view engine', 'ejs');
 
 // Express body parser
 app.use(express.urlencoded({ extended: true }));
+
+// Express Session
+app.use(session({
+  secret: 'secret',
+  resave: true,
+  saveUninitialized: true
+}))
+
+// Connect flash
+app.use(flash());
+
+// Global Vars - custom middleware
+app.use((req, res, next) => {
+  res.locals.success_msg = req.flash('success_msg');
+  res.locals.error_msg = req.flash('error_msg');
+  next();
+});
 
 //Routes
 app.use('/', basic);
