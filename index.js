@@ -3,17 +3,28 @@ const mongoose = require('mongoose');
 const express = require('express');
 const cors = require('cors');
 const basic = require('./routes/basic');
+const users = require('./routes/users');
 
 const app = express();
 const port = process.env.PORT || 3001;
 
 app.use(express.json());
 app.use(cors());
+
 app.use('/', basic);
+app.use('/users', users);
 
 mongoose
   .connect(
-    `mongodb://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_HOSTNAME}:${process.env.MONGO_PORT}/${process.env.MONGO_DB}?authSource=admin`,
+        // Doesn't work!
+    // `mongodb://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_HOSTNAME}:${process.env.MONGO_PORT}/${process.env.MONGO_DB}?authSource=admin`,
+
+        //Locally on Compass - works!
+    "mongodb://localhost/bestplaces",
+
+      // Atlas Cloud - works! - env variables work -!
+    // `mongodb+srv://${process.env.TESTING_MONGO_USERNAME}:${process.env.TESTING_MONGO_PASSWORD}@${process.env.TESTING_MONGO_HOSTNAME}?retryWrites=true&w=majority`,
+
     {useNewUrlParser: true, useFindAndModify: false},
   )
   .then(() => console.log('Connected to MongoDB...'))
