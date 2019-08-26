@@ -4,6 +4,9 @@ const cors = require("cors");
 const fs = require("fs");
 const https = require("https");
 const basic = require("./routes/basic");
+const auth = require("./routes/auth");
+const passportConfig = require("./middleware/passportConfig");
+require("dotenv").config();
 // const key = fs.readFileSync("./ssl/backend.key");
 // const cert = fs.readFileSync("./ssl/backend.crt");
 const app = express();
@@ -18,6 +21,7 @@ const port = process.env.PORT || 3001;
 app.use(express.json());
 app.use(cors());
 app.use("/", basic);
+app.use("/auth", auth);
 
 //////////////////////////////////
 
