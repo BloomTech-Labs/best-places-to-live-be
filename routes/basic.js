@@ -11,7 +11,9 @@ router.get('/', (req, res) => {
 
 // Dashboard
 router.get('/dashboard', ensureAuthenticated, (req, res) => {
-  res.render('dashboard');
+  res.render('dashboard', {
+    name: req.user.name
+  });
 });
 
 router.get('/all', async (req, res) => {
