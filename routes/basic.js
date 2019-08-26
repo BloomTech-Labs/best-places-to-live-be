@@ -3,8 +3,14 @@ const router = express.Router();
 const {Basic} = require('../models/basic');
 const {User} = require('../models/User');
 
+// Welcome Page
 router.get('/', (req, res) => {
   res.render('welcome');
+});
+
+// Dashboard
+router.get('/dashboard', (req, res) => {
+  res.render('dashboard');
 });
 
 router.get('/all', async (req, res) => {
