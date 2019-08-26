@@ -8,14 +8,18 @@ const users = require('./routes/users');
 const db = require('./config/keys')
 const flash = require('connect-flash');
 const session = require('express-session');
+const passport = require('passport');
 
 const app = express();
 const port = process.env.PORT || 3001;
 
+// Passport Config
+require('./config/passport')(passport);
+
 // app.use(express.json());
 app.use(cors());
 
-//EJS
+// EJS
 app.use(expressLayouts);
 app.set('view engine', 'ejs');
 
@@ -27,7 +31,11 @@ app.use(session({
   secret: 'secret',
   resave: true,
   saveUninitialized: true
-}))
+}));
+
+// Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Connect flash
 app.use(flash());
