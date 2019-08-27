@@ -2,6 +2,7 @@ const passport = require("passport");
 const google = require("passport-google-oauth20");
 const { User } = require("../models/user");
 
+//get user and add it to req.user
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
@@ -11,6 +12,7 @@ passport.deserializeUser((id, done) => {
   });
 });
 
+//send information to google and add the user to mongodb if they arent already in the system
 passport.use(
   new google(
     {

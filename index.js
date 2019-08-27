@@ -9,14 +9,8 @@ const auth = require("./routes/auth");
 const passportConfig = require("./middleware/passportConfig");
 const cookie = require("cookie-session");
 const passport = require("passport");
-// const key = fs.readFileSync("./ssl/backend.key");
-// const cert = fs.readFileSync("./ssl/backend.crt");
 const app = express();
 const port = process.env.PORT || 3001;
-// const options = {
-//   key: key,
-//   cert: cert
-// };
 
 //////////////////////////////////
 
@@ -24,7 +18,7 @@ app.use(express.json());
 app.use(cors());
 app.use(
   cookie({
-    maxAge: 24 * 60 * 60 * 1000,
+    maxAge: 24 * 60 * 60 * 1000, //set cookie to one day exp
     keys: [process.env.key]
   })
 );
@@ -44,12 +38,6 @@ mongoose
   )
   .then(() => console.log("Connected to MongoDB..."))
   .catch(e => console.error(`Could not connect ${e.message}`));
-
-// const server = https.createServer(options, app);
-//
-// server.listen(port, () => {
-//   console.log(`server start on port ${port}`);
-// });
 
 app.listen(port, () => {
   console.log(`server start on port ${port}`);
