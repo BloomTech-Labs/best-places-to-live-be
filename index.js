@@ -1,3 +1,4 @@
+require("dotenv").config();
 const mongoose = require("mongoose");
 const express = require("express");
 const cors = require("cors");
@@ -6,7 +7,8 @@ const https = require("https");
 const basic = require("./routes/basic");
 const auth = require("./routes/auth");
 const passportConfig = require("./middleware/passportConfig");
-require("dotenv").config();
+const cookie = require("cookie-session");
+const passport = require("passport");
 // const key = fs.readFileSync("./ssl/backend.key");
 // const cert = fs.readFileSync("./ssl/backend.crt");
 const app = express();
@@ -20,6 +22,16 @@ const port = process.env.PORT || 3001;
 
 app.use(express.json());
 app.use(cors());
+app.use(
+  cookie({
+    maxAge: 24 * 60 * 60 * 1000,
+    keys: [process.env.key]
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use("/", basic);
 app.use("/auth", auth);
 
@@ -27,9 +39,7 @@ app.use("/auth", auth);
 
 mongoose
   .connect(
-    `mongodb://${process.env.USER}:${process.env.PASS}@${process.env.URL}:${
-      process.env.PORTMONGO
-    }/BPTL?authSource=admin`,
+    `mongodb://admin:admin1@ds211268.mlab.com:11268/best-places`,
     { useNewUrlParser: true }
   )
   .then(() => console.log("Connected to MongoDB..."))

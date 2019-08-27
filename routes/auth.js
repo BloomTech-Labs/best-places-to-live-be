@@ -9,3 +9,8 @@ router.get(
     res.send("login");
   }
 );
+router.get("/redirect", passport.authenticate("google"), (req, res) => {
+  res.send("Logged in!");
+});
+
+module.exports = router;
