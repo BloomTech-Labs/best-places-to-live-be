@@ -3,11 +3,6 @@ const mongoose = require("mongoose");
 const User = mongoose.model(
   "User",
   new mongoose.Schema({
-    profile: {
-      type: Object,
-      required: true,
-      unique: true
-    },
     accessToken: {
       type: String,
       unique: true
@@ -16,8 +11,13 @@ const User = mongoose.model(
       type: String,
       unique: true
     },
-    created_at: {
-      type: String
+    providerid: {
+      type: String,
+      unique: true
+    },
+    provider: {
+      type: String,
+      unique: true
     },
     name: {
       type: String
@@ -27,6 +27,12 @@ const User = mongoose.model(
       unique: true
     },
     password: {
+      type: String
+    },
+    locale: {
+      type: String
+    },
+    created_at: {
       type: String
     }
   })
