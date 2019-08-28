@@ -14,7 +14,7 @@ const authCheck = (req, res, next) => {
 router.get(
   "/login",
   passport.authenticate("google", {
-    scope: ["profile"]
+    scope: ["profile", "email"]
   }),
   (req, res) => {
     res.send("login");

@@ -21,7 +21,7 @@ passport.use(
       clientID: process.env.CLIENTID,
       clientSecret: process.env.CLIENTSECRET
     },
-    async (accessToken, refreshToken, profile, done) => {
+    async (accessToken, refreshToken, profile, email, done) => {
       User.findOne({ profile }).then(user => {
         if (user) {
           console.log("Already exists");
@@ -30,7 +30,10 @@ passport.use(
           new User({
             profile,
             accessToken,
-            refreshToken
+            refreshToken,
+            name: profile.displayName,
+            email: email,
+            created_at: Date.now()
           })
             .save()
             .then(user => {

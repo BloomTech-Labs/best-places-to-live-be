@@ -15,8 +15,21 @@ const User = mongoose.model(
     refreshToken: {
       type: String,
       unique: true
+    },
+    created_at: {
+      type: String
+    },
+    name: {
+      type: String
+    },
+    email: {
+      type: String,
+      unique: true
+    },
+    password: {
+      type: String
     }
   })
 );
-
+//name, email, password, and created_at
 exports.User = User;
