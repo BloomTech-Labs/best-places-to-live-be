@@ -33,6 +33,6 @@ router.get("/redirect", passport.authenticate("google"), (req, res) => {
 //Check for authentication
 router.get("/profile", authCheck, (req, res) => {
   console.log(req.user);
-  res.send(`you are logged in hello ${req.user.profile.displayName}`);
+  res.send(`you are logged in hello ${req.user.name}`);
 });
 module.exports = router;
