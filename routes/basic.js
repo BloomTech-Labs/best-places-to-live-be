@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const {Basic} = require('../models/basic');
-const {User} = require('../models/User');
+const { Basic } = require('../models/basic');
+const { User } = require('../models/User');
 const { ensureAuthenticated } = require('../config/auth');
 
 // Welcome Page
@@ -23,7 +23,7 @@ router.get('/all', async (req, res) => {
 
 router.post('/add', (req, res) => {
   const basic = new Basic({
-    name: req.body.name,
+    name: req.body.name
   });
   basic.save();
   res.json(basic);
@@ -31,7 +31,7 @@ router.post('/add', (req, res) => {
 
 router.delete('/delete/:id', async (req, res) => {
   try {
-    const result = await Basic.findByIdAndRemove({_id: req.params.id});
+    const result = await Basic.findByIdAndRemove({ _id: req.params.id });
     res.json(result);
   } catch (error) {
     console.log(error);
@@ -46,7 +46,7 @@ router.get('/allusers', async (req, res) => {
 router.post('/user', async (req, res) => {
   const newUser = new User({
     name: req.body.name || null,
-    email: req.body.email,
+    email: req.body.email
   });
   try {
     const userCreated = await newUser.save();
@@ -58,7 +58,7 @@ router.post('/user', async (req, res) => {
 
 router.delete('/user/:id', async (req, res) => {
   try {
-    const result = await User.findByIdAndRemove({_id: req.params.id});
+    const result = await User.findByIdAndRemove({ _id: req.params.id });
     res.json(result);
   } catch (error) {
     console.log(error);
