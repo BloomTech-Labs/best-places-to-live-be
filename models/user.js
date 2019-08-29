@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+mongoose.set('useCreateIndex', true);
+
 const userSchema = new mongoose.Schema({
   accessToken: {
     type: String,
