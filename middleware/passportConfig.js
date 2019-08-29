@@ -17,7 +17,7 @@ passport.use(
   new google(
     {
       //options for google oauth20
-      callbackURL: "http://stagebe.letsmovehomie.com/auth/redirect",
+      callbackURL: "http://stagebe.letsmovehomie.com:3001/auth/redirect",
       clientID: process.env.CLIENTID,
       clientSecret: process.env.CLIENTSECRET
     },
