@@ -1,17 +1,15 @@
-require("dotenv").config();
-const mongoose = require("mongoose");
-const express = require("express");
-const cors = require("cors");
-const basic = require("./routes/basic");
-const auth = require("./routes/auth");
-const passportConfig = require("./middleware/passportConfig");
-const cookie = require("cookie-session");
-const passport = require("passport");
-const expressLayouts = require('express-ejs-layouts');
-const users = require('./routes/users');
-const db = require('./config/keys')
+require('dotenv').config();
+const mongoose = require('mongoose');
+const express = require('express');
+const cors = require('cors');
+const passportConfig = require('./middleware/passportConfig');
+const cookie = require('cookie-session');
+const passport = require('passport');
+const db = require('./config/keys');
 const flash = require('connect-flash');
 const session = require('express-session');
+const auth = require('./routes/auth');
+const users = require('./routes/users');
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -19,34 +17,33 @@ const port = process.env.PORT || 3001;
 // Passport Config
 require('./config/passport')(passport);
 
-// app.use(express.json());
+app.use(express.json());
 app.use(cors());
 app.use(
   cookie({
     maxAge: 24 * 60 * 60 * 1000, //set cookie to one day exp
-    keys: [process.env.key]
-  })
+    keys: [process.env.key],
+  }),
 );
 
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use("/", basic);
-app.use("/auth", auth);
-
-// EJS
-app.use(expressLayouts);
-app.set('view engine', 'ejs');
+//Routes
+app.use('/auth', auth);
+app.use('/users', users);
 
 // Express body parser
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({extended: true}));
 
 // Express Session
-app.use(session({
-  secret: 'secret',
-  resave: true,
-  saveUninitialized: true
-}));
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: true,
+    saveUninitialized: true,
+  }),
+);
 
 // Passport middleware
 app.use(passport.initialize());
@@ -63,19 +60,12 @@ app.use((req, res, next) => {
   next();
 });
 
-//Routes
-app.use('/', basic);
-app.use('/users', users);
-
 //Connect to MongoDB
 mongoose
-  .connect(
-    db.mongoURI,
-    { useNewUrlParser: true }
-  )
-  .then(() => console.log("Connected to MongoDB..."))
-  .catch(e => console.error(`Could not connect ${e.message}`));
+  .connect(db.mongoURI, {useNewUrlParser: true})
+  .then(() => console.log('MongoDB successfully connected.'))
+  .catch((e) => console.error(`Could not connect: ${e.message}`));
 
 app.listen(port, () => {
-  console.log(`server start on port ${port}`);
+  console.log(`Server running on port ${port}`);
 });
