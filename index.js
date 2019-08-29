@@ -1,14 +1,17 @@
-require('dotenv').config();
-const mongoose = require('mongoose');
-const express = require('express');
+require("dotenv").config();
+const mongoose = require("mongoose");
+const express = require("express");
+const cors = require("cors");
+const basic = require("./routes/basic");
+const auth = require("./routes/auth");
+const passportConfig = require("./middleware/passportConfig");
+const cookie = require("cookie-session");
+const passport = require("passport");
 const expressLayouts = require('express-ejs-layouts');
-const cors = require('cors');
-const basic = require('./routes/basic');
 const users = require('./routes/users');
 const db = require('./config/keys')
 const flash = require('connect-flash');
 const session = require('express-session');
-const passport = require('passport');
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -18,6 +21,18 @@ require('./config/passport')(passport);
 
 // app.use(express.json());
 app.use(cors());
+app.use(
+  cookie({
+    maxAge: 24 * 60 * 60 * 1000, //set cookie to one day exp
+    keys: [process.env.key]
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use("/", basic);
+app.use("/auth", auth);
 
 // EJS
 app.use(expressLayouts);
@@ -55,11 +70,13 @@ app.use('/users', users);
 //Connect to MongoDB
 mongoose
   .connect(
-     db.mongoURI,
-    {useNewUrlParser: true, useFindAndModify: false},
+    `mongodb://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@${
+      process.env.MONGO_HOSTNAME
+    }:${process.env.MONGO_PORT}/${process.env.MONGO_DB}`,
+    { useNewUrlParser: true }
   )
-  .then(() => console.log('Connected to MongoDB...'))
-  .catch((e) => console.error(`Could not connect ${e.message}`));
+  .then(() => console.log("Connected to MongoDB..."))
+  .catch(e => console.error(`Could not connect ${e.message}`));
 
 app.listen(port, () => {
   console.log(`server start on port ${port}`);
