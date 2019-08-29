@@ -28,7 +28,7 @@ router.get("/logout", (req, res) => {
 });
 //Redirect url for user
 router.get("/redirect", passport.authenticate("google"), (req, res) => {
-  res.send(req.user);
+  res.redirect("http://stagefe.letsmovehomie.com/topten");
 });
 //Check for authentication
 router.get("/profile", authCheck, (req, res) => {
