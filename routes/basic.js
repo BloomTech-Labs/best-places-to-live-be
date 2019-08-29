@@ -1,27 +1,27 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { Basic } = require('../models/basic');
-const { User } = require('../models/User');
-const { ensureAuthenticated } = require('../config/auth');
+const { Basic } = require("../models/basic");
+const { User } = require("../models/user");
+const { ensureAuthenticated } = require("../config/auth");
 
 // Welcome Page
-router.get('/', (req, res) => {
-  res.render('welcome');
+router.get("/", (req, res) => {
+  res.render("welcome");
 });
 
 // Dashboard
-router.get('/dashboard', ensureAuthenticated, (req, res) => {
-  res.render('dashboard', {
+router.get("/dashboard", ensureAuthenticated, (req, res) => {
+  res.render("dashboard", {
     name: req.user.name
   });
 });
 
-router.get('/all', async (req, res) => {
-  const result = await Basic.find().sort('name');
+router.get("/all", async (req, res) => {
+  const result = await Basic.find().sort("name");
   res.json(result);
 });
 
-router.post('/add', (req, res) => {
+router.post("/add", (req, res) => {
   const basic = new Basic({
     name: req.body.name
   });
@@ -29,7 +29,7 @@ router.post('/add', (req, res) => {
   res.json(basic);
 });
 
-router.delete('/delete/:id', async (req, res) => {
+router.delete("/delete/:id", async (req, res) => {
   try {
     const result = await Basic.findByIdAndRemove({ _id: req.params.id });
     res.json(result);
@@ -38,12 +38,12 @@ router.delete('/delete/:id', async (req, res) => {
   }
 });
 
-router.get('/allusers', async (req, res) => {
-  const result = await User.find().sort('name');
+router.get("/allusers", async (req, res) => {
+  const result = await User.find().sort("name");
   res.json(result);
 });
 
-router.post('/user', async (req, res) => {
+router.post("/user", async (req, res) => {
   const newUser = new User({
     name: req.body.name || null,
     email: req.body.email
@@ -56,7 +56,7 @@ router.post('/user', async (req, res) => {
   }
 });
 
-router.delete('/user/:id', async (req, res) => {
+router.delete("/user/:id", async (req, res) => {
   try {
     const result = await User.findByIdAndRemove({ _id: req.params.id });
     res.json(result);
