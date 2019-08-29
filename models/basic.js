@@ -1,13 +1,15 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const Basic = mongoose.model(
-  "Basic",
+  'Basic',
   new mongoose.Schema({
     name: {
       type: String,
-      required: true
-    }
-  })
+      required: true,
+    },
+  }),
 );
 
-exports.Basic = Basic;
+module.exports = {
+  Basic
+};
