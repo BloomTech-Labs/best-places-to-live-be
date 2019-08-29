@@ -1,6 +1,6 @@
 const passport = require("passport");
 const google = require("passport-google-oauth20");
-const { User } = require("../models/User");
+const { User } = require("../models/user");
 
 //get user and add it to req.user
 passport.serializeUser((user, done) => {
