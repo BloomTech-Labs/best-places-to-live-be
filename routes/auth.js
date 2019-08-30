@@ -17,11 +17,11 @@ const authCheck = (req, res, next) => {
 router.get(
   "/login",
   passport.authenticate("google", {
-    scope: ["profile", "email"],
+    scope: ["profile", "email"]
   }),
   (req, res) => {
     res.send("login");
-  },
+  }
 );
 //clear all sessions of cookies etc
 router.get("/logout", (req, res) => {
@@ -31,6 +31,7 @@ router.get("/logout", (req, res) => {
 });
 //Redirect url for user
 router.get("/redirect", passport.authenticate("google"), (req, res) => {
+  //add auth cookies
   console.log(req.cookies["express:sess"]);
   res.cookie("express:sess", req.cookies["express:sess"]);
   res.cookie("express:sess.sig", req.cookies["express:sess.sig"]);
