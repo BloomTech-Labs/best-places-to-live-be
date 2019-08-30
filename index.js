@@ -9,6 +9,7 @@ const db = require("./config/keys");
 const session = require("express-session");
 const auth = require("./routes/auth");
 const users = require("./routes/users");
+const city = require("./routes/city");
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -28,6 +29,7 @@ app.use(
 //Routes
 app.use("/auth", auth);
 app.use("/users", users);
+app.use("/city", city);
 
 // Express body parser
 app.use(express.urlencoded({extended: true}));
