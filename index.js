@@ -6,6 +6,7 @@ const passportConfig = require("./middleware/passportConfig");
 const cookie = require("cookie-session");
 const passport = require("passport");
 const users = require("./routes/users");
+const auth = require("./routes/auth");
 const db = require("./config/keys");
 const session = require("express-session");
 const auth = require("./routes/auth");
@@ -24,10 +25,9 @@ app.use(cors());
 app.use(
   cookie({
     maxAge: 24 * 60 * 60 * 1000, //set cookie to one day exp
-    keys: [process.env.key],
-  }),
+    keys: [process.env.key]
+  })
 );
-
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -37,19 +37,16 @@ app.use("/users", users);
 app.use("/city", city);
 app.use("/auth", auth);
 
-
-
 // Express body parser
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 
 // Express Session
 app.use(
   session({
-
     secret: process.env.SESSION_SECRET,
     resave: true,
-    saveUninitialized: true,
-  }),
+    saveUninitialized: true
+  })
 );
 
 // Passport middleware
@@ -58,9 +55,12 @@ app.use(passport.session());
 
 //Connect to MongoDB
 mongoose
-  .connect(db.mongoURI, {useNewUrlParser: true})
+  .connect(
+    db.mongoURI,
+    { useNewUrlParser: true }
+  )
   .then(() => console.log("MongoDB successfully connected."))
-  .catch((e) => console.error(`Could not connect: ${e.message}`));
+  .catch(e => console.error(`Could not connect: ${e.message}`));
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
