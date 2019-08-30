@@ -1,7 +1,7 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "🚫 Note: All lines that start with 🚫 are instructions and should be deleted before this is posted to your portfolio. This is intended to be a guideline. Feel free to add your own flare to it.",
+  "description": "Letsmovehomie.com backend",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
@@ -27,7 +27,6 @@
     "passport": "^0.4.0",
     "passport-google-oauth20": "^2.0.0",
     "bcryptjs": "^2.4.3",
-    "connect-flash": "^0.1.1",
     "express-session": "^1.16.2",
     "passport-local": "^1.0.0"
   },
