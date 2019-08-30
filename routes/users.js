@@ -6,19 +6,30 @@ const passport = require('passport');
 
 // Login Page
 router.post('/login', async (req, res) => {
-  // TO FINISH:
-  // const {email, password} = req.body;
-  // try {
-  //   const user = await User.findOne({email});
-  //   if (user) {
-  //     // NEEDS!
-  //   }
-  // } catch (error) {
-  //   res.status(500).json({
-  //     message: 'Error logging in.',
-  //   });
-  // }
-  // res.json(user);
+  const {email, password} = req.body;
+  try {
+    const user = await User.findOne({email});
+    if (user) {
+      const comparePasswords = bcrypt.compareSync(password, user.password);
+      if (comparePasswords) {
+        res.status(200).json({
+          user,
+        });
+      } else {
+        res.status(500).json({
+          message: 'Invalid password',
+        });
+      }
+    } else {
+      res.status(400).json({
+        message: 'User not found.',
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: 'Error logging in.',
+    });
+  }
 });
 
 // Register Handle
@@ -53,7 +64,6 @@ router.post('/register', async (req, res) => {
         message: 'User already exists. Please login to continue',
       });
     } else {
-      console.log('registering user.');
       const hashedPassword = bcrypt.hashSync(password, 4);
 
       const newUser = new User({
