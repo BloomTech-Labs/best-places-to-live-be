@@ -5,11 +5,10 @@ const cors = require("cors");
 const passportConfig = require("./middleware/passportConfig");
 const cookie = require("cookie-session");
 const passport = require("passport");
+const users = require("./routes/users");
 const db = require("./config/keys");
 const session = require("express-session");
-const auth = require("./routes/auth");
-const users = require("./routes/users");
-
+const cookieParser = require("cookie-parser");
 const app = express();
 const port = process.env.PORT || 3001;
 
@@ -25,9 +24,15 @@ app.use(
   }),
 );
 
-//Routes
-app.use("/auth", auth);
+
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(cookieParser());
+
 app.use("/users", users);
+app.use("/auth", auth);
+
+
 
 // Express body parser
 app.use(express.urlencoded({extended: true}));
@@ -35,6 +40,7 @@ app.use(express.urlencoded({extended: true}));
 // Express Session
 app.use(
   session({
+
     secret: process.env.SESSION_SECRET,
     resave: true,
     saveUninitialized: true,
