@@ -17,11 +17,11 @@ const authCheck = (req, res, next) => {
 router.get(
   "/login",
   passport.authenticate("google", {
-    scope: ["profile", "email"]
+    scope: ["profile", "email"],
   }),
   (req, res) => {
     res.send("login");
-  }
+  },
 );
 //clear all sessions of cookies etc
 router.get("/logout", (req, res) => {
