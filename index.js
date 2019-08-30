@@ -1,21 +1,21 @@
-require('dotenv').config();
-const mongoose = require('mongoose');
-const express = require('express');
-const cors = require('cors');
-const passportConfig = require('./middleware/passportConfig');
-const cookie = require('cookie-session');
-const passport = require('passport');
-const db = require('./config/keys');
-const flash = require('connect-flash');
-const session = require('express-session');
-const auth = require('./routes/auth');
-const users = require('./routes/users');
+require("dotenv").config();
+const mongoose = require("mongoose");
+const express = require("express");
+const cors = require("cors");
+const passportConfig = require("./middleware/passportConfig");
+const cookie = require("cookie-session");
+const passport = require("passport");
+const db = require("./config/keys");
+const flash = require("connect-flash");
+const session = require("express-session");
+const auth = require("./routes/auth");
+const users = require("./routes/users");
 
 const app = express();
 const port = process.env.PORT || 3001;
 
 // Passport Config
-require('./config/passport')(passport);
+require("./config/passport")(passport);
 
 app.use(express.json());
 app.use(cors());
@@ -26,12 +26,9 @@ app.use(
   }),
 );
 
-app.use(passport.initialize());
-app.use(passport.session());
-
 //Routes
-app.use('/auth', auth);
-app.use('/users', users);
+app.use("/auth", auth);
+app.use("/users", users);
 
 // Express body parser
 app.use(express.urlencoded({extended: true}));
@@ -54,16 +51,16 @@ app.use(flash());
 
 // Global Vars - custom middleware
 app.use((req, res, next) => {
-  res.locals.success_msg = req.flash('success_msg');
-  res.locals.error_msg = req.flash('error_msg');
-  res.locals.error = req.flash('error');
+  res.locals.success_msg = req.flash("success_msg");
+  res.locals.error_msg = req.flash("error_msg");
+  res.locals.error = req.flash("error");
   next();
 });
 
 //Connect to MongoDB
 mongoose
   .connect(db.mongoURI, {useNewUrlParser: true})
-  .then(() => console.log('MongoDB successfully connected.'))
+  .then(() => console.log("MongoDB successfully connected."))
   .catch((e) => console.error(`Could not connect: ${e.message}`));
 
 app.listen(port, () => {

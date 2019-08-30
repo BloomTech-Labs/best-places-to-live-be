@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-mongoose.set('useCreateIndex', true);
+mongoose.set("useCreateIndex", true);
 
 const userSchema = new mongoose.Schema({
   accessToken: {
@@ -37,4 +37,4 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model("User", userSchema);

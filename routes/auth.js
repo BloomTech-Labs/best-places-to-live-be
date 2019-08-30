@@ -14,11 +14,11 @@ const authCheck = (req, res, next) => {
 router.get(
   "/login",
   passport.authenticate("google", {
-    scope: ["profile", "email"]
+    scope: ["profile", "email"],
   }),
   (req, res) => {
     res.send("login");
-  }
+  },
 );
 //clear all sessions of cookies etc
 router.get("/logout", (req, res) => {
@@ -28,7 +28,7 @@ router.get("/logout", (req, res) => {
 });
 //Redirect url for user
 router.get("/redirect", passport.authenticate("google"), (req, res) => {
-  res.redirect("http://stagefe.letsmovehomie.com/topten");
+  res.status(302).redirect("http://stagefe.letsmovehomie.com/topten");
 });
 //Check for authentication
 router.get("/profile", authCheck, (req, res) => {
