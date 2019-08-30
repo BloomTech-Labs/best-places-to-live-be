@@ -6,7 +6,6 @@ const passportConfig = require("./middleware/passportConfig");
 const cookie = require("cookie-session");
 const passport = require("passport");
 const db = require("./config/keys");
-const flash = require("connect-flash");
 const session = require("express-session");
 const auth = require("./routes/auth");
 const users = require("./routes/users");
@@ -45,17 +44,6 @@ app.use(
 // Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
-
-// Connect flash
-app.use(flash());
-
-// Global Vars - custom middleware
-app.use((req, res, next) => {
-  res.locals.success_msg = req.flash("success_msg");
-  res.locals.error_msg = req.flash("error_msg");
-  res.locals.error = req.flash("error");
-  next();
-});
 
 //Connect to MongoDB
 mongoose
