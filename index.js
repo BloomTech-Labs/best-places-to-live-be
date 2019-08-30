@@ -7,6 +7,7 @@ const cookie = require("cookie-session");
 const passport = require("passport");
 const users = require("./routes/users");
 const auth = require("./routes/auth");
+const city = require("./routes/city");
 const db = require("./config/keys");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
@@ -30,11 +31,12 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(cookieParser());
 
+app.use("/city", city);
 app.use("/users", users);
 app.use("/auth", auth);
 
 // Express body parser
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({extended: true}));
 
 // Express Session
 app.use(
@@ -52,12 +54,9 @@ app.use(passport.session());
 
 //Connect to MongoDB
 mongoose
-  .connect(
-    db.mongoURI,
-    { useNewUrlParser: true }
-  )
+  .connect(db.mongoURI, {useNewUrlParser: true})
   .then(() => console.log("MongoDB successfully connected."))
-  .catch(e => console.error(`Could not connect: ${e.message}`));
+  .catch((e) => console.error(`Could not connect: ${e.message}`));
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
