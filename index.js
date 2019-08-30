@@ -23,7 +23,8 @@ app.use(
   cookie({
     maxAge: 24 * 60 * 60 * 1000, //set cookie to one day exp
     keys: [process.env.key],
-  }),
+    domain: ".letsmovehomie.com"
+  })
 );
 
 app.use(passport.initialize());
@@ -43,7 +44,8 @@ app.use(
     secret: process.env.SESSION_SECRET,
     resave: true,
     saveUninitialized: true,
-  }),
+    domain: ".letsmovehomie.com"
+  })
 );
 
 // Passport middleware
