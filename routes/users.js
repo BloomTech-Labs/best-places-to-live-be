@@ -7,6 +7,14 @@ const passport = require("passport");
 // Login Page
 router.post("/login", async (req, res) => {
   const {email, password} = req.body;
+
+  // check required fields
+  if (!email || !password) {
+    res.status(400).json({
+      message: "Please fill in all fields.",
+    });
+  }
+
   try {
     const user = await User.findOne({email});
     if (user) {
