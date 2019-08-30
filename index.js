@@ -22,8 +22,7 @@ app.use(cors());
 app.use(
   cookie({
     maxAge: 24 * 60 * 60 * 1000, //set cookie to one day exp
-    keys: [process.env.key],
-    domain: ".letsmovehomie.com"
+    keys: [process.env.key]
   })
 );
 
@@ -43,8 +42,7 @@ app.use(
   session({
     secret: process.env.SESSION_SECRET,
     resave: true,
-    saveUninitialized: true,
-    domain: ".letsmovehomie.com"
+    saveUninitialized: true
   })
 );
 
