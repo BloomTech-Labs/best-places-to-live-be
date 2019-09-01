@@ -55,11 +55,17 @@ router.post("/", async (req, res) => {
     avg_commute_time
   });
 
-  const citySaved = await newCity.save();
+  try {
+    const citySaved = await newCity.save();
 
-  res.status(200).json({
-    citySaved
-  });
+    res.status(200).json({
+      citySaved
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error saving new city in database."
+    });
+  }
 });
 
 module.exports = router;
