@@ -18,7 +18,7 @@ passport.use(
   new google(
     {
       //options for google oauth20
-      callbackURL: "http://localhost:3001/auth/redirect",
+      callbackURL: "http://stagingbe.letsmovehomie.com:3001/auth/redirect",
       clientID: keys.googleAuth.clientId,
       clientSecret: keys.googleAuth.clientSecret
     },

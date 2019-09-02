@@ -30,7 +30,7 @@ router.get("/logout", (req, res) => {
 
 //Redirect url for user
 router.get("/redirect", passport.authenticate("google"), (req, res) => {
-  res.status(303).redirect("http://localhost:3001/auth/profile");
+  res.status(303).redirect("http://stagefe.letsmovehomie.com/topten");
 });
 
 //Check for authentication
