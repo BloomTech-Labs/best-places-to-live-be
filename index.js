@@ -12,9 +12,6 @@ const city = require("./routes/city");
 const keys = require("./config/keys");
 const port = process.env.PORT || 3001;
 
-// Passport Config
-require("./config/passport")(passport);
-
 app.use(express.json());
 app.use(cors());
 app.use(
