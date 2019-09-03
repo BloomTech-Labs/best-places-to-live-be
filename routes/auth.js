@@ -30,6 +30,13 @@ router.get("/logout", (req, res) => {
 
 //Redirect url for user
 router.get("/redirect", passport.authenticate("google"), (req, res) => {
+  console.log(req.cookies["letsmovehomie"]);
+  res.cookie("letsmovehomie", req.cookies["letsmovehomie"], {
+    domain: "letsmovehomie.com"
+  });
+  res.cookie("letsmovehomie.sig", req.cookies["letsmovehomie.sig"], {
+    domain: "letsmovehomie.com"
+  });
   res.status(303).redirect("http://stagefe.letsmovehomie.com/topten");
 });
 
