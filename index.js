@@ -10,7 +10,7 @@ const users = require("./routes/users");
 const auth = require("./routes/auth");
 const city = require("./routes/city");
 const keys = require("./config/keys");
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 80
 
 app.use(express.json());
 app.use(cors());
