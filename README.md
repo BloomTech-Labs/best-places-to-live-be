@@ -30,63 +30,43 @@ To get the server running locally:
 
 ## 2️⃣ Endpoints
 
-🚫This is a placeholder, replace the endpoints, access controll, and descriptioin to match your project
+# URL: `http://stagebe.letsmovehomie.com/`
 
-#### Organization Routes
+#### City Routes
 
 | Method | Endpoint                | Access Control | Description                                  |
 | ------ | ----------------------- | -------------- | -------------------------------------------- |
-| GET    | `/organizations/:orgId` | all users      | Returns the information for an organization. |
-| PUT    | `/organizatoins/:orgId` | owners         | Modify an existing organization.             |
-| DELETE | `/organizations/:orgId` | owners         | Delete an organization.                      |
+| GET    | `/city` | public    | Returns all 392 cities. |
+| GET    | `/city/topten-cost-of-living/` | public    | Returns top ten cities with the highest score of cost of living from all of our database, in descending order. |
+| GET    | `/city/topten-average-commute-time/` | public    | Returns top ten cities with the lowest average commute time from all of our database, in ascending order. |
 
 #### User Routes
-
 | Method | Endpoint                | Access Control      | Description                                        |
 | ------ | ----------------------- | ------------------- | -------------------------------------------------- |
-| GET    | `/users/current`        | all users           | Returns info for the logged in user.               |
-| GET    | `/users/org/:userId`    | owners, supervisors | Returns all users for an organization.             |
-| GET    | `/users/:userId`        | owners, supervisors | Returns info for a single user.                    |
-| POST   | `/users/register/owner` | none                | Creates a new user as owner of a new organization. |
-| PUT    | `/users/:userId`        | owners, supervisors |                                                    |
-| DELETE | `/users/:userId`        | owners, supervisors |                                                    |
+| POST   | `/users/register` | public                | Creates a new user in database.|
+| POST   | `/users/login` | public                | Logs in user.|
 
-# Data Model
+# Data Models
 
-🚫This is just an example. Replace this with your data model
-
-#### 2️⃣ ORGANIZATIONS
-
+#### Cities Model:
 ---
-
 ```
 {
-  id: UUID
-  name: STRING
-  industry: STRING
-  paid: BOOLEAN
-  customer_id: STRING
-  subscription_id: STRING
+  _id: String,
+  name: String, UNIQUE
+  cost_of_living: Number,
+  avg_commute_time: Number
 }
 ```
 
-#### USERS
-
+#### User Model:
 ---
-
 ```
 {
-  id: UUID
-  organization_id: UUID foreign key in ORGANIZATIONS table
-  first_name: STRING
-  last_name: STRING
-  role: STRING [ 'owner', 'supervisor', 'employee' ]
-  email: STRING
-  phone: STRING
-  cal_visit: BOOLEAN
-  emp_visit: BOOLEAN
-  emailpref: BOOLEAN
-  phonepref: BOOLEAN
+  _id: String,
+  name: String,
+  email: String, UNIQUE
+  password: String
 }
 ```
 
