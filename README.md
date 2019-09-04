@@ -1,4 +1,4 @@
-# API Documentation
+# ⚙️ API Documentation
 
 #### Backend deployed at [Digital Ocean Droplet](http://stagebe.letsmovehomie.com/city)
 
