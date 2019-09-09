@@ -37,7 +37,7 @@ router.get("/redirect", passport.authenticate("google"), (req, res) => {
   res.cookie("letsmovehomie.sig", req.cookies["letsmovehomie.sig"], {
     domain: "letsmovehomie.com"
   });
-  res.status(303).redirect("http://stagefe.letsmovehomie.com/topten");
+  res.status(303).redirect("https://stagefe.letsmovehomie.com/topten");
 });
 
 //Check for authentication
