@@ -3,14 +3,17 @@ const mongoose = require("mongoose");
 const citySchema = new mongoose.Schema({
   name: {
     type: String,
-    unique: true,
+    unique: true
   },
   cost_of_living: {
-    type: String,
+    type: String
   },
   avg_commute_time: {
-    type: Number,
+    type: Number
   },
+  avg_commute_time_score: {
+    type: String
+  }
 });
 
 module.exports = mongoose.model("City", citySchema);
