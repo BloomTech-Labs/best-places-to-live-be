@@ -1,3 +1,9 @@
+# ⚠️Development Engineer Git Flow:
+
+- Resolve all merge conflicts locally
+- Compare your `branch` with `Release-Canvas-2-Development`
+- Create PR
+
 # ⚙️ API Documentation
 
 #### Backend deployed at [Digital Ocean Droplet](https://stagebe.letsmovehomie.com/city)
