@@ -1,6 +1,6 @@
 # ⚙️ API Documentation
 
-#### Backend deployed at [Digital Ocean Droplet](http://stagebe.letsmovehomie.com/city)
+#### Backend deployed at [Digital Ocean Droplet](https://stagebe.letsmovehomie.com/city)
 
 ## 💻 Getting started
 
@@ -8,7 +8,23 @@ To get the server running locally:
 
 - Clone this repo
 - **npm install** to install all required dependencies
-- **npm start** to start the local server
+- Install MongoDB in your local machine: []https://docs.mongodb.com/manual/administration/install-community/](https://docs.mongodb.com/manual/administration/install-community/)
+- Run MongoDB locally by entering `mongo` in your terminal.
+- Inside the mongo instance enter:
+```
+use admin
+```
+and in the same mongo instance create a `letsmovehomie` user and `Fastwerds` password:
+```js
+db.createUser(
+  {
+    user: "letsmovehomie",
+    pwd: "Fastwerds",
+    roles: [ { role: "userAdminAnyDatabase", db: "admin" } ]
+  }
+)
+```
+- Now that your local MongoDB is setup enter **npm start** in your terminal to start the local server.
 - **npm test** to start server using testing environment
 
 ## 🗂 Backend Database:
@@ -21,7 +37,7 @@ To get the server running locally:
 
 ## 🔌 Endpoints
 
-## 🌎 URL: `http://stagebe.letsmovehomie.com/`
+## 🌎 URL: `https://stagebe.letsmovehomie.com/`
 
 #### 🏢 City Routes
 
