@@ -4,6 +4,9 @@
 - Compare your `branch` with `Release-Canvas-2-Development`
 - Create PR
 
+# Package manager:
+- NPM
+
 # ⚙️ API Documentation
 
 #### Backend deployed at [Digital Ocean Droplet](https://stagebe.letsmovehomie.com/city)
@@ -67,7 +70,7 @@ db.createUser(
 {
   _id: String,
   name: String, UNIQUE
-  cost_of_living: Number,
+  cost_of_living: String,
   avg_commute_time: Number
 }
 ```
