@@ -13,6 +13,9 @@ const citySchema = new mongoose.Schema({
   },
   avg_commute_time_score: {
     type: String
+  },
+  photo: {
+    type: String
   }
 });
 
