@@ -19,11 +19,12 @@ passport.use(
   new google(
     {
       //options for google oauth20
-      callbackURL: "/auth/redirect/facebook",
+      callbackURL: "/auth/redirect/google",
       clientID: keys.googleAuth.googleClientId,
       clientSecret: keys.googleAuth.googleClientSecret
     },
     async (accessToken, refreshToken, profile, done) => {
+      console.log(profile);
       User.findOne({ email: profile._json.email }).then(user => {
         if (user) {
           console.log("Already exists");
@@ -49,11 +50,24 @@ passport.use(
   new facebook(
     {
       //options for google oauth20
-      callbackURL: "/auth/redirect",
+      callbackURL: "/auth/redirect/facebook",
       clientID: keys.facebookAuth.facebookClientId,
-      clientSecret: keys.facebookAuth.facebookClientSecret
+      clientSecret: keys.facebookAuth.facebookClientSecret,
+      profileFields: [
+        "id",
+        "displayName",
+        "email",
+        "gender",
+        "link",
+        "locale",
+        "name",
+        "timezone",
+        "updated_time",
+        "verified"
+      ]
     },
     async (accessToken, refreshToken, profile, done) => {
+      console.log(profile);
       User.findOne({ email: profile._json.email }).then(user => {
         if (user) {
           console.log("Already exists");
