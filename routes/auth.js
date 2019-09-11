@@ -4,7 +4,7 @@ const passport = require("passport");
 //check if a user is in request sent
 const authCheck = (req, res, next) => {
   if (!req.user) {
-    res.send("you are not logged in");
+    res.send(false);
   } else {
     next();
   }
@@ -65,9 +65,8 @@ router.get(
 );
 
 //Check for authentication
-router.get("/profile", authCheck, (req, res) => {
-  console.log(req.user);
-  res.send(`you are logged in hello ${req.user.name}`);
+router.get("/validation", authCheck, (req, res) => {
+  res.send(true);
 });
 
 module.exports = router;
