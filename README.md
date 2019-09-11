@@ -9,7 +9,7 @@
 
 # ⚙️ API Documentation
 
-#### Backend deployed at [Digital Ocean Droplet](https://stagebe.letsmovehomie.com/city)
+#### Backend deployed at [https://stagebe.letsmovehomie.com/city](https://stagebe.letsmovehomie.com/city)
 
 ## 💻 Getting started
 
@@ -36,6 +36,20 @@ db.createUser(
 - Now that your local MongoDB is setup enter **npm start** in your terminal to start the local server.
 - **npm test** to start server using testing environment
 
+# Seeding:
+
+## Seeding all 392 Cities:
+- To seed your local MongoDB with our 392 cities, install [mongo-seeding-cli](https://www.npmjs.com/package/mongo-seeding-cli)
+
+- The file for seeding is inside `/data-seeding/1-cities/index.js`
+for more information about the file structure: [Seeding MongoDB database the right way](https://medium.com/@pkosiec/seeding-mongodb-database-the-right-way-32a8a0e75490)
+
+- Then execute `seed --db-name production ./data-seeding` in your terminal
+this command will seed all 392 cities in your local MongoDB
+
+## Seeding avg_commute_time_score
+ - run `node /calculation-seeding/avg_commute_time_score.js` to calculate the letter grade (A, B, C, D, E) for each city in our database.
+
 ## 🗂 Backend Database:
 -    MongoDB
 
@@ -44,7 +58,7 @@ db.createUser(
 -    Express
 -    Passport.js
 
-## 🔌 Endpoints
+# 🔌 Endpoints
 
 ## 🌎 URL: `https://stagebe.letsmovehomie.com/`
 
@@ -71,7 +85,9 @@ db.createUser(
   _id: String,
   name: String, UNIQUE
   cost_of_living: String,
-  avg_commute_time: Number
+  photo: String,
+  avg_commute_time: Number,
+  avg_commute_time_score: String,
 }
 ```
 
