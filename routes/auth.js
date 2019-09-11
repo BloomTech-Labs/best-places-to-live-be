@@ -23,7 +23,7 @@ router.get(
 router.get(
   "/login/facebook",
   passport.authenticate("facebook", {
-    scope: ["read_stream"]
+    scope: ["email"]
   }),
   (req, res) => {
     res.send("login");
