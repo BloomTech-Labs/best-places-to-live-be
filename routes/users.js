@@ -30,7 +30,7 @@ const tokenAuthentication = (req, res, next) => {
 
 router.get("/profile", tokenAuthentication, async (req, res) => {
   const _id = req.decodedToken._id;
-  console.log(req.decodedToken);
+
   try {
     const user = await User.findOne({ _id });
 
@@ -53,8 +53,8 @@ router.get("/profile", tokenAuthentication, async (req, res) => {
   }
 });
 
-router.post("/profile/:_id", async (req, res) => {
-  const _id = req.params._id;
+router.post("/profile", tokenAuthentication, async (req, res) => {
+  const _id = req.decodedToken._id;
   const { city_name, city_id, city_photo } = req.body;
 
   const city = {
@@ -101,8 +101,8 @@ router.post("/profile/:_id", async (req, res) => {
   }
 });
 
-router.delete("/profile/:_id", async (req, res) => {
-  const _id = req.params._id;
+router.delete("/profile", tokenAuthentication, async (req, res) => {
+  const _id = req.decodedToken._id;
   const { city_id } = req.body;
 
   try {
