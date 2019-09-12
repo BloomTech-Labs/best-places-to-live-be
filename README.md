@@ -50,6 +50,13 @@ this command will seed all 392 cities in your local MongoDB
 ## Seeding avg_commute_time_score
  - run `node /calculation-seeding/avg_commute_time_score.js` to calculate the letter grade (A, B, C, D, E) for each city in our database.
 
+# MongoDB Database Backup:
+ - To create a backup of the current MongoDB database:
+ `mongodump -d production -o ~/mongoBackups/date-of-backup`
+
+ - To restore a backup:
+ `mongorestore ~/mongoBackups/date-of-backup/`
+
 ## 🗂 Backend Database:
 -    MongoDB
 
