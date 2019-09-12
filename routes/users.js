@@ -2,30 +2,22 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
-const passport = require("passport");
+const keys = require("../config/keys");
 const jwt = require("jsonwebtoken");
-
-const tokenSecret = process.env.TokenSecret
-  ? process.env.TokenSecret
-  : 'privatekey:T5c!G56vff==rRm"C2q@P]3p#WMrXdKXB_S:BN.4chW,)5)x1RQ';
 
 const tokenAuthentication = (req, res, next) => {
   const token = req.headers.authorization;
 
-  jwt.verify(
-    token,
-    'privatekey:T5c!G56vff==rRm"C2q@P]3p#WMrXdKXB_S:BN.4chW,)5)x1RQ',
-    (error, decodedToken) => {
-      if (error) {
-        res.status(403).json({
-          message: "Please login to continue."
-        });
-      } else {
-        req.decodedToken = decodedToken;
-        next();
-      }
+  jwt.verify(token, keys.jwtAuth.secret, (error, decodedToken) => {
+    if (error) {
+      res.status(403).json({
+        message: "Please login to continue."
+      });
+    } else {
+      req.decodedToken = decodedToken;
+      next();
     }
-  );
+  });
 };
 
 router.get("/profile", tokenAuthentication, async (req, res) => {
@@ -166,7 +158,7 @@ router.post("/login", async (req, res) => {
             name: user.name,
             email: user.email
           },
-          tokenSecret,
+          keys.jwtAuth.secret,
           { expiresIn: "24h" }
         );
 
@@ -241,7 +233,7 @@ router.post("/register", async (req, res) => {
           name: userSaved.name,
           email: userSaved.email
         },
-        tokenSecret,
+        keys.jwtAuth.secret,
         { expiresIn: "24h" }
       );
 
