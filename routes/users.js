@@ -34,6 +34,54 @@ router.get("/profile/:_id", async (req, res) => {
   }
 });
 
+router.post("/profile/:_id", async (req, res) => {
+  const _id = req.params._id;
+  const { city_name, city_id, city_photo } = req.body;
+
+  const city = {
+    _id: city_id,
+    name: city_name,
+    photo: city_photo
+  };
+
+  try {
+    const user = await User.findOne({ _id });
+
+    if (user) {
+      const newCities = [...user.cities].concat([city]);
+
+      const updatedUser = await User.findOneAndUpdate(
+        {
+          _id
+        },
+        {
+          $set: {
+            cities: newCities
+          }
+        },
+        {
+          new: true
+        }
+      );
+
+      res.status(200).json({
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        cities: updatedUser.cities
+      });
+    } else {
+      res.status(400).json({
+        message: "User does not exist."
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "Error retrieving user from database."
+    });
+  }
+});
+
 // Login Page
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
