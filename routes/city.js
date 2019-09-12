@@ -50,7 +50,9 @@ router.post("/search", async (req, res) => {
   const { searchTerm } = req.body;
 
   try {
-    const searchResults = await City.find({ $text: { $search: searchTerm } });
+    const searchResults = await City.find({
+      $text: { $search: `\"${searchTerm}\"` }
+    });
 
     if (searchResults.length) {
       res.status(200).json({
