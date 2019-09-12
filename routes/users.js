@@ -9,9 +9,28 @@ const tokenSecret = process.env.TokenSecret
   ? process.env.TokenSecret
   : 'privatekey:T5c!G56vff==rRm"C2q@P]3p#WMrXdKXB_S:BN.4chW,)5)x1RQ';
 
-router.get("/profile/:_id", async (req, res) => {
-  const _id = req.params._id;
+const tokenAuthentication = (req, res, next) => {
+  const token = req.headers.authorization;
 
+  jwt.verify(
+    token,
+    'privatekey:T5c!G56vff==rRm"C2q@P]3p#WMrXdKXB_S:BN.4chW,)5)x1RQ',
+    (error, decodedToken) => {
+      if (error) {
+        res.status(403).json({
+          message: "Please login to continue."
+        });
+      } else {
+        req.decodedToken = decodedToken;
+        next();
+      }
+    }
+  );
+};
+
+router.get("/profile", tokenAuthentication, async (req, res) => {
+  const _id = req.decodedToken._id;
+  console.log(req.decodedToken);
   try {
     const user = await User.findOne({ _id });
 
