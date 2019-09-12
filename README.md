@@ -108,16 +108,19 @@ In order for the app to function correctly, the user must set up their own envir
 
 Please create a .env file that includes the following:
 
-    * MONGO_USERNAME - MongoDB username.
-    * MONGO_PASSWORD - MongoDB username's password.
-    * MONGO_HOSTNAME - URI of where MongoDB is hosted.
-    * MONGO_PORT - MongoDB port.
-    * MONGO_DB - MongoDB name.
+    MONGO_USERNAME= MongoDB username
+    MONGO_PASSWORD= MongoDB username's password
+    MONGO_HOSTNAME= URI of where MongoDB is hosted
+    MONGO_PORT= MongoDB port
+    MONGO_DB= MongoDB name
 
-    * CLIENTID - Google Authentication API Client ID.
-    * CLIENTSECRET - Google Authentication API Client Secret.
+    GOOGLE_CLIENTID= Google Authentication API Client ID
+    GOOGLE_CLIENTSECRET= Google Authentication API Client Secret
 
-    * COOKIE_KEY - Cookie Key for Passportjs.
+    FACEBOOK_CLIENTID= Facebook Authentication API Client ID
+    FACEBOOK_CLIENTSECRET= Facebook Authentication API Client Secret
+
+    COOKIE_KEY= Cookie Key for Passportjs
 
 ## 📡 Actions - TODO
 
