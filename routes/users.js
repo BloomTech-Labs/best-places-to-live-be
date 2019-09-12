@@ -5,7 +5,34 @@ const bcrypt = require("bcryptjs");
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
 
-const tokenSecret = process.env.TokenSecret ? process.env.TokenSecret : 'privatekey:T5c!G56vff==rRm"C2q@P]3p#WMrXdKXB_S:BN.4chW,)5)x1RQ';
+const tokenSecret = process.env.TokenSecret
+  ? process.env.TokenSecret
+  : 'privatekey:T5c!G56vff==rRm"C2q@P]3p#WMrXdKXB_S:BN.4chW,)5)x1RQ';
+
+router.get("/profile/:_id", async (req, res) => {
+  const _id = req.params._id;
+
+  try {
+    const user = await User.findOne({ _id });
+
+    if (user) {
+      res.status(200).json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        cities: user.cities
+      });
+    } else {
+      res.status(400).json({
+        message: "User does not exist."
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "Error retrieving user from database."
+    });
+  }
+});
 
 // Login Page
 router.post("/login", async (req, res) => {
@@ -22,16 +49,24 @@ router.post("/login", async (req, res) => {
     const user = await User.findOne({ email });
     if (user) {
       const comparePasswords = bcrypt.compareSync(password, user.password);
+
       if (comparePasswords) {
-        if(req.headers && req.headers['user-type'] && req.headers['user-type'] === "ios") 
-      {
-        jwt.sign({user}, tokenSecret, { expiresIn: '24h' },(err, token) => {
-          if(err) { console.log(err) }   
-          res.status(200).json({
-            token
-          });
+        const token = jwt.sign(
+          {
+            _id: user._id,
+            name: user.name,
+            email: user.email
+          },
+          tokenSecret,
+          { expiresIn: "24h" }
+        );
+
+        res.status(200).json({
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          token
         });
-      } else res.status(200).json({ user });
       } else {
         res.status(500).json({
           message: "Invalid password"
@@ -75,6 +110,7 @@ router.post("/register", async (req, res) => {
 
   try {
     const user = await User.findOne({ email });
+
     if (user) {
       res.status(500).json({
         message: "User already exists. Please login to continue"
@@ -87,17 +123,25 @@ router.post("/register", async (req, res) => {
         email,
         password: hashedPassword
       });
-      
+
       const userSaved = await newUser.save();
-      if(req.headers && req.headers['user-type'] && req.headers['user-type'] === "ios") 
-      {
-        jwt.sign({ userSaved }, tokenSecret, { expiresIn: '24h' },(err, token) => {
-          if(err) { console.log(err) }   
-          res.status(200).json({
-            token
-          });
-        });
-      } else res.status(200).json({ userSaved });
+
+      const token = jwt.sign(
+        {
+          _id: userSaved._id,
+          name: userSaved.name,
+          email: userSaved.email
+        },
+        tokenSecret,
+        { expiresIn: "24h" }
+      );
+
+      res.status(200).json({
+        _id: userSaved._id,
+        name: userSaved.name,
+        email: userSaved.email,
+        token
+      });
     }
   } catch (error) {
     console.log(error);
