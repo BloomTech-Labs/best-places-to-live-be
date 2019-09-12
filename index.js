@@ -13,25 +13,25 @@ const city = require("./routes/city");
 const keys = require("./config/keys");
 const https = require("https");
 const fs = require("fs");
-const privateKey = fs.readFileSync(
-  "/etc/letsencrypt/live/stagebe.letsmovehomie.com/privkey.pem",
-  "utf8"
-);
-const certificate = fs.readFileSync(
-  "/etc/letsencrypt/live/stagebe.letsmovehomie.com/cert.pem",
-  "utf8"
-);
-const ca = fs.readFileSync(
-  "/etc/letsencrypt/live/stagebe.letsmovehomie.com/chain.pem",
-  "utf8"
-);
+// const privateKey = fs.readFileSync(
+//   "/etc/letsencrypt/live/stagebe.letsmovehomie.com/privkey.pem",
+//   "utf8"
+// );
+// const certificate = fs.readFileSync(
+//   "/etc/letsencrypt/live/stagebe.letsmovehomie.com/cert.pem",
+//   "utf8"
+// );
+// const ca = fs.readFileSync(
+//   "/etc/letsencrypt/live/stagebe.letsmovehomie.com/chain.pem",
+//   "utf8"
+// );
 
-const credentials = {
-  key: privateKey,
-  cert: certificate,
-  ca: ca
-};
-const port = process.env.PORT || 443;
+// const credentials = {
+//   key: privateKey,
+//   cert: certificate,
+//   ca: ca
+// };
+const port = process.env.PORT || 80;
 
 app.use(express.json());
 app.use(cors());
@@ -53,18 +53,18 @@ app.use("/auth", auth);
 
 //Connect to MongoDB
 mongoose
-  .connect(
-    keys.mongodb.dbURI,
-    { useNewUrlParser: true }
-  )
+  .connect(keys.mongodb.dbURI, {
+    useNewUrlParser: true,
+    useFindAndModify: false
+  })
   .then(() => console.log("MongoDB successfully connected."))
   .catch(e => console.error(`Could not connect: ${e.message}`));
 
-const server = https.createServer(credentials, app);
-server.listen(port, () => {
-  console.log("server starting on port : " + port);
-});
-
-// app.listen(port, () => {
-//   console.log(`Server running on port ${port}`);
+// const server = https.createServer(credentials, app);
+// server.listen(port, () => {
+//   console.log("server starting on port : " + port);
 // });
+
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
