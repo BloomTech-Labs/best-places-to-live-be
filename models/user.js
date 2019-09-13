@@ -12,6 +12,15 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String
+  },
+  saveCities: {
+    type: Array
+  },
+  userSettings: {
+    type: Object
+  },
+  userProfile: {
+    type: Object
   }
 });
 
