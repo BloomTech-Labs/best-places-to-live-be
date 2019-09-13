@@ -13,8 +13,8 @@ const auth = require("./routes/auth");
 const city = require("./routes/city");
 const keys = require("./config/keys");
 const https = require("https");
-//const fs = require("fs");
-/* const privateKey = fs.readFileSync(
+const fs = require("fs");
+const privateKey = fs.readFileSync(
   "/etc/letsencrypt/live/stagebe.letsmovehomie.com/privkey.pem",
   "utf8"
 );
@@ -31,7 +31,7 @@ const credentials = {
   key: privateKey,
   cert: certificate,
   ca: ca
-}; */
+};
 const port = process.env.PORT || 443;
 
 app.use(express.json());
@@ -62,14 +62,14 @@ mongoose
   .then(() => console.log("MongoDB successfully connected."))
   .catch(e => console.error(`Could not connect: ${e.message}`));
 
-/* const server = https.createServer(credentials, app);
+const server = https.createServer(credentials, app);
 server.listen(port, () => {
   console.log("server starting on port : " + port);
-}); */
-
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
 });
+
+/* app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+}); */
 
 
 function checkConfig()
