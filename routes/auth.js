@@ -60,7 +60,9 @@ router.get(
     res.cookie("letsmovehomie.sig", req.cookies["letsmovehomie.sig"], {
       domain: "letsmovehomie.com"
     });
-    res.status(303).redirect("https://stagefe.letsmovehomie.com/topten");
+    //res.status(303).redirect("https://stagefe.letsmovehomie.com/topten");
+    console.log(req.cookies);
+    res.status(302).redirect("http://localhost:3001/auth/validation");
   }
 );
 
