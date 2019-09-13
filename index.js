@@ -14,24 +14,24 @@ const profile = require("./routes/profile");
 const keys = require("./config/keys");
 const https = require("https");
 const fs = require("fs");
-// const privateKey = fs.readFileSync(
-//   "/etc/letsencrypt/live/stagebe.letsmovehomie.com/privkey.pem",
-//   "utf8"
-// );
-// const certificate = fs.readFileSync(
-//   "/etc/letsencrypt/live/stagebe.letsmovehomie.com/cert.pem",
-//   "utf8"
-// );
-// const ca = fs.readFileSync(
-//   "/etc/letsencrypt/live/stagebe.letsmovehomie.com/chain.pem",
-//   "utf8"
-// );
+const privateKey = fs.readFileSync(
+  "/etc/letsencrypt/live/stagebe.letsmovehomie.com/privkey.pem",
+  "utf8"
+);
+const certificate = fs.readFileSync(
+  "/etc/letsencrypt/live/stagebe.letsmovehomie.com/cert.pem",
+  "utf8"
+);
+const ca = fs.readFileSync(
+  "/etc/letsencrypt/live/stagebe.letsmovehomie.com/chain.pem",
+  "utf8"
+);
 
-// const credentials = {
-//   key: privateKey,
-//   cert: certificate,
-//   ca: ca
-// };
+const credentials = {
+  key: privateKey,
+  cert: certificate,
+  ca: ca
+};
 const port = process.env.PORT || 443;
 
 app.use(express.json());
@@ -40,8 +40,8 @@ app.use(
   cookie({
     name: "letsmovehomie",
     maxAge: 24 * 60 * 60 * 1000, //set cookie to one day exp
-    keys: [keys.session.cookieKey]
-    //domain: "letsmovehomie.com"
+    keys: [keys.session.cookieKey],
+    domain: "letsmovehomie.com"
   })
 );
 app.use(express.static(__dirname, { dotfiles: "allow" }));
@@ -62,11 +62,11 @@ mongoose
   .then(() => console.log("MongoDB successfully connected."))
   .catch(e => console.error(`Could not connect: ${e.message}`));
 
-//const server = https.createServer(credentials, app);
-// server.listen(port, () => {
-//   console.log("server starting on port : " + port);
-// });
-
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+const server = https.createServer(credentials, app);
+server.listen(port, () => {
+  console.log("server starting on port : " + port);
 });
+//
+// app.listen(port, () => {
+//   console.log(`Server running on port ${port}`);
+// });
