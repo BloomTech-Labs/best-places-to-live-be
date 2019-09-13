@@ -53,7 +53,7 @@ db.createUser({
 
 ## Seeding avg_commute_time_score
 
-- run `node /calculation-seeding/avg_commute_time_score.js` to calculate the letter grade (A, B, C, D, E) for each city in our database.
+- run `node ./calculation-seeding/avg_commute_time_score.js` to calculate the letter grade (A, B, C, D, E) for each city in our database.
 
 # MongoDB Database Backup:
 
