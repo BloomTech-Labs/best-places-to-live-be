@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String
   },
-  saveCities: {
+  cities: {
     type: Array
   },
   userSettings: {

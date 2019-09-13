@@ -40,7 +40,10 @@ app.use("/profile", profile);
 
 //Connect to MongoDB
 mongoose
-  .connect(keys.mongodb.dbURI, { useNewUrlParser: true })
+  .connect(keys.mongodb.dbURI, {
+    useNewUrlParser: true,
+    useFindAndModify: false
+  })
   .then(() => console.log("MongoDB successfully connected."))
   .catch(e => console.error(`Could not connect: ${e.message}`));
 
@@ -70,4 +73,3 @@ function checkConfig() {
   )
     throw "You must have the appropriate *.env File to launch this project.";
 }
-
