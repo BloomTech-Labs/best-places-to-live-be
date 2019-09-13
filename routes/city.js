@@ -10,23 +10,24 @@ router.get("/", async (req, res) => {
   });
 });
 
-router.delete("/", async (req, res) => 
-{
-  try{
+router.delete("/", async (req, res) => {
+  try {
     //throw "error";
-    if (req.body && req.body.password === "q6zj5QrHdJabSRDkygbVfyagca5JhQnGuvKXTnzcAVWaR3sJGCrXZgfDh5dLB3RfNK4mnmSrmvTn4c86ZwRWT4uFbmFsjhqMLX2VTTBLCrHq5R6MKSRBbdAnb94WeAaS")
-    {
+    if (
+      req.body &&
+      req.body.password ===
+        "q6zj5QrHdJabSRDkygbVfyagca5JhQnGuvKXTnzcAVWaR3sJGCrXZgfDh5dLB3RfNK4mnmSrmvTn4c86ZwRWT4uFbmFsjhqMLX2VTTBLCrHq5R6MKSRBbdAnb94WeAaS"
+    ) {
       await City.remove();
       res.status(200).json({
-        
-          message: "hello"
-        });
-    }else throw "You SHALL NOT PASS"
-  }catch {  
+        message: "hello"
+      });
+    } else throw "You SHALL NOT PASS";
+  } catch {
     res.status(200).json({
       message: "good bye"
-    }
-    );}
+    });
+  }
 });
 
 router.get("/topten-score_total", async (req, res) => {
