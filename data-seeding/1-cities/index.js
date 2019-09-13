@@ -1,7 +1,6 @@
 
 dataUsa = require("./data");
-
-const toSeed = [];
+/* const toSeed = [];
 
 const uniqueCities = dataUsa.data.reduce((result, current) => {
   const foundCity = result.find(item => item.name === current.name);
@@ -27,6 +26,6 @@ function getRandomInt(min, max) {
 
 uniqueCities.forEach(city => {
   toSeed.push(city);
-});
+}); */
 
-module.exports = toSeed;
+module.exports = dataUsa[0];
