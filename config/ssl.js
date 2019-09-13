@@ -19,7 +19,8 @@ try {
     cert: certificate,
     ca: ca
   };
-} catch {
+} catch (error) {
   console.log("not using SSL");
+  console.log(error);
 }
 module.exports = credentials;
