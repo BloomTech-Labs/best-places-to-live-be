@@ -11,6 +11,7 @@ const passport = require("passport");
 const users = require("./routes/users");
 const auth = require("./routes/auth");
 const city = require("./routes/city");
+const profile = require("./routes/profile");
 const keys = require("./config/keys");
 const https = require("https");
 const credentials = require("./config/ssl");
@@ -35,6 +36,7 @@ app.use(cookieParser());
 app.use("/city", city);
 app.use("/users", users);
 app.use("/auth", auth);
+app.use("/profile", profile);
 
 //Connect to MongoDB
 mongoose
@@ -68,3 +70,4 @@ function checkConfig() {
   )
     throw "You must have the appropriate *.env File to launch this project.";
 }
+
