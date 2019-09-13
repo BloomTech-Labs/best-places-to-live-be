@@ -56,7 +56,7 @@ app.use("/profile", profile);
 //Connect to MongoDB
 mongoose
   .connect(
-    "mongodb+srv://admin:Iloveyou1!@cluster0-faq0g.mongodb.net/test?retryWrites=true&w=majority",
+    keys.mongodb.dbURI,
     { useNewUrlParser: true }
   )
   .then(() => console.log("MongoDB successfully connected."))
