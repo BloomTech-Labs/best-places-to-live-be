@@ -12,12 +12,10 @@ const authCheck = (req, res, next) => {
 };
 
 router.get("/cities", authCheck, async (req, res) => {
-  console.log(req.user);
   let cities = await User.findById(req.user._id);
   res.json(cities.saveCities);
 });
 router.post("/cities", authCheck, async (req, res) => {
-  console.log(req.user);
   //find user
   await User.findById(req.user._id).then(userbefore => {
     //find city in the user. if it doesnt exists add it.
@@ -35,7 +33,6 @@ router.post("/cities", authCheck, async (req, res) => {
   });
 });
 router.delete("/cities", authCheck, async (req, res) => {
-  console.log(req.user);
   //find user
   await User.findById(req.user._id).then(userbefore => {
     //find city in the user. if it exists remove it.
