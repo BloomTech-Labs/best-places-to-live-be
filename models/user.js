@@ -13,8 +13,14 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String
   },
-  cities: {
+  saveCities: {
     type: Array
+  },
+  userSettings: {
+    type: Object
+  },
+  userProfile: {
+    type: Object
   }
 });
 
