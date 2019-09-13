@@ -1,5 +1,7 @@
 
 dataUsa = require("./data");
+
+//code removed we dont need to check if the data is unique python already checked this.
 /* const toSeed = [];
 
 const uniqueCities = dataUsa.data.reduce((result, current) => {
