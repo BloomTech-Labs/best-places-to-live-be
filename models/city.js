@@ -1,6 +1,83 @@
 const mongoose = require("mongoose");
 
 const citySchema = new mongoose.Schema({
+
+//custom grades added to the model
+//>>>>>>>>>>
+	"grade_business_freedom": { 
+		type: String,
+		default: null
+	},
+	"grade_commute": { 
+		type: String,
+		default: null
+	},
+	"grade_cost_of_living": { 
+		type: String,
+		default: null
+	},
+	"grade_economy": { 
+		type: String,
+		default: null
+	},
+	"grade_education": { 
+		type: String,
+		default: null
+	},
+	"grade_environmental_quality": { 
+		type: String,
+		default: null
+	},
+	"grade_healthcare": { 
+		type: String,
+		default: null
+	},
+	"grade_housing": { 
+		type: String,
+		default: null
+	},
+	"grade_internet_access": { 
+		type: String,
+		default: null
+	},
+	"grade_leisure_&_culture": { 
+		type: String,
+		default: null
+	},
+	"grade_outdoors": { 
+		type: String,
+		default: null
+	},
+	"grade_safety": { 
+		type: String,
+		default: null
+	},
+	"grade_startups": { 
+		type: String,
+		default: null
+	},
+	"grade_taxation": { 
+		type: String,
+		default: null
+	},
+	"grade_tolerance": { 
+		type: String,
+		default: null
+	},
+	"grade_total": { 
+		type: String,
+		default: null
+	},
+	"grade_travel_connectivity": { 
+		type: String,
+		default: null
+	},
+	"grade_venture_capital": { 
+		type: String,
+		default: null
+	},
+/// >>>>>>>
+
 	"air-pollution-telescore": { 
 		type: Number,
 		default: null
