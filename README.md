@@ -5,11 +5,12 @@
 - Create PR
 
 # Package manager:
+
 - NPM
 
 # ⚙️ API Documentation
 
-#### Backend deployed at [Digital Ocean Droplet](https://stagebe.letsmovehomie.com/city)
+#### Backend deployed at [https://stagebe.letsmovehomie.com/city](https://stagebe.letsmovehomie.com/city)
 
 ## 💻 Getting started
 
@@ -20,63 +21,127 @@ To get the server running locally:
 - Install MongoDB in your local machine: []https://docs.mongodb.com/manual/administration/install-community/](https://docs.mongodb.com/manual/administration/install-community/)
 - Run MongoDB locally by entering `mongo` in your terminal.
 - Inside the mongo instance enter:
+
 ```
 use admin
 ```
+
 and in the same mongo instance create a `letsmovehomie` user and `Fastwerds` password:
+
 ```js
-db.createUser(
-  {
-    user: "letsmovehomie",
-    pwd: "Fastwerds",
-    roles: [ { role: "userAdminAnyDatabase", db: "admin" } ]
-  }
-)
+db.createUser({
+  user: "letsmovehomie",
+  pwd: "Fastwerds",
+  roles: [{ role: "userAdminAnyDatabase", db: "admin" }]
+});
 ```
+
 - Now that your local MongoDB is setup enter **npm start** in your terminal to start the local server.
 - **npm test** to start server using testing environment
 
+# Seeding:
+
+## Seeding all 392 Cities:
+
+- To seed your local MongoDB with our 392 cities, install [mongo-seeding-cli](https://www.npmjs.com/package/mongo-seeding-cli)
+
+- The file for seeding is inside `/data-seeding/1-cities/index.js`
+  for more information about the file structure: [Seeding MongoDB database the right way](https://medium.com/@pkosiec/seeding-mongodb-database-the-right-way-32a8a0e75490)
+
+- Then execute `seed --db-name production ./data-seeding` in your terminal
+  this command will seed all 392 cities in your local MongoDB
+
+## Seeding avg_commute_time_score
+
+- run `node /calculation-seeding/avg_commute_time_score.js` to calculate the letter grade (A, B, C, D, E) for each city in our database.
+
+# MongoDB Database Backup:
+
+- To create a backup of the current MongoDB database:
+  `mongodump -d production -o ~/mongoBackups/date-of-backup`
+
+- To restore a backup:
+  `mongorestore ~/mongoBackups/date-of-backup/`
+
 ## 🗂 Backend Database:
--    MongoDB
+
+- MongoDB
 
 ## 📚 Backend Libraries
--    Mongoose
--    Express
--    Passport.js
 
-## 🔌 Endpoints
+- Mongoose
+- Express
+- Passport.js
+
+# 🔌 Endpoints
 
 ## 🌎 URL: `https://stagebe.letsmovehomie.com/`
 
 #### 🏢 City Routes
 
-| Method | Endpoint                | Access Control | Description                                  |
-| ------ | ----------------------- | -------------- | -------------------------------------------- |
-| GET    | `/city` | public    | Returns all 392 cities. |
-| GET    | `/city/topten-cost-of-living/` | public    | Returns top ten cities with the highest score of cost of living from all of our database, in descending order. |
-| GET    | `/city/topten-average-commute-time/` | public    | Returns top ten cities with the lowest average commute time from all of our database, in ascending order. |
+| Method | Endpoint                             | Access Control | Description                                                                                                    |
+| ------ | ------------------------------------ | -------------- | -------------------------------------------------------------------------------------------------------------- |
+| GET    | `/city`                              | public         | Returns all 392 cities.                                                                                        |
+| GET    | `/city/topten-cost-of-living/`       | public         | Returns top ten cities with the highest score of cost of living from all of our database, in descending order. |
+| GET    | `/city/topten-average-commute-time/` | public         | Returns top ten cities with the lowest average commute time from all of our database, in ascending order.      |
+
+#### 🏢 City Search
+
+| Method | Endpoint       | Access Control | Description                             |
+| ------ | -------------- | -------------- | --------------------------------------- |
+| POST   | `/city/search` | public         | returns cities that contain search term |
+
+example:
+
+```js
+JSON BODY:
+{
+  "searchTerm": "miami"
+}
+
+RESPONSE:
+{
+  "cities": [
+    {
+      "_id": "5d6d653293eba6bb2fe301df",
+      "name": "Miami, FL",
+    },
+    {
+      "_id": "5d6d653293eba6bb2fe301de",
+      "name": "Miami Beach, FL",
+    }
+  ]
+}
+```
 
 #### 👥 User Routes
-| Method | Endpoint                | Access Control      | Description                                        |
-| ------ | ----------------------- | ------------------- | -------------------------------------------------- |
-| POST   | `/users/register` | public                | Creates a new user in database.|
-| POST   | `/users/login` | public                | Logs in user.|
+
+| Method | Endpoint          | Access Control | Description                     |
+| ------ | ----------------- | -------------- | ------------------------------- |
+| POST   | `/users/register` | public         | Creates a new user in database. |
+| POST   | `/users/login`    | public         | Logs in user.                   |
 
 ## 📜 Data Models
 
 #### 🏢 Cities Model:
+
 ---
+
 ```
 {
   _id: String,
   name: String, UNIQUE
   cost_of_living: String,
-  avg_commute_time: Number
+  photo: String,
+  avg_commute_time: Number,
+  avg_commute_time_score: String,
 }
 ```
 
 #### 👥 User Model:
+
 ---
+
 ```
 {
   _id: String,
@@ -92,16 +157,19 @@ In order for the app to function correctly, the user must set up their own envir
 
 Please create a .env file that includes the following:
 
-    * MONGO_USERNAME - MongoDB username.
-    * MONGO_PASSWORD - MongoDB username's password.
-    * MONGO_HOSTNAME - URI of where MongoDB is hosted.
-    * MONGO_PORT - MongoDB port.
-    * MONGO_DB - MongoDB name.
+    MONGO_USERNAME= MongoDB username
+    MONGO_PASSWORD= MongoDB username's password
+    MONGO_HOSTNAME= URI of where MongoDB is hosted
+    MONGO_PORT= MongoDB port
+    MONGO_DB= MongoDB name
 
-    * CLIENTID - Google Authentication API Client ID.
-    * CLIENTSECRET - Google Authentication API Client Secret.
+    GOOGLE_CLIENTID= Google Authentication API Client ID
+    GOOGLE_CLIENTSECRET= Google Authentication API Client Secret
 
-    * COOKIE_KEY - Cookie Key for Passportjs.
+    FACEBOOK_CLIENTID= Facebook Authentication API Client ID
+    FACEBOOK_CLIENTSECRET= Facebook Authentication API Client Secret
+
+    COOKIE_KEY= Cookie Key for Passportjs
 
 ## 📡 Actions - TODO
 
@@ -128,7 +196,7 @@ Please create a .env file that includes the following:
 `updateUser(userId, changes object)` -> Updates a single user by ID.
 
 `deleteUser(userId)` -> deletes everything dependent on the user
-    
+
 ## 🤝 Contributing
 
 When contributing to this repository, please first discuss the change you wish to make via issue, email, or any other method with the owners of this repository before making a change.
@@ -137,11 +205,12 @@ Please note we have a [code of conduct](./code_of_conduct.md). Please follow it 
 
 ### 🕷 Issue/Bug Request
 
- **If you are having an issue with the existing project code, please submit a bug report under the following guidelines:**
- - Check first to see if your issue has already been reported.
- - Check to see if the issue has recently been fixed by attempting to reproduce the issue using the latest master branch in the repository.
- - Create a live example of the problem.
- - Submit a detailed bug report including your environment & browser, steps to reproduce the issue, actual and expected outcomes,  where you believe the issue is originating from, and any potential solutions you have considered.
+**If you are having an issue with the existing project code, please submit a bug report under the following guidelines:**
+
+- Check first to see if your issue has already been reported.
+- Check to see if the issue has recently been fixed by attempting to reproduce the issue using the latest master branch in the repository.
+- Create a live example of the problem.
+- Submit a detailed bug report including your environment & browser, steps to reproduce the issue, actual and expected outcomes, where you believe the issue is originating from, and any potential solutions you have considered.
 
 ### ☄️ Feature Requests
 

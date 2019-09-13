@@ -1,10 +1,6 @@
 module.exports = {
   mongodb: {
-    dbURI: `mongodb://${process.env.MONGO_USERNAME}:${
-      process.env.MONGO_PASSWORD
-    }@${process.env.MONGO_HOSTNAME}:${process.env.MONGO_PORT}/${
-      process.env.MONGO_DB
-    }?authSource=admin`
+    dbURI: `mongodb://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_HOSTNAME}:${process.env.MONGO_PORT}/${process.env.MONGO_DB}?authSource=admin`
   },
   session: {
     cookieKey: process.env.COOKIE_KEY
@@ -16,5 +12,8 @@ module.exports = {
   facebookAuth: {
     facebookClientId: process.env.FACEBOOK_CLIENTID,
     facebookClientSecret: process.env.FACEBOOK_CLIENTSECRET
+  },
+  jwtAuth: {
+    secret: process.env.JWT_SECRET
   }
 };

@@ -46,6 +46,30 @@ router.get("/topten-cost-of-living", async (req, res) => {
   }
 });
 
+router.post("/search", async (req, res) => {
+  const { searchTerm } = req.body;
+
+  try {
+    const searchResults = await City.find({
+      $text: { $search: `\"${searchTerm}\"` }
+    });
+
+    if (searchResults.length) {
+      res.status(200).json({
+        cities: searchResults
+      });
+    } else {
+      res.status(404).json({
+        message: "Could not find any cities with that name."
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "Error searching cities in our database."
+    });
+  }
+});
+
 router.post("/", async (req, res) => {
   const { name, cost_of_living, avg_commute_time } = req.body;
 
