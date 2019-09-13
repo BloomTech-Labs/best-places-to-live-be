@@ -18,17 +18,42 @@ router.get("/cities", authCheck, async (req, res) => {
 });
 router.post("/cities", authCheck, async (req, res) => {
   console.log(req.user);
-  await User.findById(req.user._id).then(user => {
-    if (!user.saveCities.includes(req.body.cities)) {
+  //find user
+  await User.findById(req.user._id).then(userbefore => {
+    //find city in the user. if it doesnt exists add it.
+    if (!userbefore.saveCities.includes(req.body.city)) {
       User.findByIdAndUpdate(
         req.user._id,
-        { $push: { saveCities: req.body.cities } },
+        { $push: { saveCities: req.body.city } },
         { new: true }
-      ).then(city => {
-        res.json(city);
+      ).then(userafter => {
+        res.json(userafter);
       });
     } else {
       res.status(400).json("Already have that city");
+    }
+  });
+});
+router.delete("/cities", authCheck, async (req, res) => {
+  console.log(req.user);
+  //find user
+  await User.findById(req.user._id).then(userbefore => {
+    //find city in the user. if it exists remove it.
+    if (userbefore.saveCities.includes(req.body.city)) {
+      //filter out city
+      let newCities = userbefore.saveCities.filter(item => {
+        return item !== req.body.city;
+      });
+      //update user with the cities
+      User.findByIdAndUpdate(
+        req.user._id,
+        { $set: { saveCities: newCities } },
+        { new: true }
+      ).then(userafter => {
+        res.json(userafter);
+      });
+    } else {
+      res.status(400).json("Dont have that city");
     }
   });
 });
