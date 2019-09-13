@@ -31,7 +31,7 @@ City.find().then(cities => {
         score = "F";
         break;
     }
-
+    const limits = [7.1,6.5,6.1,5.5];
     const updatedCity = await City.findOneAndUpdate(
       { name: city.name },
       {
