@@ -1,4 +1,4 @@
-const credentials = null;
+var credentials = null;
 try {
   const fs = require("fs");
   const privateKey = fs.readFileSync(
