@@ -35,11 +35,11 @@ City.find().then(cities => {
     deviations[k].push(c[k])
     )
   })
-  Object.keys(deviations).map(k =>{
-      let sd = standarddeviations(deviations[k])
-      deviations[k] = [sd*4, sd*3, sd*2, sd*1]; //so sd*4 is sd2 sd*3 is sd1 sd*2 is avg sd*1 is sd-1
-    }
-  );
+
+  Object.keys(deviations).map(k =>  
+    deviations[k] =  {sd : standarddeviations(deviations[k]), avg: average(deviations[k]) }
+    )
+  
 
   cities.map(async city => {
     const rounded_avg_commute_time = Math.round(city.avg_commute_time);
@@ -62,13 +62,24 @@ City.find().then(cities => {
         score = "F";
         break;
     }
+    
+    let object = {};
+    Object.keys(deviations).map(k =>{
+        let sd =  deviations[k].sd;
+        let avg = deviations[k].avg;
+          object[k] = (GetZPercent(city[k], avg, sd))*10 + (city[k] > avg ? 0.05 : 0); //to make from 0-1 to 0-10;
+          let nk = k.split("score_").join("grade_");
+          object[nk] = calculateGrading(city[k],[sd*1.5+avg, sd*1+avg, avg, -sd*1+avg]);
+        }
+    );
     const updatedCity = await City.findOneAndUpdate(
       { name: city.name },
       {
         $set: {
+          ...object,
           avg_commute_time: rounded_avg_commute_time,
-          avg_commute_time_score: score,
-          grade_business_freedom: await calculateGrading(city.score_business_freedom, deviations.score_business_freedom
+          avg_commute_time_score: score
+         /*  grade_business_freedom: await calculateGrading(city.score_business_freedom, deviations.score_business_freedom
           ),
           grade_commute: await calculateGrading(city.score_commute, deviations.score_commute),
           grade_cost_of_living: await calculateGrading(
@@ -107,13 +118,12 @@ City.find().then(cities => {
           grade_venture_capital: await calculateGrading(
             city.score_venture_capital,
             deviations.score_venture_capital
-          )
+          ) */
         }
       }
     );
 
     documentsUpdated++;
-
     //console.log(updatedCity);
     console.log(documentsUpdated);
   });
@@ -160,4 +170,37 @@ function average(data){
 
   var avg = sum / data.length;
   return avg;
+}
+
+function GetZPercent(val, mean, sd) {
+  let z = (val-mean)/sd;
+  // z == number of standard deviations from the mean
+
+  // if z is greater than 6.5 standard deviations from the mean the
+  // number of significant digits will be outside of a reasonable range
+
+  if (z < -6.5) {
+    return 0.0;
+  }
+
+  if (z > 6.5) {
+    return 1.0;
+  }
+
+  var factK = 1;
+  var sum = 0;
+  var term = 1;
+  var k = 0;
+  var loopStop = Math.exp(-23);
+
+  while(Math.abs(term) > loopStop) {
+    term = .3989422804 * Math.pow(-1,k) * Math.pow(z,k) / (2 * k + 1) / Math.pow(2,k) * Math.pow(z,k+1) / factK;
+    sum += term;
+    k++;
+    factK *= k;
+  }
+
+  sum += 0.5;
+
+  return sum;
 }
