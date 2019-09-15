@@ -3,10 +3,25 @@ const router = express.Router();
 const City = require("../models/city");
 
 router.get("/", async (req, res) => {
-  const cities = await City.find();
+  let list = req.body.ids;
+  if(!list || list.length < 1) return res.status(403).json({message: "Please enter a list of ids"})
 
+  const cities = await City.find({_id: list});
+  let data = []
+  if(req.body && req.body.model)
+  {
+    cities.map(c =>{ 
+      let d = {}
+      Object.keys(req.body.model).map(k => 
+        d[k] = c[k]
+      )
+      data.push(d);
+    })
+  }else 
+    data = cities;
+  console.log(data);
   res.status(200).json({
-    cities
+    data
   });
 });
 
