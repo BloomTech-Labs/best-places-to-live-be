@@ -1,4 +1,4 @@
-const express = require("express"); 
+const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
@@ -45,7 +45,45 @@ router.get("/profile", tokenAuthentication, async (req, res) => {
   }
 });
 
-router.post("/profile", tokenAuthentication, async (req, res) => {
+router.put("/profile", tokenAuthentication, async (req, res) => {
+  const _id = req.decodedToken._id;
+  const userUpdates = req.body;
+
+  try {
+    const user = await User.findById(_id);
+
+    if (user) {
+      const updatedUser = await User.findOneAndUpdate(
+        {
+          _id
+        },
+        {
+          $set: userUpdates
+        },
+        {
+          new: true
+        }
+      );
+
+      res.status(200).json({
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        cities: updatedUser.cities
+      });
+    } else {
+      res.status(400).json({
+        message: "User does not exist."
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "Error updating user in database."
+    });
+  }
+});
+
+router.post("/profile/cities", tokenAuthentication, async (req, res) => {
   const _id = req.decodedToken._id;
   const { city_name, city_id, city_photo } = req.body;
 
@@ -93,7 +131,7 @@ router.post("/profile", tokenAuthentication, async (req, res) => {
   }
 });
 
-router.delete("/profile", tokenAuthentication, async (req, res) => {
+router.delete("/profile/cities", tokenAuthentication, async (req, res) => {
   const _id = req.decodedToken._id;
   const { city_id } = req.body;
 
