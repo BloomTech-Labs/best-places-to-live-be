@@ -53,7 +53,11 @@ db.createUser({
 
 ## Seeding avg_commute_time_score
 
-- run `node ./calculation-seeding/avg_commute_time_score.js` to calculate the letter grade (A, B, C, D, E) for each city in our database.
+- run `node ./calculation-seeding/calcScores.js` to calculate the letter grade (A, B, C, D, E) for each city in our database.
+
+## Inside our Digital Ocean Droplet:
+
+- Remember to restart the node server by executing `pm2 restart index` in the terminal
 
 # MongoDB Database Backup:
 
@@ -87,35 +91,11 @@ db.createUser({
 
 #### 🏢 City Search
 
-| Method | Endpoint       | Access Control | Description                             |
-| ------ | -------------- | -------------- | --------------------------------------- |
-| POST   | `/city/` | public         | <details> <summary>Returns cities requested in body</summary>_body_ {<br/>&nbsp;&nbsp;&nbsp;&nbsp;__ids: []__ // list of ids that you want data back on<br/>&nbsp;&nbsp;&nbsp;&nbsp;__model: {}__ //object with same keyvalues of the data you want in the list of &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;objects<br/>}</details> |
-| POST   | `/city/search` | public         | returns cities that contain search term |
-| POST   | `/city/top` | public         |<details> <summary>Retuns The Top cities based on Catagory</summary>_query_<br/>{<br/>&nbsp;&nbsp;&nbsp;&nbsp;__q: "",__ //forced name filter use this to only grab a particluar state.Defaults to null<br/>&nbsp;&nbsp;&nbsp;&nbsp;__filter: "",__ //name of the key value of the data model you wanna sort by. Defaults to Score_total<br/>&nbsp;&nbsp;&nbsp;&nbsp;__limit: Number,__ //Number of items you want back. Defaults 10<br/>&nbsp;&nbsp;&nbsp;&nbsp;__order:""__ //asc for bottom or none for top. Defaults to top<br/>}<br/>_body_<br/>{<br/>&nbsp;&nbsp;&nbsp;&nbsp;__model: {}__ //object with same keyvalues of the data you want in the list of &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;objects<br/>}</details> |
-
-
-example:
-
-```js
-JSON BODY:
-{
-  "searchTerm": "miami"
-}
-
-RESPONSE:
-{
-  "cities": [
-    {
-      "_id": "5d6d653293eba6bb2fe301df",
-      "name": "Miami, FL",
-    },
-    {
-      "_id": "5d6d653293eba6bb2fe301de",
-      "name": "Miami Beach, FL",
-    }
-  ]
-}
-```
+| Method | Endpoint       | Access Control | Description |
+| ------ | -------------- | -------------- | --------------------------------------------------------------|
+| POST   | `/city/`       | public         | <details> <summary>Returns cities requested in body</summary>_body_ {<br/>&nbsp;&nbsp;&nbsp;&nbsp;**ids: []** // list of ids that you want data back on<br/>&nbsp;&nbsp;&nbsp;&nbsp;**model: {}** //object with same keyvalues of the data you want in the list of &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;objects<br/>}</details>|
+| POST   | `/city/search` | public         | <details><summary>Returns cities that contain search term</summary>_body_ <br> { <br>&nbsp;&nbsp;"searchTerm": "miami" <br>}</details>|
+| POST   | `/city/top`    | public         | <details> <summary>Returns The Top cities based on Category</summary>_query_<br/>{<br/>&nbsp;&nbsp;&nbsp;&nbsp;**q: "",** //forced name filter use this to only grab a particluar state.Defaults to null<br/>&nbsp;&nbsp;&nbsp;&nbsp;**filter: "",** //name of the key value of the data model you wanna sort by. Defaults to Score*total<br/>&nbsp;&nbsp;&nbsp;&nbsp;**limit: Number,** //Number of items you want back. Defaults 10<br/>&nbsp;&nbsp;&nbsp;&nbsp;**order:""** //asc for bottom or none for top. Defaults to top<br/>}<br/>\_body*<br/>{<br/>&nbsp;&nbsp;&nbsp;&nbsp;**model: {}** //object with same keyvalues of the data you want in the list of &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;objects<br/>}</details> |
 
 #### 👥 User Routes
 
@@ -250,7 +230,7 @@ RESPONSE:
   "lgbt-index": Number,
   "lgbt-index-telescore": Number,
   "life-expectancy": Number,
-  location: 
+  location:
   {
     "geohash": String
     "latlon"
@@ -350,6 +330,7 @@ RESPONSE:
   "workfrom-coworking-spaces-count": Number
 }
 ```
+
 </details>
 <details>
 <summary>👥 User Model:</summary>
@@ -359,9 +340,125 @@ RESPONSE:
   _id: String,
   name: String,
   email: String, UNIQUE
-  password: String
+  password: String,
+  cities: Array
 }
 ```
+
+</details>
+
+<details>
+  <summary>iOS Endpoints - User's favorite cities</summary>
+
+  ## POST `https://stagebe.letsmovehomie.com/users/profile/cities`
+
+  REQUIRES:
+
+    HEADERS:
+  ```
+  {
+    headers: {
+      Authorization: "token"
+    }
+  }
+  ```
+
+    JSON BODY
+  ```
+  {
+    "city_id": "535358409283535",
+    "city_name": "Seattle, WA",
+    "city_photo": "https://letsmovehomie-city-photoes.nyc3.digitaloceanspaces.com/tallahase-fl.jpg"
+  }
+  ```
+
+  RETURNS
+
+  ```
+  {
+    "_id": "5d7acebe82c76cf25955b4e5",
+    "name": "Carlos",
+    "email": "carlos@carlos.com",
+    "cities": [
+      "city_id": "535358409283535",
+      "city_name": "Seattle, WA",
+      "city_photo": "https://letsmovehomie-city-photoes.nyc3.digitaloceanspaces.com/tallahase-fl.jpg"
+    ]
+  }
+  ```
+
+  ## DELETE `https://stagebe.letsmovehomie.com/users/profile/cities`
+
+  REQUIRES:
+
+    HEADERS:
+  ```
+  {
+    headers: {
+      Authorization: "token"
+    }
+  }
+  ```
+
+    JSON BODY
+  ```
+  {
+    "city_id": "535358409283535"
+  }
+  ```
+
+  RETURNS
+
+  ```
+  {
+    "_id": "5d7acebe82c76cf25955b4e5",
+    "name": "Carlos",
+    "email": "carlos@carlos.com",
+    "cities": []
+  }
+  ```
+</details>
+
+<details>
+  <summary>iOS Endpoints - Update user's information - password, name, email, etc</summary>
+
+  ## PUT `https://stagebe.letsmovehomie.com/users/profile/`
+
+  REQUIRES:
+
+    HEADERS:
+  ```
+  {
+    headers: {
+      Authorization: "token"
+    }
+  }
+  ```
+
+    JSON BODY WITH FIELDS TO UPDATE (Not all fields are required)
+  ```
+  {
+    "name": "Changed Name",
+    "email": "changed@email.com",
+    "password": ""
+  }
+  ```
+
+  RETURNS
+
+  ```
+  {
+    "_id": "5d7acebe82c76cf25955b4e5",
+    "name": "Carlos",
+    "email": "carlos@carlos.com",
+    "cities": [
+      "city_id": "535358409283535",
+      "city_name": "Seattle, WA",
+      "city_photo": "https://letsmovehomie-city-photoes.nyc3.digitaloceanspaces.com/tallahase-fl.jpg"
+    ]
+  }
+  ```
+
 </details>
 
 ## ⚠️ Environment Variables

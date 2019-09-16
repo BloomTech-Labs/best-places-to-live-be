@@ -53,6 +53,11 @@ router.put("/profile", tokenAuthentication, async (req, res) => {
     const user = await User.findById(_id);
 
     if (user) {
+      if (req.body.password) {
+        const hashedPassword = bcrypt.hashSync(req.body.password, 4);
+        userUpdates.password = hashedPassword;
+      }
+
       const updatedUser = await User.findOneAndUpdate(
         {
           _id
@@ -77,6 +82,7 @@ router.put("/profile", tokenAuthentication, async (req, res) => {
       });
     }
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       message: "Error updating user in database."
     });
