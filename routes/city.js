@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const City = require("../models/city");
 
-router.get("/", async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     let list = req.body.ids;
     if (!list || list.length < 1)
@@ -48,7 +48,7 @@ router.delete("/", async (req, res) => {
   }
 });
 
-router.get("/top", async function(req, res) {
+router.post("/top", async function(req, res) {
   try {
     let q = req.query.q ? req.query.q : null;
     let filter = req.query.filter ? req.query.filter : "score_total";
