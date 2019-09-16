@@ -470,7 +470,7 @@ const citySchema = new mongoose.Schema({
     default: null
   },
   location: {
-    type: String,
+    type: Object,
     default: null
   },
   "median-age": {

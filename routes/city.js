@@ -2,12 +2,30 @@ const express = require("express");
 const router = express.Router();
 const City = require("../models/city");
 
-router.get("/", async (req, res) => {
-  const cities = await City.find();
+router.post("/", async (req, res) => {
+  try {
+    let list = req.body.ids;
+    if (!list || list.length < 1)
+      return res.status(403).json({ message: "Please enter a list of ids" });
 
-  res.status(200).json({
-    cities
-  });
+    const cities = await City.find({ _id: list });
+    let data = [];
+    if (req.body && req.body.model) {
+      cities.map(c => {
+        let d = {};
+        Object.keys(req.body.model).map(k => (d[k] = c[k]));
+        data.push(d);
+      });
+    } else data = cities;
+    console.log(data);
+    res.status(200).json({
+      data
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Could Not find this data in the data base"
+    });
+  }
 });
 
 router.delete("/", async (req, res) => {
@@ -26,6 +44,46 @@ router.delete("/", async (req, res) => {
   } catch {
     res.status(200).json({
       message: "good bye"
+    });
+  }
+});
+
+router.post("/top", async function(req, res) {
+  try {
+    let q = req.query.q ? req.query.q : null;
+    let filter = req.query.filter ? req.query.filter : "score_total";
+    let limit = parseInt(req.query.limit) ? parseInt(req.query.limit) : 10;
+    let order = req.query.order.toLowerCase() === "asc" || req.query.order === "1"  ? 1 : -1;
+
+    filter = filter.split("%26").join("&");
+
+    //search the db and only get the data that matches q
+    let qsort = {};
+    qsort[filter] = order;
+    let query = q ? { $text: { $search: `\"${q}\"` } } : {};
+    const cities = await City.find(query)
+      .sort({
+        ...qsort,
+        name: 1
+      })
+      .limit(limit);
+
+      //check for model
+      let data = [];
+      if (req.body && req.body.model) {
+        cities.map(c => {
+          let d = {};
+          Object.keys(req.body.model).map(k => (d[k] = c[k]));
+          data.push(d);
+        });
+      } else data = cities;
+
+    res.status(200).json({
+      cities: data
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Could not retrieve top 10 cities"
     });
   }
 });
