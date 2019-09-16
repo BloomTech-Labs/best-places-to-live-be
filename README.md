@@ -440,25 +440,23 @@ db.createUser({
   {
     "name": "Changed Name",
     "email": "changed@email.com",
-    "password": ""
+    "password": "changedPassword"
   }
   ```
+    NOTE: If password field is sent, there is a function that will hash the new password before storing to database.
 
   RETURNS
 
   ```
   {
     "_id": "5d7acebe82c76cf25955b4e5",
-    "name": "Carlos",
-    "email": "carlos@carlos.com",
+    "name": "Changed Name",
+    "email": "changedPassword",
     "cities": [
-      "city_id": "535358409283535",
-      "city_name": "Seattle, WA",
-      "city_photo": "https://letsmovehomie-city-photoes.nyc3.digitaloceanspaces.com/tallahase-fl.jpg"
+      ...
     ]
   }
   ```
-
 </details>
 
 ## ⚠️ Environment Variables
