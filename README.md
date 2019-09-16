@@ -89,7 +89,10 @@ db.createUser({
 
 | Method | Endpoint       | Access Control | Description                             |
 | ------ | -------------- | -------------- | --------------------------------------- |
+| POST   | `/city/` | public         | returns cities Pass model to get data back in format requested, pass in Ids array to get the ids you want (required) |
 | POST   | `/city/search` | public         | returns cities that contain search term |
+| POST   | `/city/top` | public         | Get the top cityies q=a forced filter by name filter=What data to sort by Limit=number of elements back order=top or bottom |
+
 
 example:
 
