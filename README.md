@@ -89,9 +89,9 @@ db.createUser({
 
 | Method | Endpoint       | Access Control | Description                             |
 | ------ | -------------- | -------------- | --------------------------------------- |
-| POST   | `/city/` | public         | returns cities Pass model to get data back in format requested, pass in Ids array to get the ids you want (required) |
+| POST   | `/city/` | public         | <details> <summary>Returns cities requested in body</summary>_body_ {<br/>&nbsp;&nbsp;&nbsp;&nbsp;__ids: []__ // list of ids that you want data back on<br/>&nbsp;&nbsp;&nbsp;&nbsp;__model: {}__ //object with same keyvalues of the data you want in the list of &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;objects<br/>}</details> |
 | POST   | `/city/search` | public         | returns cities that contain search term |
-| POST   | `/city/top` | public         | Get the top cityies q=a forced filter by name filter=What data to sort by Limit=number of elements back order=top or bottom |
+| POST   | `/city/top` | public         |<details> <summary>Retuns The Top cities based on Catagory</summary>_query_<br/>{<br/>&nbsp;&nbsp;&nbsp;&nbsp;__q: "",__ //forced name filter use this to only grab a particluar state.Defaults to null<br/>&nbsp;&nbsp;&nbsp;&nbsp;__filter: "",__ //name of the key value of the data model you wanna sort by. Defaults to Score_total<br/>&nbsp;&nbsp;&nbsp;&nbsp;__limit: Number,__ //Number of items you want back. Defaults 10<br/>&nbsp;&nbsp;&nbsp;&nbsp;__order:""__ //asc for bottom or none for top. Defaults to top<br/>}<br/>_body_<br/>{<br/>&nbsp;&nbsp;&nbsp;&nbsp;__model: {}__ //object with same keyvalues of the data you want in the list of &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;objects<br/>}</details> |
 
 
 example:
@@ -126,9 +126,10 @@ RESPONSE:
 
 ## 📜 Data Models
 
-#### 🏢 Cities Model:
-
----
+<details>
+<summary>
+  🏢 Cities Model:
+ </summary>
 
 ```
 {
@@ -349,10 +350,9 @@ RESPONSE:
   "workfrom-coworking-spaces-count": Number
 }
 ```
-
-#### 👥 User Model:
-
----
+</details>
+<details>
+<summary>👥 User Model:</summary>
 
 ```
 {
@@ -362,6 +362,7 @@ RESPONSE:
   password: String
 }
 ```
+</details>
 
 ## ⚠️ Environment Variables
 
