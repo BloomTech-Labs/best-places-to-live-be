@@ -53,7 +53,7 @@ router.get("/top", async function(req, res) {
     let q = req.query.q ? req.query.q : null;
     let filter = req.query.filter ? req.query.filter : "score_total";
     let limit = parseInt(req.query.limit) ? parseInt(req.query.limit) : 10;
-    let order = req.query.order === "asc" ? 1 : -1;
+    let order = req.query.order.toLowerCase() === "asc" || req.query.order === "1"  ? 1 : -1;
 
     filter = filter.split("%26").join("&");
 
@@ -61,12 +61,23 @@ router.get("/top", async function(req, res) {
     let qsort = {};
     qsort[filter] = order;
     let query = q ? { $text: { $search: `\"${q}\"` } } : {};
-    const data = await City.find(query)
+    const cities = await City.find(query)
       .sort({
         ...qsort,
         name: 1
       })
       .limit(limit);
+
+      //check for model
+      let data = [];
+      if (req.body && req.body.model) {
+        cities.map(c => {
+          let d = {};
+          Object.keys(req.body.model).map(k => (d[k] = c[k]));
+          data.push(d);
+        });
+      } else data = cities;
+
     res.status(200).json({
       cities: data
     });
