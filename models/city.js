@@ -471,7 +471,7 @@ const citySchema = new mongoose.Schema({
   },
   location: {
     type: Object,
-    default: null
+    default: { type: "Point", coordinates: [0, 0] }
   },
   "median-age": {
     type: Number,
@@ -819,5 +819,6 @@ const citySchema = new mongoose.Schema({
     default: null
   }
 });
-
-module.exports = mongoose.model("City", citySchema);
+citySchema.index({ location: "2dsphere" });
+var model = mongoose.model("City", citySchema);
+module.exports = model;
