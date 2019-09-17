@@ -43,6 +43,18 @@ City.find().then(cities => {
   );
 
   cities.map(async city => {
+
+    //here we are gonna do a quick reasigning of geo location data
+    let object = {};
+    if (city.location && city.location.latlon)
+      object.location = {
+        type: "Point",
+        coordinates: [
+          city.location.latlon.longitude,
+          city.location.latlon.latitude
+        ]
+      };
+      
     const rounded_avg_commute_time = Math.round(city.avg_commute_time);
     let score = "";
 
@@ -64,7 +76,6 @@ City.find().then(cities => {
         break;
     }
 
-    let object = {};
     Object.keys(deviations).map(k => {
       let sd = deviations[k].sd;
       let avg = deviations[k].avg;
@@ -90,7 +101,6 @@ City.find().then(cities => {
     );
 
     documentsUpdated++;
-    //console.log(updatedCity);
     console.log(documentsUpdated);
   });
 });
