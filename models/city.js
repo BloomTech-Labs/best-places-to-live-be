@@ -327,7 +327,7 @@ const citySchema = new mongoose.Schema({
   },
   full_name: {
     type: String,
-    default: null
+    unique: true
   },
   "funderbeam-total-startups": {
     type: Number,
@@ -495,7 +495,6 @@ const citySchema = new mongoose.Schema({
   },
   name: {
     type: String,
-    default: null,
     unique: true
   },
   "network-download": {
@@ -819,6 +818,5 @@ const citySchema = new mongoose.Schema({
     default: null
   }
 });
-citySchema.index({ location: "2dsphere" });
-var model = mongoose.model("City", citySchema);
-module.exports = model;
+//citySchema.index({ location: "2dsphere" });
+module.exports = mongoose.model("City", citySchema);;

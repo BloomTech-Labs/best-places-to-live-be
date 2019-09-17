@@ -29,4 +29,4 @@ uniqueCities.forEach(city => {
   toSeed.push(city);
 }); */
 
-module.exports = dataUsa[0];
+module.exports = dataUsa[0][0];
