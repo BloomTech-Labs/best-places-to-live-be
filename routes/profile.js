@@ -10,7 +10,10 @@ const authCheck = (req, res, next) => {
     next();
   }
 };
-
+router.get("/", authCheck, async (req, res) => {
+  let user = await User.findById(req.user._id);
+  res.json(user);
+});
 router.get("/cities", authCheck, async (req, res) => {
   let cities = await User.findById(req.user._id);
   res.json(cities.saveCities);
