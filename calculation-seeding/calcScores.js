@@ -46,14 +46,16 @@ City.find().then(cities => {
 
     //here we are gonna do a quick reasigning of geo location data
     let object = {};
-   /*  if (city.location && city.location.latlon)
+    if (city.location && city.location.latlon)
       object.location = {
         type: "Point",
         coordinates: [
           city.location.latlon.longitude,
           city.location.latlon.latitude
         ]
-      }; */
+      }; 
+      object.location = city.location;
+      if(object.location && object.location.coordinates) object.location = object.location.coordinates.reverse();
       
     const rounded_avg_commute_time = Math.round(city.avg_commute_time);
     let score = "";
