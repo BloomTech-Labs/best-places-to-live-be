@@ -7,8 +7,9 @@ router.post("/", async (req, res) => {
     let list = req.body.ids;
     if (!list || list.length < 1)
       return res.status(403).json({ message: "Please enter a list of ids" });
-
-    const cities = await City.find({ _id: list });
+    let filter = { _id: list }
+    if(list[0] === "all") filter = {};
+    const cities = await City.find(filter);
     let data = [];
     if (req.body && req.body.model) {
       cities.map(c => {
@@ -17,7 +18,6 @@ router.post("/", async (req, res) => {
         data.push(d);
       });
     } else data = cities;
-    console.log(data);
     res.status(200).json({
       data
     });
@@ -53,7 +53,7 @@ router.post("/top", async function(req, res) {
     let q = req.query.q ? req.query.q : null;
     let filter = req.query.filter ? req.query.filter : "score_total";
     let limit = parseInt(req.query.limit) ? parseInt(req.query.limit) : 10;
-    let order = req.query.order.toLowerCase() === "asc" || req.query.order === "1"  ? 1 : -1;
+    let order = req.query.order && req.query.order.toLowerCase() === "asc" || req.query.order === "1"  ? 1 : -1;
 
     filter = filter.split("%26").join("&");
 
