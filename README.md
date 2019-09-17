@@ -451,7 +451,7 @@ db.createUser({
   {
     "_id": "5d7acebe82c76cf25955b4e5",
     "name": "Changed Name",
-    "email": "changedPassword",
+    "email": "changed@email.com",
     "cities": [
       ...
     ]
