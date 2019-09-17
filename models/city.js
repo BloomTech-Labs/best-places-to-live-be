@@ -516,7 +516,7 @@ const citySchema = new mongoose.Schema({
   },
   photo: {
     type: String,
-    default: null
+    default: "https://letsmovehomie-city-photoes.nyc3.digitaloceanspaces.com/no-photo-available.jpg"
   },
   "pisa-detail-happiness": {
     type: Number,
