@@ -84,8 +84,8 @@ db.createUser({
 
 #### 🏢 City Routes
 
-| Method | Endpoint           | Access Control | Description                                               |
-| ------ | ------------------ | -------------- | --------------------------------------------------------- |
+| Method | Endpoint           | Access Control | Description                                                       |
+| ------ | ------------------ | -------------- | ----------------------------------------------------------------- |
 | GET    | `/city/all/`       | public         | Returns ***only*** the `_id` and `name` fields of all 5037 cities.|
 
 #### 🏢 City Search
