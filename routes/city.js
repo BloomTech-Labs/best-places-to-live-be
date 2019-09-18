@@ -2,6 +2,19 @@ const express = require("express");
 const router = express.Router();
 const City = require("../models/city");
 
+router.get("/all", async (req, res) => {
+  try {
+    const cities = await City.find({}, { name: 1 });
+    res.status(200).json({
+      cities
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error retrieving cities from database."
+    });
+  }
+});
+
 router.post("/location", async (req, res) => {
   let lat = parseFloat(req.query.lat);
   let lng = parseFloat(req.query.lng);
@@ -151,41 +164,6 @@ router.get("/topten-score_total", async (req, res) => {
   } catch (error) {
     res.status(500).json({
       message: "Could not retrieve top 10 cities of average commute time."
-    });
-  }
-});
-
-router.get("/topten-average-commute-time", async (req, res) => {
-  try {
-    const sortedByAverageCommuteTime_ASC = await City.find()
-      .sort({
-        avg_commute_time: "asc"
-      })
-      .limit(10);
-
-    res.status(200).json({
-      cities: sortedByAverageCommuteTime_ASC
-    });
-  } catch (error) {
-    res.status(500).json({
-      message: "Could not retrieve top 10 cities of average commute time."
-    });
-  }
-});
-router.get("/topten-cost-of-living", async (req, res) => {
-  try {
-    const sortedByCostOfLiving_DESC = await City.find()
-      .sort({
-        cost_of_living: -1
-      })
-      .limit(10);
-
-    res.status(200).json({
-      cities: sortedByCostOfLiving_DESC
-    });
-  } catch (error) {
-    res.status(500).json({
-      message: "Could not retrieve top 10 cities of cost of living."
     });
   }
 });
