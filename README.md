@@ -1,3 +1,4 @@
+
 # ⚠️Development Engineer Git Flow:
 
 - Resolve all merge conflicts locally
@@ -104,6 +105,22 @@ db.createUser({
 | ------ | ----------------- | -------------- | ------------------------------- |
 | POST   | `/users/register` | public         | Creates a new user in database. |
 | POST   | `/users/login`    | public         | Logs in user.                   |
+
+#### 👥 Profile Routes
+
+---
+
+BASE URL
+/profile
+
+---
+
+| Method | Endpoint  | Access Control | Description                |
+| ------ | --------- | -------------- | -------------------------- |
+| GET    | `/`       | private        | Retrieve user data object  |
+| GET    | `/cities` | private        | Retrieve user saved cities |
+| POST   | `/cities` | private        | add user saved cities      |
+| DELETE | `/cities` | private        | delete user saved cities   |
 
 ## 📜 Data Models
 
@@ -548,3 +565,4 @@ These contribution guidelines have been adapted from [this good-Contributing.md-
 ### 🖥 [Frontend Documentation](https://github.com/labs15-best-places/front-end) for details on the frontend application of our project.
 
 ### 📱 [iOS Documentation](https://github.com/labs15-best-places/ios) for details on the mobile iOS application of our project.
+
