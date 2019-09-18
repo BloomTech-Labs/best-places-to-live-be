@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const passport = require("passport");
 const User = require("../models/user");
-
+const bcrypt = require("bcryptjs");
 //check if a user is in request sent
 const authCheck = (req, res, next) => {
   if (!req.user) {
@@ -10,10 +10,41 @@ const authCheck = (req, res, next) => {
     next();
   }
 };
+
+////////////////////////////////////////////////////
+////////////////////////////////////////////////////
+///////////////////// USER PROFILE /////////////////
+////////////////////////////////////////////////////
+////////////////////////////////////////////////////
+
 router.get("/", authCheck, async (req, res) => {
   let user = await User.findById(req.user._id);
   res.json(user);
 });
+
+router.put("/", authCheck, async (req, res) => {
+  let update = {};
+  if (req.body.name.length) {
+    update.name = req.body.name;
+  }
+  if (req.body.password) {
+    const hashedPassword = bcrypt.hashSync(req.body.password, 4);
+    update.password = hashedPassword;
+  }
+  if (req.body.email) {
+    update.email = req.body.email;
+  }
+  let id = req.user._id;
+  let user = await User.findByIdAndUpdate(id, { $set: update }, { new: true });
+  res.json(user);
+});
+
+////////////////////////////////////////////////////
+////////////////////////////////////////////////////
+///////////////////// USER CITIES //////////////////
+////////////////////////////////////////////////////
+////////////////////////////////////////////////////
+
 router.get("/cities", authCheck, async (req, res) => {
   let cities = await User.findById(req.user._id);
   res.json(cities.saveCities);
