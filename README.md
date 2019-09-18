@@ -84,11 +84,9 @@ db.createUser({
 
 #### 🏢 City Routes
 
-| Method | Endpoint                             | Access Control | Description                                                                                                    |
-| ------ | ------------------------------------ | -------------- | -------------------------------------------------------------------------------------------------------------- |
-| GET    | `/city`                              | public         | Returns all 392 cities.                                                                                        |
-| GET    | `/city/topten-cost-of-living/`       | public         | Returns top ten cities with the highest score of cost of living from all of our database, in descending order. |
-| GET    | `/city/topten-average-commute-time/` | public         | Returns top ten cities with the lowest average commute time from all of our database, in ascending order.      |
+| Method | Endpoint           | Access Control | Description                                                       |
+| ------ | ------------------ | -------------- | ----------------------------------------------------------------- |
+| GET    | `/city/all/`       | public         | Returns ***only*** the `_id` and `name` fields of all 5037 cities.|
 
 #### 🏢 City Search
 
