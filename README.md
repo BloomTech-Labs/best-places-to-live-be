@@ -91,10 +91,10 @@ db.createUser({
 
 #### 🏢 City Search
 
-| Method | Endpoint       | Access Control | Description |
-| ------ | -------------- | -------------- | --------------------------------------------------------------|
-| POST   | `/city/`       | public         | <details> <summary>Returns cities requested in body</summary>_body_ {<br/>&nbsp;&nbsp;&nbsp;&nbsp;**ids: []** // list of ids that you want data back on<br/>&nbsp;&nbsp;&nbsp;&nbsp;**model: {}** //object with same keyvalues of the data you want in the list of &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;objects<br/>}</details>|
-| POST   | `/city/search` | public         | <details><summary>Returns cities that contain search term</summary>_body_ <br> { <br>&nbsp;&nbsp;"searchTerm": "miami" <br>}</details>|
+| Method | Endpoint       | Access Control | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| ------ | -------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| POST   | `/city/`       | public         | <details> <summary>Returns cities requested in body</summary>_body_ {<br/>&nbsp;&nbsp;&nbsp;&nbsp;**ids: []** // list of ids that you want data back on<br/>&nbsp;&nbsp;&nbsp;&nbsp;**model: {}** //object with same keyvalues of the data you want in the list of &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;objects<br/>}</details>                                                                                                                                                                                                                                                                                                                                                                                                  |
+| POST   | `/city/search` | public         | <details><summary>Returns cities that contain search term</summary>_body_ <br> { <br>&nbsp;&nbsp;"searchTerm": "miami" <br>}</details>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | POST   | `/city/top`    | public         | <details> <summary>Returns The Top cities based on Category</summary>_query_<br/>{<br/>&nbsp;&nbsp;&nbsp;&nbsp;**q: "",** //forced name filter use this to only grab a particluar state.Defaults to null<br/>&nbsp;&nbsp;&nbsp;&nbsp;**filter: "",** //name of the key value of the data model you wanna sort by. Defaults to Score*total<br/>&nbsp;&nbsp;&nbsp;&nbsp;**limit: Number,** //Number of items you want back. Defaults 10<br/>&nbsp;&nbsp;&nbsp;&nbsp;**order:""** //asc for bottom or none for top. Defaults to top<br/>}<br/>\_body*<br/>{<br/>&nbsp;&nbsp;&nbsp;&nbsp;**model: {}** //object with same keyvalues of the data you want in the list of &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;objects<br/>}</details> |
 
 #### 👥 User Routes
@@ -103,6 +103,22 @@ db.createUser({
 | ------ | ----------------- | -------------- | ------------------------------- |
 | POST   | `/users/register` | public         | Creates a new user in database. |
 | POST   | `/users/login`    | public         | Logs in user.                   |
+
+#### 👥 Profile Routes
+
+---
+
+BASE URL
+/profile
+
+---
+
+| Method | Endpoint  | Access Control | Description                |
+| ------ | --------- | -------------- | -------------------------- |
+| GET    | `/`       | private        | Retrieve user data object  |
+| GET    | `/cities` | private        | Retrieve user saved cities |
+| POST   | `/cities` | private        | add user saved cities      |
+| DELETE | `/cities` | private        | delete user saved cities   |
 
 ## 📜 Data Models
 
@@ -350,113 +366,122 @@ db.createUser({
 <details>
   <summary>iOS Endpoints - User's favorite cities</summary>
 
-  ## POST `https://stagebe.letsmovehomie.com/users/profile/cities`
+## POST `https://stagebe.letsmovehomie.com/users/profile/cities`
 
-  REQUIRES:
+REQUIRES:
 
     HEADERS:
-  ```
-  {
-    headers: {
-      Authorization: "token"
-    }
+
+```
+{
+  headers: {
+    Authorization: "token"
   }
-  ```
+}
+```
 
     JSON BODY
-  ```
-  {
+
+```
+{
+  "city_id": "535358409283535",
+  "city_name": "Seattle, WA",
+  "city_photo": "https://letsmovehomie-city-photoes.nyc3.digitaloceanspaces.com/tallahase-fl.jpg"
+}
+```
+
+RETURNS
+
+```
+{
+  "_id": "5d7acebe82c76cf25955b4e5",
+  "name": "Carlos",
+  "email": "carlos@carlos.com",
+  "cities": [
     "city_id": "535358409283535",
     "city_name": "Seattle, WA",
     "city_photo": "https://letsmovehomie-city-photoes.nyc3.digitaloceanspaces.com/tallahase-fl.jpg"
-  }
-  ```
+  ]
+}
+```
 
-  RETURNS
+## DELETE `https://stagebe.letsmovehomie.com/users/profile/cities`
 
-  ```
-  {
-    "_id": "5d7acebe82c76cf25955b4e5",
-    "name": "Carlos",
-    "email": "carlos@carlos.com",
-    "cities": [
-      "city_id": "535358409283535",
-      "city_name": "Seattle, WA",
-      "city_photo": "https://letsmovehomie-city-photoes.nyc3.digitaloceanspaces.com/tallahase-fl.jpg"
-    ]
-  }
-  ```
-
-  ## DELETE `https://stagebe.letsmovehomie.com/users/profile/cities`
-
-  REQUIRES:
+REQUIRES:
 
     HEADERS:
-  ```
-  {
-    headers: {
-      Authorization: "token"
-    }
+
+```
+{
+  headers: {
+    Authorization: "token"
   }
-  ```
+}
+```
 
     JSON BODY
-  ```
-  {
-    "city_id": "535358409283535"
-  }
-  ```
 
-  RETURNS
+```
+{
+  "city_id": "535358409283535"
+}
+```
 
-  ```
-  {
-    "_id": "5d7acebe82c76cf25955b4e5",
-    "name": "Carlos",
-    "email": "carlos@carlos.com",
-    "cities": []
-  }
-  ```
+RETURNS
+
+```
+{
+  "_id": "5d7acebe82c76cf25955b4e5",
+  "name": "Carlos",
+  "email": "carlos@carlos.com",
+  "cities": []
+}
+```
+
 </details>
 
 <details>
   <summary>iOS Endpoints - Update user's information - password, name, email, etc</summary>
 
-  ## PUT `https://stagebe.letsmovehomie.com/users/profile/`
+## PUT `https://stagebe.letsmovehomie.com/users/profile/`
 
-  REQUIRES:
+REQUIRES:
 
     HEADERS:
-  ```
-  {
-    headers: {
-      Authorization: "token"
-    }
+
+```
+{
+  headers: {
+    Authorization: "token"
   }
-  ```
+}
+```
 
     JSON BODY WITH FIELDS TO UPDATE (Not all fields are required)
-  ```
-  {
-    "name": "Changed Name",
-    "email": "changed@email.com",
-    "password": "changedPassword"
-  }
-  ```
+
+```
+{
+  "name": "Changed Name",
+  "email": "changed@email.com",
+  "password": "changedPassword"
+}
+```
+
     NOTE: If password field is sent, there is a function that will hash the new password before storing to database.
 
-  RETURNS
+RETURNS
 
-  ```
-  {
-    "_id": "5d7acebe82c76cf25955b4e5",
-    "name": "Changed Name",
-    "email": "changedPassword",
-    "cities": [
-      ...
-    ]
-  }
-  ```
+```
+{
+  "_id": "5d7acebe82c76cf25955b4e5",
+  "name": "Changed Name",
+  "email": "changedPassword",
+  "cities": [
+    ...
+  ]
+}
+```
+
 </details>
 
 ## ⚠️ Environment Variables
@@ -492,9 +517,9 @@ Please create a .env file that includes the following:
 `updateOrg(orgId)` -> Update an organization by ID
 
 `deleteOrg(orgId)` -> Delete an organization by ID
-<br>
-<br>
-<br>
+<br>
+<br>
+<br>
 `getUsers(orgId)` -> if no param all users
 
 `getUser(userId)` -> Returns a single user by user ID
