@@ -2,13 +2,59 @@ const express = require("express");
 const router = express.Router();
 const City = require("../models/city");
 
+router.post("/location", async (req, res) => {
+  let lat = parseFloat(req.query.lat);
+  let lng = parseFloat(req.query.lng);
+  let zoom = req.query.zoom ? req.query.zoom : 10;
+  let limit = req.query.limit ? parseInt(req.query.limit) : 50;
+  if (!lat || !lng)
+    return res.status(400).json({ message: "Please Enter an area to search" });
+  const cities =
+    req.query.rand === "1" || zoom < 7
+      ? await City.aggregate([
+          {
+            $geoNear: {
+              near: { type: "Point", coordinates: [lng, lat] },
+              spherical: true,
+              distanceField: "calcDistance"
+            }
+          },
+          { $sample: { size: limit } }
+        ]).limit(limit)
+      : await City.find({
+          location: {
+            $near: {
+              $geometry: { type: "Point", coordinates: [lng, lat] }, //yes this is right
+              $maxDistance: parseInt((50000 * 10) / zoom)
+            }
+          }
+        }).limit(limit);
+
+  let data = [];
+  if (req.body && req.body.model) {
+    cities.map(c => {
+      let d = {};
+      Object.keys(req.body.model).map(k => (d[k] = c[k]));
+      data.push(d);
+    });
+  } else data = cities;
+  if (!data || data.length < 1)
+    return res
+      .status(200)
+      .json({ message: "There are no cities in this area" });
+  res.status(200).json({
+    data
+  });
+});
+
 router.post("/", async (req, res) => {
   try {
     let list = req.body.ids;
     if (!list || list.length < 1)
       return res.status(403).json({ message: "Please enter a list of ids" });
-
-    const cities = await City.find({ _id: list });
+    let filter = { _id: list };
+    if (list[0] === "all") filter = {};
+    const cities = await City.find(filter);
     let data = [];
     if (req.body && req.body.model) {
       cities.map(c => {
@@ -17,7 +63,6 @@ router.post("/", async (req, res) => {
         data.push(d);
       });
     } else data = cities;
-    console.log(data);
     res.status(200).json({
       data
     });
@@ -53,7 +98,11 @@ router.post("/top", async function(req, res) {
     let q = req.query.q ? req.query.q : null;
     let filter = req.query.filter ? req.query.filter : "score_total";
     let limit = parseInt(req.query.limit) ? parseInt(req.query.limit) : 10;
-    let order = req.query.order.toLowerCase() === "asc" || req.query.order === "1"  ? 1 : -1;
+    let order =
+      (req.query.order && req.query.order.toLowerCase() === "asc") ||
+      req.query.order === "1"
+        ? 1
+        : -1;
 
     filter = filter.split("%26").join("&");
 
@@ -68,15 +117,15 @@ router.post("/top", async function(req, res) {
       })
       .limit(limit);
 
-      //check for model
-      let data = [];
-      if (req.body && req.body.model) {
-        cities.map(c => {
-          let d = {};
-          Object.keys(req.body.model).map(k => (d[k] = c[k]));
-          data.push(d);
-        });
-      } else data = cities;
+    //check for model
+    let data = [];
+    if (req.body && req.body.model) {
+      cities.map(c => {
+        let d = {};
+        Object.keys(req.body.model).map(k => (d[k] = c[k]));
+        data.push(d);
+      });
+    } else data = cities;
 
     res.status(200).json({
       cities: data

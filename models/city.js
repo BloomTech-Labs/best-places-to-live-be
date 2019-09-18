@@ -327,7 +327,7 @@ const citySchema = new mongoose.Schema({
   },
   full_name: {
     type: String,
-    default: null
+    unique: true
   },
   "funderbeam-total-startups": {
     type: Number,
@@ -471,7 +471,7 @@ const citySchema = new mongoose.Schema({
   },
   location: {
     type: Object,
-    default: null
+    default: { type: "Point", coordinates: [0, 0] }
   },
   "median-age": {
     type: Number,
@@ -495,7 +495,6 @@ const citySchema = new mongoose.Schema({
   },
   name: {
     type: String,
-    default: null,
     unique: true
   },
   "network-download": {
@@ -516,7 +515,7 @@ const citySchema = new mongoose.Schema({
   },
   photo: {
     type: String,
-    default: null
+    default: "https://letsmovehomie-city-photoes.nyc3.digitaloceanspaces.com/no-photo-available.jpg"
   },
   "pisa-detail-happiness": {
     type: Number,
@@ -819,5 +818,5 @@ const citySchema = new mongoose.Schema({
     default: null
   }
 });
-
-module.exports = mongoose.model("City", citySchema);
+//citySchema.index({ location: "2dsphere" });
+module.exports = mongoose.model("City", citySchema);;

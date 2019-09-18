@@ -49,6 +49,18 @@ router.put("/profile", tokenAuthentication, async (req, res) => {
   const _id = req.decodedToken._id;
   const userUpdates = req.body;
 
+  if (userUpdates.name === null) {
+    delete userUpdates.name;
+  }
+
+  if (userUpdates.email === null) {
+    delete userUpdates.email;
+  }
+
+  if (userUpdates.password === null) {
+    delete userUpdates.password;
+  }
+
   try {
     const user = await User.findById(_id);
 
