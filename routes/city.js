@@ -169,12 +169,13 @@ router.get("/topten-score_total", async (req, res) => {
 });
 
 router.post("/search", async (req, res) => {
+  const limit = req.query.limit ? parseInt(req.query.limit) : 50;
   const { searchTerm } = req.body;
 
   try {
     const searchResults = await City.find({
       $text: { $search: `\"${searchTerm}\"` }
-    });
+    }).limit(limit);
 
     if (searchResults.length) {
       res.status(200).json({
