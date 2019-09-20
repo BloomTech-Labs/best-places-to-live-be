@@ -49,15 +49,15 @@ router.put("/profile", tokenAuthentication, async (req, res) => {
   const _id = req.decodedToken._id;
   const userUpdates = req.body;
 
-  if (userUpdates.name === null) {
+  if (userUpdates.name === null || userUpdates.name === "") {
     delete userUpdates.name;
   }
 
-  if (userUpdates.email === null) {
+  if (userUpdates.email === null || userUpdates.email === "") {
     delete userUpdates.email;
   }
 
-  if (userUpdates.password === null) {
+  if (userUpdates.password === null || userUpdates.password === "") {
     delete userUpdates.password;
   }
 
