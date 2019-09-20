@@ -49,15 +49,15 @@ router.put("/profile", tokenAuthentication, async (req, res) => {
   const _id = req.decodedToken._id;
   const userUpdates = req.body;
 
-  if (userUpdates.name === null) {
+  if (userUpdates.name === null || userUpdates.name === "") {
     delete userUpdates.name;
   }
 
-  if (userUpdates.email === null) {
+  if (userUpdates.email === null || userUpdates.email === "") {
     delete userUpdates.email;
   }
 
-  if (userUpdates.password === null) {
+  if (userUpdates.password === null || userUpdates.password === "") {
     delete userUpdates.password;
   }
 
@@ -244,67 +244,64 @@ router.post("/login", async (req, res) => {
 // Register Handle
 router.post("/register", async (req, res) => {
   const { name, email, password, password2 } = req.body;
+
   // check required fields
   if (!name || !email || !password || !password2) {
     res.status(400).json({
       message: "Please fill in all fields."
     });
-  }
-
-  // check passwords match
-  if (password !== password2) {
-    res.status(400).json({
-      message: "Passwords do not match."
-    });
-  }
-
-  // check pass length
-  if (password.length < 6) {
+    // check pass length
+  } else if (password.length < 6) {
     res.status(500).json({
       message: "Password must be at least 6 characters"
     });
-  }
+    // check passwords match
+  } else if (password !== password2) {
+    res.status(400).json({
+      message: "Passwords do not match."
+    });
+  } else {
+    try {
+      const user = await User.findOne({ email });
 
-  try {
-    const user = await User.findOne({ email });
+      if (user) {
+        res.status(500).json({
+          message: "User already exists. Please login to continue"
+        });
+      } else {
+        const hashedPassword = bcrypt.hashSync(password, 4);
 
-    if (user) {
-      res.status(500).json({
-        message: "User already exists. Please login to continue"
-      });
-    } else {
-      const hashedPassword = bcrypt.hashSync(password, 4);
+        const newUser = new User({
+          name,
+          email,
+          password: hashedPassword
+        });
 
-      const newUser = new User({
-        name,
-        email,
-        password: hashedPassword
-      });
+        const userSaved = await newUser.save();
 
-      const userSaved = await newUser.save();
+        const token = jwt.sign(
+          {
+            _id: userSaved._id,
+            name: userSaved.name,
+            email: userSaved.email
+          },
+          keys.jwtAuth.secret,
+          { expiresIn: "24h" }
+        );
 
-      const token = jwt.sign(
-        {
+        res.status(200).json({
           _id: userSaved._id,
           name: userSaved.name,
-          email: userSaved.email
-        },
-        keys.jwtAuth.secret,
-        { expiresIn: "24h" }
-      );
-
-      res.status(200).json({
-        _id: userSaved._id,
-        name: userSaved.name,
-        email: userSaved.email,
-        token
+          email: userSaved.email,
+          token
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        message: "Error registering."
       });
     }
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      message: "Error registering."
-    });
   }
 });
 
