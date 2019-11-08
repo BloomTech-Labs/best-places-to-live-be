@@ -16,7 +16,7 @@ const keys = require("./config/keys");
 const https = require("https");
 const credentials = require("./config/ssl");
 
-const port = process.env.PORT || 443;
+const port = process.env.PORT || 27017;
 
 app.use(express.json());
 app.use(cors());

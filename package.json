@@ -4,7 +4,7 @@
   "description": "Letsmovehomie.com backend",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "nodemon index.js",
     "startnodemon": "nodemon index.js",
     "test": "jest"
   },

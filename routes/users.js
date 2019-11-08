@@ -201,8 +201,8 @@ router.post("/login", async (req, res) => {
     .then(user => {
       if (user && bcrypt.compareSync(credentials.password, user.password)) {
         const token = generateToken(user);
-        res.status(200).json({message: 'Welcome!'}
-        console.log(token))
+        res.status(200).json({message: 'Welcome!'})
+        console.log(token)
       } else {
         res.status(401).json({message: 'Invalid Credentials'});
       }
@@ -212,24 +212,7 @@ router.post("/login", async (req, res) => {
     });
   
 
-  (comparePasswords) {
-        const token = jwt.sign(
-          {
-            _id: user._id,
-            name: user.name,
-            email: user.email
-          },
-          keys.jwtAuth.secret,
-          { expiresIn: "24h" }
-        );
-
-        res.status(200).json({
-          _id: user._id,
-          name: user.name,
-          email: user.email,
-          token
-        });
-  } 
+  
 });
 
 // Register Handle
