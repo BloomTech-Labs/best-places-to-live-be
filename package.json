@@ -7,9 +7,11 @@
     "start": "node index.js",
     "startnodemon": "nodemon index.js",
     "test": "jest"
-
   },
-  
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/labs15-best-places/backend.git"
+  },
   "author": "",
   "license": "ISC",
   "bugs": {

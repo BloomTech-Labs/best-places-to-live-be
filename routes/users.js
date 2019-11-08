@@ -4,7 +4,7 @@ const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const keys = require("../config/keys");
 const jwt = require("jsonwebtoken");
-
+const secrets = require('../config/secrets');
 const tokenAuthentication = (req, res, next) => {
   const token = req.headers.authorization;
 
@@ -193,21 +193,26 @@ router.delete("/profile/cities", tokenAuthentication, async (req, res) => {
 
 // Login Page
 router.post("/login", async (req, res) => {
-  const { email, password } = req.body;
-
+  const {email, password} = req.body;
+  
   // check required fields
-  if (!email || !password) {
-    res.status(400).json({
-      message: "Please fill in all fields."
+  User.findBy({ username })
+    .first()
+    .then(user => {
+      if (user && bcrypt.compareSync(credentials.password, user.password)) {
+        const token = generateToken(user);
+        res.status(200).json({message: 'Welcome!'}
+        console.log(token))
+      } else {
+        res.status(401).json({message: 'Invalid Credentials'});
+      }
+    })
+    .catch(error => {
+      res.status(500).json(error);
     });
-  }
+  
 
-  try {
-    const user = await User.findOne({ email });
-    if (user) {
-      const comparePasswords = bcrypt.compareSync(password, user.password);
-
-      if (comparePasswords) {
+  (comparePasswords) {
         const token = jwt.sign(
           {
             _id: user._id,
@@ -224,26 +229,13 @@ router.post("/login", async (req, res) => {
           email: user.email,
           token
         });
-      } else {
-        res.status(500).json({
-          message: "Invalid password"
-        });
-      }
-    } else {
-      res.status(400).json({
-        message: "User not found."
-      });
-    }
-  } catch (error) {
-    res.status(500).json({
-      message: "Error logging in."
-    });
-  }
+  } 
 });
 
 // Register Handle
 router.post("/register", async (req, res) => {
-  const { name, email, password, password2 } = req.body;
+  const credentials = req.body;
+  const hash = bcrypt.hashSync(credentials.password, 7)
 
   // check required fields
   if (!name || !email || !password || !password2) {
@@ -269,7 +261,7 @@ router.post("/register", async (req, res) => {
           message: "User already exists. Please login to continue"
         });
       } else {
-        const hashedPassword = bcrypt.hashSync(password, 4);
+        const hashedPassword = bcrypt.hashSync(password, 6);
 
         const newUser = new User({
           name,
@@ -304,5 +296,16 @@ router.post("/register", async (req, res) => {
     }
   }
 });
+
+function generateToken(user){
+  const payload = {
+    subject: user.id,
+    email: user.email
+  }
+  const options = {
+    expiresIn: '1d',
+  };
+  return jwt.sign(payload, secrets.jwtSecret, options);
+}
 
 module.exports = router;
