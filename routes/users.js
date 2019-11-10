@@ -190,10 +190,10 @@ router.delete("/profile/cities", tokenAuthentication, async (req, res) => {
     });
   }
 });
-
+//Re-vamped this. It is readable now and DRY
 // Login Page
 router.post("/login", async (req, res) => {
-  const {email, password} = req.body;
+  const credentials = req.body;
   
   // check required fields
   User.findBy({ username })
@@ -214,7 +214,7 @@ router.post("/login", async (req, res) => {
 
   
 });
-
+//Most of this is old code and I need to come back to this to make sure it is working.
 // Register Handle
 router.post("/register", async (req, res) => {
   const credentials = req.body;
@@ -279,7 +279,7 @@ router.post("/register", async (req, res) => {
     }
   }
 });
-
+//Creates token used in login
 function generateToken(user){
   const payload = {
     subject: user.id,
