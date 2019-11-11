@@ -14,7 +14,7 @@ const profile = require("./routes/profile");
 const keys = require("./config/keys");
 const server = express();
 
-server.use(helmet)
+server.use(helmet())
 server.use(express.json());
 server.use(cors());
 

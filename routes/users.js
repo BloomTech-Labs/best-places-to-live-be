@@ -217,8 +217,8 @@ router.post("/login", async (req, res) => {
 //Most of this is old code and I need to come back to this to make sure it is working.
 // Register Handle
 router.post("/register", async (req, res) => {
-  const credentials = req.body;
-  const hash = bcrypt.hashSync(credentials.password, 7)
+  const {name, email, password, password2} = req.body;
+  const hash = bcrypt.hashSync(password, 7)
 
   // check required fields
   if (!name || !email || !password || !password2) {
@@ -244,25 +244,17 @@ router.post("/register", async (req, res) => {
           message: "User already exists. Please login to continue"
         });
       } else {
-        const hashedPassword = bcrypt.hashSync(password, 6);
+        
 
         const newUser = new User({
           name,
           email,
-          password: hashedPassword
+          password: hash
         });
 
         const userSaved = await newUser.save();
 
-        const token = jwt.sign(
-          {
-            _id: userSaved._id,
-            name: userSaved.name,
-            email: userSaved.email
-          },
-          keys.jwtAuth.secret,
-          { expiresIn: "24h" }
-        );
+        
 
         res.status(200).json({
           _id: userSaved._id,
@@ -283,7 +275,8 @@ router.post("/register", async (req, res) => {
 function generateToken(user){
   const payload = {
     subject: user.id,
-    email: user.email
+    email: user.email,
+    name: user.name
   }
   const options = {
     expiresIn: '1d',
