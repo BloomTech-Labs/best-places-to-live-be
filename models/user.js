@@ -1,9 +1,7 @@
 const mongoose = require("mongoose");
-
 mongoose.set("useCreateIndex", true);
-
 const userSchema = new mongoose.Schema({
-  name: {
+  username: {
     type: String
   },
   email: {
@@ -11,6 +9,9 @@ const userSchema = new mongoose.Schema({
     unique: true
   },
   password: {
+    type: String
+  },
+  location: {
     type: String
   },
   cities: {
@@ -23,5 +24,4 @@ const userSchema = new mongoose.Schema({
     type: Object
   }
 });
-
 module.exports = mongoose.model("User", userSchema);

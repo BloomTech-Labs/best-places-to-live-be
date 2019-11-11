@@ -194,8 +194,8 @@ router.delete("/profile/cities", tokenAuthentication, async (req, res) => {
 // Login Page
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
-
   // check required fields
+  console.log(email, password)
   if (!email || !password) {
     res.status(400).json({
       message: "Please fill in all fields."
@@ -235,6 +235,7 @@ router.post("/login", async (req, res) => {
       });
     }
   } catch (error) {
+    console.log(error)
     res.status(500).json({
       message: "Error logging in."
     });
@@ -247,6 +248,7 @@ router.post("/register", async (req, res) => {
 
   // check required fields
   if (!name || !email || !password || !password2) {
+    console.log(name, email, password, password2 )
     res.status(400).json({
       message: "Please fill in all fields."
     });
