@@ -244,11 +244,11 @@ router.post("/login", async (req, res) => {
 
 //Register Handle
 router.post("/register", async (req, res) => {
-  const { username, email, password, location } = req.body;
-  console.log({ username, email, password, location })
+  const { name, email, password, location } = req.body;
+  console.log({ name, email, password, location })
 
   //check required fields
-  if (!username || !email || !password || !location) {
+  if (!name || !email || !password || !location) {
     res.status(400).json({
       message: "Please fill in all fields."
     });
@@ -269,7 +269,7 @@ router.post("/register", async (req, res) => {
       } else {
         const hashedPassword = bcrypt.hashSync(password, 4);
         const newUser = new User({
-          username,
+          name,
           email,
           location,
           password: hashedPassword
@@ -278,7 +278,7 @@ router.post("/register", async (req, res) => {
         const token = jwt.sign(
           {
             _id: userSaved._id,
-            username: userSaved.username,
+            name: userSaved.name,
             email: userSaved.email,
             location:userSaved.location
           },
@@ -287,7 +287,7 @@ router.post("/register", async (req, res) => {
         );
         res.status(200).json({
           _id: userSaved._id,
-          username: userSaved.username,
+          name: userSaved.name,
           email: userSaved.email,
           location:userSaved.location,
           token
