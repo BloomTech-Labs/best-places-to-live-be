@@ -243,10 +243,11 @@ router.post("/login", async (req, res) => {
 
 // Register Handle
 router.post("/register", async (req, res) => {
-  const { name, email, password, password2 } = req.body;
+  const { name, email, password, location } = req.body;
+  console.log({ name, email, password, location })
 
-  // check required fields
-  if (!name || !email || !password || !password2) {
+  //check required fields
+  if (!name || !email || !password || !location) {
     res.status(400).json({
       message: "Please fill in all fields."
     });
@@ -283,7 +284,8 @@ router.post("/register", async (req, res) => {
           {
             _id: userSaved._id,
             name: userSaved.name,
-            email: userSaved.email
+            email: userSaved.email,
+            location:userSaved.location
           },
           keys.jwtAuth.secret,
           { expiresIn: "24h" }
