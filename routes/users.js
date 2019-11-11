@@ -194,8 +194,8 @@ router.delete("/profile/cities", tokenAuthentication, async (req, res) => {
 // Login Page
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
+
   // check required fields
-  console.log(email, password);
   if (!email || !password) {
     res.status(400).json({
       message: "Please fill in all fields."
@@ -235,61 +235,64 @@ router.post("/login", async (req, res) => {
       });
     }
   } catch (error) {
-    console.log(error);
     res.status(500).json({
       message: "Error logging in."
     });
   }
 });
 
-//Register Handle
+// Register Handle
 router.post("/register", async (req, res) => {
-  const { username, email, password, location } = req.body;
-  console.log({ username, email, password, location })
+  const { name, email, password, password2 } = req.body;
 
-  //check required fields
-  if (!username || !email || !password || !location) {
+  // check required fields
+  if (!name || !email || !password || !password2) {
     res.status(400).json({
       message: "Please fill in all fields."
     });
-  }
-  //check pass length
-  else if (password.length < 6) {
+    // check pass length
+  } else if (password.length < 6) {
     res.status(500).json({
       message: "Password must be at least 6 characters"
     });
- 
-  }else {
+    // check passwords match
+  } else if (password !== password2) {
+    res.status(400).json({
+      message: "Passwords do not match."
+    });
+  } else {
     try {
       const user = await User.findOne({ email });
+
       if (user) {
         res.status(500).json({
           message: "User already exists. Please login to continue"
         });
       } else {
         const hashedPassword = bcrypt.hashSync(password, 4);
+
         const newUser = new User({
-          username,
+          name,
           email,
-          location,
           password: hashedPassword
         });
+
         const userSaved = await newUser.save();
+
         const token = jwt.sign(
           {
             _id: userSaved._id,
-            username: userSaved.username,
-            email: userSaved.email,
-            location:userSaved.location
+            name: userSaved.name,
+            email: userSaved.email
           },
           keys.jwtAuth.secret,
           { expiresIn: "24h" }
         );
+
         res.status(200).json({
           _id: userSaved._id,
-          username: userSaved.username,
+          name: userSaved.name,
           email: userSaved.email,
-          location:userSaved.location,
           token
         });
       }
@@ -300,6 +303,6 @@ router.post("/register", async (req, res) => {
       });
     }
   }
- });
+});
 
 module.exports = router;
