@@ -217,11 +217,11 @@ router.post("/login", async (req, res) => {
 //Most of this is old code and I need to come back to this to make sure it is working.
 // Register Handle
 router.post("/register", async (req, res) => {
-  const {name, email, password, password2} = req.body;
+  const { name, email, password, location } = req.body;
+  console.log({ name, email, password, location })
   const hash = bcrypt.hashSync(password, 7)
-
-  // check required fields
-  if (!name || !email || !password || !password2) {
+  //check required fields
+  if (!name || !email || !password || !location) {
     res.status(400).json({
       message: "Please fill in all fields."
     });
@@ -231,10 +231,6 @@ router.post("/register", async (req, res) => {
       message: "Password must be at least 6 characters"
     });
     // check passwords match
-  } else if (password !== password2) {
-    res.status(400).json({
-      message: "Passwords do not match."
-    });
   } else {
     try {
       const user = await User.findOne({ email });
