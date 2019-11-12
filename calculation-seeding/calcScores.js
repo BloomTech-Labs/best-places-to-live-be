@@ -8,12 +8,12 @@ mongoose
   .then(() => console.log("MongoDB successfully connected."))
   .catch(e => console.error(`Could not connect: ${e.message}`));
 
+let documentsUpdated = 0;
 for (let i = 0; i < 5000; i = i + 100) {
   City.find()
     .skip(i)
     .limit(100)
     .then(cities => {
-      let documentsUpdated = 0;
       let deviations = {
         score_business_freedom: [],
         score_commute: [],
@@ -107,6 +107,7 @@ for (let i = 0; i < 5000; i = i + 100) {
         );
 
         documentsUpdated++;
+        console.log("Records updated: ", documentsUpdated);
       });
     });
 }
