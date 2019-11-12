@@ -4,7 +4,7 @@ const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const keys = require("../config/keys");
 const jwt = require("jsonwebtoken");
-
+const secrets = require('../config/secrets');
 const tokenAuthentication = (req, res, next) => {
   const token = req.headers.authorization;
 
@@ -190,62 +190,36 @@ router.delete("/profile/cities", tokenAuthentication, async (req, res) => {
     });
   }
 });
-
+//Re-vamped this. It is readable now and DRY
 // Login Page
 router.post("/login", async (req, res) => {
-  const { email, password } = req.body;
-
+  const credentials = req.body;
+  
   // check required fields
-  if (!email || !password) {
-    res.status(400).json({
-      message: "Please fill in all fields."
-    });
-  }
-
-  try {
-    const user = await User.findOne({ email });
-    if (user) {
-      const comparePasswords = bcrypt.compareSync(password, user.password);
-
-      if (comparePasswords) {
-        const token = jwt.sign(
-          {
-            _id: user._id,
-            name: user.name,
-            email: user.email
-          },
-          keys.jwtAuth.secret,
-          { expiresIn: "24h" }
-        );
-
-        res.status(200).json({
-          _id: user._id,
-          name: user.name,
-          email: user.email,
-          token
-        });
+  User.findBy({ username })
+    .first()
+    .then(user => {
+      if (user && bcrypt.compareSync(credentials.password, user.password)) {
+        const token = generateToken(user);
+        res.status(200).json({message: 'Welcome!'})
+        console.log(token)
       } else {
-        res.status(500).json({
-          message: "Invalid password"
-        });
+        res.status(401).json({message: 'Invalid Credentials'});
       }
-    } else {
-      res.status(400).json({
-        message: "User not found."
-      });
-    }
-  } catch (error) {
-    res.status(500).json({
-      message: "Error logging in."
+    })
+    .catch(error => {
+      res.status(500).json(error);
     });
-  }
-});
+  
 
+  
+});
+//Most of this is old code and I need to come back to this to make sure it is working.
 // Register Handle
 router.post("/register", async (req, res) => {
   const { name, email, password, location } = req.body;
   console.log({ name, email, password, location })
-
+  const hash = bcrypt.hashSync(password, 7)
   //check required fields
   if (!name || !email || !password || !location) {
     res.status(400).json({
@@ -266,26 +240,17 @@ router.post("/register", async (req, res) => {
           message: "User already exists. Please login to continue"
         });
       } else {
-        const hashedPassword = bcrypt.hashSync(password, 4);
+        
 
         const newUser = new User({
           name,
           email,
-          password: hashedPassword
+          password: hash
         });
 
         const userSaved = await newUser.save();
 
-        const token = jwt.sign(
-          {
-            _id: userSaved._id,
-            name: userSaved.name,
-            email: userSaved.email,
-            location:userSaved.location
-          },
-          keys.jwtAuth.secret,
-          { expiresIn: "24h" }
-        );
+        
 
         res.status(200).json({
           _id: userSaved._id,
@@ -302,5 +267,17 @@ router.post("/register", async (req, res) => {
     }
   }
 });
+//Creates token used in login
+function generateToken(user){
+  const payload = {
+    subject: user.id,
+    email: user.email,
+    name: user.name
+  }
+  const options = {
+    expiresIn: '1d',
+  };
+  return jwt.sign(payload, secrets.jwtSecret, options);
+}
 
 module.exports = router;
