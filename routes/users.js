@@ -248,7 +248,6 @@ router.post("/register", async (req, res) => {
   const { name,email,password,location} = req.body;
   // check required fields
   if (!name || !email || !password || !location) {
-    console.log(name, email, password, location)
     res.status(400).json({
       message: "Please fill in all fields."
     });
@@ -300,3 +299,5 @@ router.post("/register", async (req, res) => {
     }
   }
  });
+
+ module.exports = router;
