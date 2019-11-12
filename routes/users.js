@@ -257,10 +257,6 @@ router.post("/register", async (req, res) => {
       message: "Password must be at least 6 characters"
     });
     // check passwords match
-  } else if (password !== password2) {
-    res.status(400).json({
-      message: "Passwords do not match."
-    });
   } else {
     try {
       const user = await User.findOne({ email });
