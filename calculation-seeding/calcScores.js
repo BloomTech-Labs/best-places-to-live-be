@@ -8,108 +8,104 @@ mongoose
   .then(() => console.log("MongoDB successfully connected."))
   .catch(e => console.error(`Could not connect: ${e.message}`));
 
-for (let i = 0; i < 5000; i = i + 100) {
-  City.find()
-    .skip(i)
-    .limit(100)
-    .then(cities => {
-      let documentsUpdated = 0;
-      let deviations = {
-        score_business_freedom: [],
-        score_commute: [],
-        score_cost_of_living: [],
-        score_economy: [],
-        score_education: [],
-        score_environmental_quality: [],
-        score_healthcare: [],
-        score_housing: [],
-        score_internet_access: [],
-        "score_leisure_&_culture": [],
-        score_outdoors: [],
-        score_safety: [],
-        score_startups: [],
-        score_taxation: [],
-        score_tolerance: [],
-        score_total: [],
-        score_travel_connectivity: [],
-        score_venture_capital: []
-      };
-      cities.map(c => {
-        Object.keys(deviations).map(k => deviations[k].push(c[k]));
-      });
+City.find().then(cities => {
+  let documentsUpdated = 0;
+  let deviations = {
+    score_business_freedom: [],
+    score_commute: [],
+    score_cost_of_living: [],
+    score_economy: [],
+    score_education: [],
+    score_environmental_quality: [],
+    score_healthcare: [],
+    score_housing: [],
+    score_internet_access: [],
+    "score_leisure_&_culture": [],
+    score_outdoors: [],
+    score_safety: [],
+    score_startups: [],
+    score_taxation: [],
+    score_tolerance: [],
+    score_total: [],
+    score_travel_connectivity: [],
+    score_venture_capital: []
+  };
+  cities.map(c => {
+    Object.keys(deviations).map(k => deviations[k].push(c[k]));
+  });
 
-      Object.keys(deviations).map(
-        k =>
-          (deviations[k] = {
-            sd: standarddeviations(deviations[k]),
-            avg: average(deviations[k])
-          })
-      );
+  Object.keys(deviations).map(
+    k =>
+      (deviations[k] = {
+        sd: standarddeviations(deviations[k]),
+        avg: average(deviations[k])
+      })
+  );
 
-      cities.map(async city => {
-        //here we are gonna do a quick reasigning of geo location data
-        let object = {};
-        if (city.location && city.location.latlon)
-          object.location = {
-            type: "Point",
-            coordinates: [
-              city.location.latlon.longitude,
-              city.location.latlon.latitude
-            ]
-          };
-        object.location = city.location;
-        if (object.location && object.location.coordinates)
-          object.location = object.location.coordinates.reverse();
+  cities.map(async city => {
 
-        const rounded_avg_commute_time = Math.round(city.avg_commute_time);
-        let score = "";
+    //here we are gonna do a quick reasigning of geo location data
+    let object = {};
+    if (city.location && city.location.latlon)
+      object.location = {
+        type: "Point",
+        coordinates: [
+          city.location.latlon.longitude,
+          city.location.latlon.latitude
+        ]
+      }; 
+      object.location = city.location;
+      if(object.location && object.location.coordinates) object.location = object.location.coordinates.reverse();
+      
+    const rounded_avg_commute_time = Math.round(city.avg_commute_time);
+    let score = "";
 
-        switch (true) {
-          case rounded_avg_commute_time <= 20:
-            score = "A";
-            break;
-          case rounded_avg_commute_time <= 26:
-            score = "B";
-            break;
-          case rounded_avg_commute_time <= 32:
-            score = "C";
-            break;
-          case rounded_avg_commute_time <= 38:
-            score = "D";
-            break;
-          default:
-            score = "F";
-            break;
-        }
+    switch (true) {
+      case rounded_avg_commute_time <= 20:
+        score = "A";
+        break;
+      case rounded_avg_commute_time <= 26:
+        score = "B";
+        break;
+      case rounded_avg_commute_time <= 32:
+        score = "C";
+        break;
+      case rounded_avg_commute_time <= 38:
+        score = "D";
+        break;
+      default:
+        score = "F";
+        break;
+    }
 
-        Object.keys(deviations).map(k => {
-          let sd = deviations[k].sd;
-          let avg = deviations[k].avg;
-          object[k] =
-            GetZPercent(city[k], avg, sd) * 10 + (city[k] > avg ? 0.05 : 0); //to make from 0-1 to 0-10;
-          let nk = k.split("score_").join("grade_");
-          object[nk] = calculateGrading(city[k], [
-            sd * 1.5 + avg,
-            sd * 1 + avg,
-            avg,
-            -sd * 1 + avg
-          ]);
-        });
-        const updatedCity = await City.findOneAndUpdate(
-          { name: city.name },
-          {
-            $set: {
-              ...object,
-              avg_commute_time: rounded_avg_commute_time,
-              avg_commute_time_score: score
-            }
-          }
-        );
-
-        documentsUpdated++;
-      });
+    Object.keys(deviations).map(k => {
+      let sd = deviations[k].sd;
+      let avg = deviations[k].avg;
+      object[k] =
+        GetZPercent(city[k], avg, sd) * 10 + (city[k] > avg ? 0.05 : 0); //to make from 0-1 to 0-10;
+      let nk = k.split("score_").join("grade_");
+      object[nk] = calculateGrading(city[k], [
+        sd * 1.5 + avg,
+        sd * 1 + avg,
+        avg,
+        -sd * 1 + avg
+      ]);
     });
-}
+    const updatedCity = await City.findOneAndUpdate(
+      { name: city.name },
+      {
+        $set: {
+          ...object,
+          avg_commute_time: rounded_avg_commute_time,
+          avg_commute_time_score: score
+        }
+      }
+    );
+
+    documentsUpdated++;
+    console.log(documentsUpdated);
+  });
+});
 
 function calculateGrading(get, deviationss) {
   // whereas get is the data being tested and deviationss is the values at which each grade chages must me length 4 [A,B,C,D]
