@@ -1,41 +1,12 @@
 require("dotenv").config();
 checkConfig();
-const express = require("express");
-const app = express();
 const mongoose = require("mongoose");
-const cors = require("cors");
-const passportConfig = require("./middleware/passportConfig");
-const cookie = require("cookie-session");
-const cookieParser = require("cookie-parser");
-const passport = require("passport");
-const users = require("./routes/users");
-const auth = require("./routes/auth");
-const city = require("./routes/city");
-const profile = require("./routes/profile");
 const keys = require("./config/keys");
-const https = require("https");
-const credentials = require("./config/ssl");
 const server = require('./server');
+const credentials = require("./config/ssl");
+const passportConfig = require("./middleware/passportConfig");
+const https = require("https");
 const port = process.env.PORT || 443;
-
-
-server.use(
-  cookie({
-    name: "letsmovehomie",
-    maxAge: 24 * 60 * 60 * 1000, //set cookie to one day exp
-    keys: [keys.session.cookieKey],
-    domain: "letsmovehomie.com"
-  })
-);
-
-server.use(express.static(__dirname, { dotfiles: "allow" }));
-server.use(passport.initialize());
-server.use(passport.session());
-server.use(cookieParser());
-server.use("/city", city);
-server.use("/users", users);
-server.use("/auth", auth);
-server.use("/profile", profile);
 
 //Connect to MongoDB
 mongoose
@@ -56,6 +27,8 @@ if (credentials) {
     console.log(`Server running on port ${port}`);
   });
 }
+
+
 
 function checkConfig() {
   if (

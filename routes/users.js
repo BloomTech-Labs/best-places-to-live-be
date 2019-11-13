@@ -245,6 +245,7 @@ router.post("/login", async (req, res) => {
 
 // Register Handle
 router.post("/register", async (req, res) => {
+  console.log(res)
   const { name,email,password,location} = req.body;
   console.log({name,email,password,location})
   // check required fields
