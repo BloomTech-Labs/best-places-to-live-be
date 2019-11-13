@@ -7,11 +7,9 @@ const passport = require("passport");
 //Plan is to have this better organized to my liking by v5
 const cookie = require("cookie-session");
 const cookieParser = require("cookie-parser");
-const https = require("https");
 const users = require("./routes/users");
 const auth = require("./routes/auth");
 const city = require("./routes/city");
-const passportConfig = require("./middleware/passportConfig");
 const profile = require("./routes/profile");
 
 //Still not sure what keys are doing
