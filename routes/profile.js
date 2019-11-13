@@ -4,7 +4,8 @@ const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 //check if a user is in request sent
 const authCheck = (req, res, next) => {
-  if (!req.user) {
+  const user = req.body;
+  if (!user) {
     res.status(401).send(false);
   } else {
     next();
