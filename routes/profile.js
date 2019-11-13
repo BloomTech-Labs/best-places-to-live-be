@@ -19,7 +19,7 @@ const authCheck = (req, res, next) => {
 ////////////////////////////////////////////////////
 
 router.get("/", authCheck, async (req, res) => {
-  let user = await User.findById(req.user._id);
+  let user = await User.findBy(req.user.email);
   res.json(user);
 });
 
