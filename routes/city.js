@@ -20,7 +20,6 @@ router.post("/location", async (req, res) => {
   let lng = parseFloat(req.query.lng);
   let zoom = req.query.zoom ? req.query.zoom : 10;
   let limit = req.query.limit ? parseInt(req.query.limit) : 50;
-  console.log("Info for city loc", req.query.rand === "1", zoom, limit);
   if (!lat || !lng)
     return res.status(400).json({ message: "Please Enter an area to search" });
   const cities =
@@ -35,13 +34,15 @@ router.post("/location", async (req, res) => {
           },
           { $sample: { size: limit } }
         ]).limit(limit)
-      : City.find({
-        location: {
-          $geoWithin: {
-            $centerSphere: [[lng, lat], parseInt((50000 * 10) / zoom) ]//yes this is right
+      : await City.find({
+          location: {
+            $near: {
+              $geometry: { type: "Point", coordinates: [lng, lat] }, //yes this is right
+              $maxDistance: parseInt((50000 * 10) / zoom)
+            }
           }
-        }
-      }).limit(limit);
+        }).limit(limit);
+
   let data = [];
   if (req.body && req.body.model) {
     cities.map(c => {
@@ -98,7 +99,7 @@ router.delete("/", async (req, res) => {
         message: "hello"
       });
     } else throw "You SHALL NOT PASS";
-  } catch (error) {
+  } catch (error){
     res.status(200).json({
       message: "good bye"
     });
@@ -170,7 +171,6 @@ router.get("/topten-score_total", async (req, res) => {
 router.post("/search", async (req, res) => {
   const limit = req.query.limit ? parseInt(req.query.limit) : 50;
   const { searchTerm } = req.body;
-  console.log({ searchTerm } )
 
   try {
     const searchResults = await City.find({
