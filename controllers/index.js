@@ -8,11 +8,8 @@ const newUser = new User({
 
 await newUser.save();
 
-
+const token = signToken(newUser);
 
 facebookOAuth: async (req, res, next) => {
     console.log('got here');
-    console.log('req.user', req.user)
-    const token = signToken(newUser);
-    res.status(200).JSON(token)
 }
