@@ -19,6 +19,7 @@ const server = require('./server');
 const port = process.env.PORT || 443;
 
 
+
 server.use(
   cookie({
     name: "letsmovehomie",
@@ -36,6 +37,7 @@ server.use("/city", city);
 server.use("/users", users);
 server.use("/auth", auth);
 server.use("/profile", profile);
+
 
 //Connect to MongoDB
 mongoose
