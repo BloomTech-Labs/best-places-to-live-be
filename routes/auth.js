@@ -21,9 +21,12 @@ router.get(
   }
 );
 
-router.route('/oauth/facebook')
-.post(passport.authenticate('facebooktoken', {session: false}),
-userscontroller.facebookOAuth);
+router.get('/auth/facebook', passport.authenticate('facebook', {scope: 'email'}));
+
+router.get('/auth/facebook/callback', passport.authenticate('facebook', {
+  successRedirect: '/profile',
+  failureRedirect: '/'
+}));
 
 
 //clear all sessions of cookies etc
