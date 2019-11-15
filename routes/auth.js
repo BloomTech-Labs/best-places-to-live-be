@@ -32,6 +32,9 @@ router.get(
 //     res.redirect('/');
 //   });
 
+app.get('/auth/facebook', passport.authenticate('facebook'));
+
+
 router.get(
   "/login/facebook/cb",
   passport.authenticate("facebook", {
