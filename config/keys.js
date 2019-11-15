@@ -16,7 +16,7 @@ module.exports = {
     OAuth: {
       facebook: {
         clientID: '482046309075252',
-        clientSecret: process.env.FACEBOOK_CLIENTSECRET
+        clientSecret: 'bb6a4796a1ca2d541a2b0d6520ef7d9e'
       },
     }
 };
