@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const passport = require("passport");
-const userscontroller = require('../controllers/index')
+
 //check if a user is in request sent
 const authCheck = (req, res, next) => {
   if (!req.user) {
