@@ -9,11 +9,14 @@ module.exports = {
     googleClientId: process.env.GOOGLE_CLIENTID,
     googleClientSecret: process.env.GOOGLE_CLIENTSECRET
   },
-  facebookAuth: {
-    facebookClientId: process.env.FACEBOOK_CLIENTID,
-    facebookClientSecret: process.env.FACEBOOK_CLIENTSECRET
-  },
   jwtAuth: {
     secret: process.env.JWT_SECRET
-  }
+  },
+  JWT_SECRET: 'codeworkauthentication',
+    OAuth: {
+      facebook: {
+        clientID: '482046309075252',
+        clientSecret: process.env.FACEBOOK_CLIENTSECRET
+      },
+    }
 };
