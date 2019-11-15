@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const passport = require("passport");
-const userscontroller = require('../controllers/index')
+
 //check if a user is in request sent
 const authCheck = (req, res, next) => {
   if (!req.user) {
@@ -28,6 +28,13 @@ router.get('/auth/facebook/callback', passport.authenticate('facebook', {
   failureRedirect: '/'
 }));
 
+// Facebook will redirect the user to this URL after approval.  Finish the
+// authentication process by attempting to obtain an access token.  If
+// access was granted, the user will be logged in.  Otherwise,
+// authentication has failed.
+// app.get('/auth/facebook/callback',
+//   passport.authenticate('facebook', { successRedirect: '/',
+//                                       failureRedirect: '/login' }));
 
 //clear all sessions of cookies etc
 router.get("/logout", (req, res) => {
@@ -47,7 +54,21 @@ router.get("/redirect/google", passport.authenticate("google"), (req, res) => {
   });
   res.status(303).redirect("https://stagefe.letsmovehomie.com/topten");
 });
-
+//Redirect url for user
+// router.get(
+//   "/redirect/facebook",
+//   passport.authenticate("facebook"),
+//   (req, res) => {
+//     console.log(req.cookies["letsmovehomie"]);
+//     res.cookie("letsmovehomie", req.cookies["letsmovehomie"], {
+//       domain: "letsmovehomie.com"
+//     });
+//     res.cookie("letsmovehomie.sig", req.cookies["letsmovehomie.sig"], {
+//       domain: "letsmovehomie.com"
+//     });
+//     res.status(303).redirect("https://stagefe.letsmovehomie.com/topten");
+//   }
+// );
 
 //Check for authentication
 router.get("/validation", authCheck, (req, res) => {
