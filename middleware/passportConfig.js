@@ -57,6 +57,16 @@ passport.use('facebooktoken',
       console.log('profile',profile);
       console.log('accesstoken', accessToken);
       console.log('refreshToken', refreshToken);
+
+      const existingUser = await User.findOne({'facebook.id': profile.id});
+      if(existingUser){
+        return done(null, existingUser);
+      }
+      const newUser = new User({method: 'facebook',
+    facebook: {
+      id: profile.id,
+      email: profile.emails[0].value
+    }});
     } catch (error){
       done(error, false, error.message);
     }
