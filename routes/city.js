@@ -99,7 +99,7 @@ router.delete("/", async (req, res) => {
         message: "hello"
       });
     } else throw "You SHALL NOT PASS";
-  } catch (error) {
+  } catch {
     res.status(200).json({
       message: "good bye"
     });

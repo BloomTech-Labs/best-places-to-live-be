@@ -243,11 +243,10 @@ router.post("/login", async (req, res) => {
 
 // Register Handle
 router.post("/register", async (req, res) => {
-  const { name,email,password,location} = req.body;
-  console.log({name,email,password,location})
-  // check required fields
-  if (!name || !email || !password || !location) {
+  const { name, email, password, password2 } = req.body;
 
+  // check required fields
+  if (!name || !email || !password || !password2) {
     res.status(400).json({
       message: "Please fill in all fields."
     });
@@ -256,10 +255,11 @@ router.post("/register", async (req, res) => {
     res.status(500).json({
       message: "Password must be at least 6 characters"
     });
-   
+    // check passwords match
   } else {
     try {
       const user = await User.findOne({ email });
+
       if (user) {
         res.status(500).json({
           message: "User already exists. Please login to continue"
@@ -270,26 +270,25 @@ router.post("/register", async (req, res) => {
         const newUser = new User({
           name,
           email,
-          location,
           password: hashedPassword
         });
+
         const userSaved = await newUser.save();
 
         const token = jwt.sign(
           {
             _id: userSaved._id,
             name: userSaved.name,
-            email: userSaved.email,
-            location: userSaved.location
+            email: userSaved.email
           },
           keys.jwtAuth.secret,
           { expiresIn: "24h" }
         );
+
         res.status(200).json({
           _id: userSaved._id,
           name: userSaved.name,
           email: userSaved.email,
-          location: userSaved.location,
           token
         });
       }
@@ -300,7 +299,6 @@ router.post("/register", async (req, res) => {
       });
     }
   }
- });
+});
 
-
- module.exports = router;
+module.exports = router;

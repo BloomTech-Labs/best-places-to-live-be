@@ -15,12 +15,12 @@ const profile = require("./routes/profile");
 const keys = require("./config/keys");
 const https = require("https");
 const credentials = require("./config/ssl");
-const server = require('./server');
+
 const port = process.env.PORT || 443;
 
-
-
-server.use(
+app.use(express.json());
+app.use(cors());
+app.use(
   cookie({
     name: "letsmovehomie",
     maxAge: 24 * 60 * 60 * 1000, //set cookie to one day exp
@@ -29,15 +29,14 @@ server.use(
   })
 );
 
-server.use(express.static(__dirname, { dotfiles: "allow" }));
-server.use(passport.initialize());
-server.use(passport.session());
-server.use(cookieParser());
-server.use("/city", city);
-server.use("/users", users);
-server.use("/auth", auth);
-server.use("/profile", profile);
-
+app.use(express.static(__dirname, { dotfiles: "allow" }));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(cookieParser());
+app.use("/city", city);
+app.use("/users", users);
+app.use("/auth", auth);
+app.use("/profile", profile);
 
 //Connect to MongoDB
 mongoose
@@ -49,12 +48,12 @@ mongoose
   .catch(e => console.error(`Could not connect: ${e.message}`));
 
 if (credentials) {
-  const app = https.createServer(credentials, app);
-  app.listen(port, () => {
+  const server = https.createServer(credentials, app);
+  server.listen(port, () => {
     console.log("server starting on port : " + port);
   });
 } else {
-  server.listen(port, () => {
+  app.listen(port, () => {
     console.log(`Server running on port ${port}`);
   });
 }
