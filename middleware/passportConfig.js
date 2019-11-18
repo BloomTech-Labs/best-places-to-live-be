@@ -95,7 +95,7 @@ module.exports = function(passport) {
 
         // pull in our app id and secret from our auth.js file
         clientID        : 482046309075252,
-        clientSecret    : bb6a4796a1ca2d541a2b0d6520ef7d9e,
+        clientSecret    : 'bb6a4796a1ca2d541a2b0d6520ef7d9e',
         callbackURL     : configAuth.facebookAuth.callbackURL
 
     },
