@@ -39,18 +39,19 @@ router.get("/logout", (req, res) => {
   res.send("you have logged out");
 });
 
-//Redirect url for user
-router.get("/redirect/google", passport.authenticate("google"), (req, res) => {
-  console.log(req.cookies["letsmovehomie"]);
-  res.cookie("letsmovehomie", req.cookies["letsmovehomie"], {
-    domain: "letsmovehomie.com"
-  });
-  res.cookie("letsmovehomie.sig", req.cookies["letsmovehomie.sig"], {
-    domain: "letsmovehomie.com"
-  });
-  res.status(303).redirect("https://stagefe.letsmovehomie.com/topten");
-});
-//Redirect url for user
+// //Redirect url for user
+// router.get("/redirect/google", passport.authenticate("google"), (req, res) => {
+//   console.log(req.cookies["letsmovehomie"]);
+//   res.cookie("letsmovehomie", req.cookies["letsmovehomie"], {
+//     domain: "letsmovehomie.com"
+//   });
+//   res.cookie("letsmovehomie.sig", req.cookies["letsmovehomie.sig"], {
+//     domain: "letsmovehomie.com"
+//   });
+//   res.status(303).redirect("https://stagefe.letsmovehomie.com/topten");
+// });
+
+// // Redirect url for user
 // router.get(
 //   "/redirect/facebook",
 //   passport.authenticate("facebook"),
