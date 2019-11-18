@@ -21,20 +21,16 @@ router.get(
   }
 );
 
-router.get('/auth/facebook', passport.authenticate('facebook', {scope: 'email'}));
+app.get('/facebook', passport.authenticate('facebook', { scope : 'email' }));
 
-router.get('/auth/facebook/callback', passport.authenticate('facebook', {
-  successRedirect: '/profile',
-  failureRedirect: '/'
-}));
+	// handle the callback after facebook has authenticated the user
+	app.get('/facebook/callback',
+		passport.authenticate('facebook', {
+			successRedirect : '/profile',
+			failureRedirect : '/'
+		}));
 
-// Facebook will redirect the user to this URL after approval.  Finish the
-// authentication process by attempting to obtain an access token.  If
-// access was granted, the user will be logged in.  Otherwise,
-// authentication has failed.
-// app.get('/auth/facebook/callback',
-//   passport.authenticate('facebook', { successRedirect: '/',
-//                                       failureRedirect: '/login' }));
+
 
 //clear all sessions of cookies etc
 router.get("/logout", (req, res) => {
