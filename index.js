@@ -4,7 +4,8 @@ const mongoose = require("mongoose");
 const keys = require("./config/keys");
 const server = require('./server');
 const credentials = require("./config/ssl");
-const passportConfig = require("./middleware/passportConfig");
+const passport = require('passport');
+const passportConfig = require("./middleware/passportConfig")(passport);
 const https = require("https");
 const port = process.env.PORT || 443;
 
