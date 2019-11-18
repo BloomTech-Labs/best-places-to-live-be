@@ -1,9 +1,9 @@
 const keys = require("../config/keys");
 const passport = require("passport");
 const google = require("passport-google-oauth20");
-const facebook = require("passport-facebook").Strategy;
+const facebook = require("passport-facebook");
 const User = require("../models/user");
-const LocalStrategy = require('passport-local').Strategy;
+const LocalStrategy = require('passport-local');
 module.exports = function(passport) {
 
 	// =========================================================================
