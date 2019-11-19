@@ -42,7 +42,7 @@ server.use("/auth", auth);
 server.use("/profile", profile);
 //Informs devs that this is working
 server.get("/", (req, res) => {
-  res.send("<h1>Let's Move Homie is a terrible name</h1>");
+  res.status(200).send("Let's Move Homie is a terrible name");
 });
 
 module.exports = server;
