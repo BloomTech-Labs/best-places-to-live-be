@@ -44,5 +44,8 @@
   },
   "mdSeed": {
     "seedersFolder": "data-seeding"
+  },
+  "jest": {
+    "testEnvironment": "node"
   }
 }
