@@ -35,6 +35,23 @@ describe('REST API (/users)', function () {
         done();
   
       });
+      it('should have property \'passsword\' correctly', function (done) {
+
+        schema.should.have.property('password');
+        schema.name.options.type.should.be.equal(String);
+  
+        done();
+  
+      });
+
+      it('should have property \'location\' correctly', function (done) {
+
+        schema.should.have.property('location');
+        schema.name.options.type.should.be.equal(String);
+  
+        done();
+  
+      });
 
        
       });    
