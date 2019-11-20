@@ -109,10 +109,24 @@ describe("Testing schema (/city)", () => {
     done();
   });
 
-  it("should have property  'full_name' ", done => {
-    schema.should.have.property('full_name');
-    schema['full_name'].options.unique.should.equal(true);
+  it("should have property  'apartment-rent-large' ", done => {
+    schema.should.have.property('apartment-rent-large');
+    schema['apartment-rent-large'].options.type.should.equal(Number);
     done();
   });
+
+  it("should have property  'apartment-rent-medium' ", done => {
+    schema.should.have.property('apartment-rent-medium');
+    schema['apartment-rent-medium'].options.type.should.equal(Number);
+    done();
+  });
+
+  it("should have property  'apartment-rent-small' ", done => {
+    schema.should.have.property('apartment-rent-small');
+    schema['apartment-rent-small'].options.type.should.equal(Number);
+    done();
+  });
+
+ 
 });
 });

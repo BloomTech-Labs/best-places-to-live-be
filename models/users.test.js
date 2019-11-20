@@ -30,5 +30,12 @@ describe("Testing schema (/users)", function() {
       schema.location.options.type.should.be.equal(String);
       done();
     });
-  });
+
+    it("should have property ' email' ", function (done) {
+      schema.should.have.property('email');
+      schema.email.options.unique.should.be.equal(true);
+      done();
+    })
+    
+  })
 });
