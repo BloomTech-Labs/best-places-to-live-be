@@ -7,7 +7,9 @@ module.exports = {
   },
   googleAuth: {
     googleClientId: process.env.GOOGLE_CLIENTID,
-    googleClientSecret: process.env.GOOGLE_CLIENTSECRET
+    googleClientSecret: process.env.GOOGLE_CLIENTSECRET,
+    callbackURL: '/auth/google/redirect'
+   
   },
   facebookAuth: {
     facebookClientId: '482046309075252',
