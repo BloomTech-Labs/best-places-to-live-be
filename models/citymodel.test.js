@@ -25,6 +25,94 @@ describe("Testing schema (/city)", () => {
       done();
     });
 
-    
+    it("should have property 'score_healthcare' ", done => {
+     schema.should.have.property('score_healthcare');
+     schema['score_healthcare'].options.type.should.be.equal(Number);
+     done();
+    });
+
+   it("should have property 'weather-average-high' ", done => {
+    schema.should.have.property('weather-average-high');
+    schema['weather-average-high'].options.type.should.be.equal(String);
+    done();
+   });
+
+   it("should have property 'startup-jobs-available-telescore'", done => {
+    schema.should.have.property('startup-jobs-available-telescore');
+    schema['startup-jobs-available-telescore'].options.type.should.be.equal(Number);
+    done();
+   });
+
+   it("should have property 'weather-average-low' ", done => {
+    schema.should.have.property('weather-average-low');
+    schema['weather-average-low'].options.type.should.equal(String);
+    done();
+   });
+   
+   it("should have property 'state' ", done => {
+    schema.should.have.property('state');
+    schema['state'].options.type.should.equal(String);
+    done();
+   });
+
+   it("should have property 'score_taxation' ", done => {
+    schema.should.have.property('score_taxation');
+    schema['score_taxation'].options.type.should.equal(Number);
+    done();
+   });
+ 
+  it("should have property ' score_safety' ", done => {
+    schema.should.have.property('score_safety');
+    schema['score_safety'].options.type.should.equal(Number);
+    done();
   });
+
+  it("should have property ' score_education' ", done => {
+    schema.should.have.property('score_education');
+    schema['score_education'].options.type.should.equal(Number);
+    done();
+  });
+   
+  it("should have property 'score_environmental_quality' ", done => {
+    schema.should.have.property('score_environmental_quality');
+    schema['score_environmental_quality'].options.type.should.equal(Number);
+    done();
+  });
+
+  it("should have property 'score_housing' ", done => {
+    schema.should.have.property('score_housing');
+    schema['score_housing'].options.type.should.equal(Number);
+    done();
+  });
+
+  it("should have property ' score_internet_access' ", done => {
+    schema.should.have.property('score_internet_access');
+    schema['score_internet_access'].options.type.should.equal(Number);
+    done();
+  });
+
+  it("should have property 'startup-salaries' ", done => {
+    schema.should.have.property('startup-salaries');
+    schema['startup-salaries'].options.type.should.equal(Number);
+    done();
+  });
+
+  it("should have property 'weather-type' ", done => {
+    schema.should.have.property('weather-type');
+    schema['weather-type'].options.type.should.equal(String);
+    done();
+  });
+
+  it("should have property 'weather-type' ", done => {
+    schema.should.have.property('weather-type');
+    schema['weather-type'].options.type.should.equal(String);
+    done();
+  });
+
+  it("should have property  'full_name' ", done => {
+    schema.should.have.property('full_name');
+    schema['full_name'].options.unique.should.equal(true);
+    done();
+  });
+});
 });
