@@ -1,5 +1,5 @@
 #### Package manager:
- NPM
+ -  NPM
 
 # ⚙️ API Documentation
 
@@ -58,6 +58,11 @@ db.createUser({
 ## Inside our Digital Ocean Droplet:
 
 - Remember to restart the node server by executing `pm2 restart index` in the terminal
+
+ #### MongoDB Database Backup:
+  - To create a backup of the current MongoDB database: mongodump -d production -o ~/mongoBackups/date-of-backup
+
+  - To restore a backup: mongorestore ~/mongoBackups/date-of-backup/
 
 
 ## 🗂 BACKEND DATABASE:
