@@ -1,3 +1,5 @@
+#### Package manager:
+ NPM
 
 # ⚙️ API Documentation
 
@@ -64,11 +66,11 @@ db.createUser({
 
 
 ##  📚  BACKEND FRAMEWORK:
-- We used:
-  - NodeJS
-  - Express
-  - Passport.js
-  - Cors(Middleware)
+We used:
+ - NodeJS
+ - Express
+ - Passport.js
+ - Cors(Middleware)
 
 
  ##  📚  TESTING LIBRARYS:
@@ -390,7 +392,7 @@ RETURN
 <details>
   <summary>iOS Endpoints - User's favorite cities</summary>
 
-  ## POST `https://stagebe.letsmovehomie.com/users/profile/cities`
+  ## POST `https://bestplacesbe-test.herokuapp.com/users/profile/cities`
 
   REQUIRES:
 
@@ -427,7 +429,7 @@ RETURN
   }
   ```
 
-  ## DELETE `https://stagebe.letsmovehomie.com/users/profile/cities`
+  ## DELETE `https://bestplacesbe-test.herokuapp.com/users/profile/cities`
 
   REQUIRES:
 
@@ -462,7 +464,7 @@ RETURN
 <details>
   <summary>iOS Endpoints - Update user's information - password, name, email, etc</summary>
 
-  ## PUT `https://stagebe.letsmovehomie.com/users/profile/`
+  ## PUT `https://bestplacesbe-test.herokuapp.com/users/profile/`
 
   REQUIRES:
 
@@ -578,13 +580,11 @@ Remember that this project is licensed under the MIT license, and by submitting 
 - Include the relevant issue number, if applicable.
 - You may merge the Pull Request in once you have the sign-off of two other developers, or if you do not have permission to do that, you may request the second reviewer to merge it for you.
 
-### 👏 Attribution
 
-These contribution guidelines have been adapted from [this good-Contributing.md-template](https://gist.github.com/PurpleBooth/b24679402957c63ec426).
 
 ## Documentation
 
-### 🖥 [Frontend Documentation](https://github.com/labs15-best-places/front-end) for details on the frontend application of our project.
+### 🖥 [Frontend Documentation](https://github.com/Lambda-School-Labs/best-places-to-live-fe) for details on the frontend application of our project.
 
-### 📱 [iOS Documentation](https://github.com/labs15-best-places/ios) for details on the mobile iOS application of our project.
+### 📱 [iOS Documentation](https://github.com/Lambda-School-Labs/ios) for details on the mobile iOS application of our project.
 
