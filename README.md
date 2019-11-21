@@ -5,7 +5,7 @@
 
 #### Backend deployed at:
 
-#### Staging 
+#### Contest and Deployment
 #### [https://bestplacesbe-contest.herokuapp.com/] 
 #### [https://bestplacesbe-test.herokuapp.com/]
 
