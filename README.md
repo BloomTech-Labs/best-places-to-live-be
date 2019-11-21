@@ -11,7 +11,8 @@
 
 # ⚙️ API Documentation
 
-#### Backend deployed at [https://stagebe.letsmovehomie.com/city](https://stagebe.letsmovehomie.com/city)
+#### Backend deployed at [https://bestplacesbe-contest.herokuapp.com/] 
+#### [https://bestplacesbe-test.herokuapp.com/]
 
 ## 💻 Getting started
 
