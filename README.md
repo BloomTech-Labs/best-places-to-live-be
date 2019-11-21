@@ -78,11 +78,12 @@ db.createUser({
 
 
 
-# 🔌 Endpoints
+# 🔌 ENDPOINTS
 
 ## 🌎 URL: `https://bestplacesbe.herokuapp.com/`
 
 
+#### 🏢 Users Routes
 
 | Method | Endpoint                | Access Control      | Description                                        |
 | ------ | ----------------------- | ------------------- | -------------------------------------------------- |
@@ -91,11 +92,26 @@ db.createUser({
 
 
 
+#### 👥  User Profile Routes
+
+| Method | Endpoint                | Access Control      | Description                                        |
+| ------ | ----------------------- | ------------------- | -------------------------------------------------- |
+| GET    | `/profile`              |   users           | See the users profile.                   |
+| PUT    | `/profile`              |   users           | Able to edits the saved saved list       |
+| POST   | `/profile/cities`       |   users           | Able to delete the saved list            |
+| DELETE | `/profile/cities`       |   users           | Deletes cities from your saved list.     |
+   
+
+
+
+
 #### 🏢 City Routes
 
 | Method | Endpoint           | Access Control | Description                                                       |
 | ------ | ------------------ | -------------- | ----------------------------------------------------------------- |
 | GET    | `/city/all/`       | public         | Returns ***only*** the `_id` and `name` fields of all 5037 cities.|
+
+
 
 #### 🏢 City Search
 
@@ -109,7 +125,6 @@ db.createUser({
 
 #### 👥 Profile Routes
 
----
 
 BASE URL
 /profile
