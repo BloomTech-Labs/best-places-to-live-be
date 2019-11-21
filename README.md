@@ -1,14 +1,4 @@
 
-# ⚠️Development Engineer Git Flow:
-
-- Resolve all merge conflicts locally
-- Compare your `branch` with `Release-Canvas-2-Development`
-- Create PR
-
-# Package manager:
-
-- NPM
-
 # ⚙️ API Documentation
 
 #### Backend deployed at [https://bestplacesbe-contest.herokuapp.com/] 
@@ -61,23 +51,26 @@ db.createUser({
 
 - Remember to restart the node server by executing `pm2 restart index` in the terminal
 
-# MongoDB Database Backup:
 
-- To create a backup of the current MongoDB database:
-  `mongodump -d production -o ~/mongoBackups/date-of-backup`
-
-- To restore a backup:
-  `mongorestore ~/mongoBackups/date-of-backup/`
-
-## 🗂 Backend Database:
+## 🗂 BACKEND DATABASE:
 
 - MongoDB
 
-## 📚 Backend Libraries
 
-- Mongoose
-- Express
-- Passport.js
+##  📚  BACKEND FRAMEWORK:
+- We used:
+  - NodeJS
+  - Express
+  - Passport.js
+  - Cors(Middleware)
+
+
+ ##  📚  TESTING LIBRARYS:
+  - Jest
+  - Chai
+  - SuperTest 
+
+
 
 # 🔌 Endpoints
 
