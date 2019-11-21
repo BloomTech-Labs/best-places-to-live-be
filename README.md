@@ -1,10 +1,16 @@
 
 # ⚙️ API Documentation
 
-#### Backend deployed at [https://bestplacesbe-contest.herokuapp.com/] 
+#### Backend deployed at:
+
+#### Staging 
+#### [https://bestplacesbe-contest.herokuapp.com/] 
 #### [https://bestplacesbe-test.herokuapp.com/]
 
-## 💻 Getting started
+#### Master 
+####  [https://bestplacesbe.herokuapp.com/]
+
+  💻 Getting started
 
 To get the server running locally:
 
@@ -74,7 +80,16 @@ db.createUser({
 
 # 🔌 Endpoints
 
-## 🌎 URL: `https://stagebe.letsmovehomie.com/`
+## 🌎 URL: `https://bestplacesbe.herokuapp.com/`
+
+
+
+| Method | Endpoint                | Access Control      | Description                                        |
+| ------ | ----------------------- | ------------------- | -------------------------------------------------- |
+| POST   | `/register`             |   users           | Registers a new user.                   |
+| POST   | `/login`                |   users           | Sign in a user .                        |
+
+
 
 #### 🏢 City Routes
 
@@ -91,12 +106,6 @@ db.createUser({
 | POST   | `/city/top`    | public         | <details> <summary>Returns The Top cities based on Category</summary>_query_<br/>{<br/>&nbsp;&nbsp;&nbsp;&nbsp;**q: "",** //forced name filter use this to only grab a particluar state.Defaults to null<br/>&nbsp;&nbsp;&nbsp;&nbsp;**filter: "",** //name of the key value of the data model you wanna sort by. Defaults to Score*total<br/>&nbsp;&nbsp;&nbsp;&nbsp;**limit: Number,** //Number of items you want back. Defaults 10<br/>&nbsp;&nbsp;&nbsp;&nbsp;**order:""** //asc for bottom or none for top. Defaults to top<br/>}<br/>\_body*<br/>{<br/>&nbsp;&nbsp;&nbsp;&nbsp;**model: {}** //object with same keyvalues of the data you want in the list of &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;objects<br/>}</details> |
 | POST   | `/city/location` | public         | <details><summary>Return an array of cities sorted by distanec of the passed in location.</summary>_query_<br/>{<br/>&nbsp;&nbsp;&nbsp;&nbsp;**lat: Number,** //latitude of the location<br/>&nbsp;&nbsp;&nbsp;&nbsp;**lng: Number,** //longitude of the location<br/>&nbsp;&nbsp;&nbsp;&nbsp;**zoom: Number,** //google zoom helps determine how far to look<br/>&nbsp;&nbsp;&nbsp;&nbsp;**rand: Number** //Get a random set back, automatically does this if zooom < 7<br/>&nbsp;&nbsp;&nbsp;&nbsp;**limit: Number** // sets the number of elements<br/>}<br/>_body_ <br/> { <br>&nbsp;&nbsp;**"model": Object** // sets the elements you want back from the db <br>}</details>|
 
-#### 👥 User Routes
-
-| Method | Endpoint          | Access Control | Description                     |
-| ------ | ----------------- | -------------- | ------------------------------- |
-| POST   | `/users/register` | public         | Creates a new user in database. |
-| POST   | `/users/login`    | public         | Logs in user.                   |
 
 #### 👥 Profile Routes
 
