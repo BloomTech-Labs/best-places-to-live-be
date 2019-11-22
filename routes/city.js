@@ -4,7 +4,7 @@ const City = require("../models/city");
 
 router.get("/all", async (req, res) => {
   try {
-    const cities = await City.find({}, { name: 1 });
+    const cities = await City.find({}, { name: 1, secure_url: 1 });
     res.status(200).json({
       cities
     });
