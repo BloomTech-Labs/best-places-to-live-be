@@ -291,6 +291,54 @@ router.delete("/dislikes", tokenAuthentication, async (req, res) => {
 
 // ===== End of dislikes =====
 
+// ===== Factors =====
+
+router.post("/factors", tokenAuthentication, async (req, res) => {
+  const _id = req.decodedToken._id;
+  const { newFactor } = req.body;
+
+  try {
+    const user = await User.findOne({ _id });
+
+    if (user) {
+      const newFactors = [...user.factors].concat([newFactor]);
+
+      const updatedUser = await User.findOneAndUpdate(
+        {
+          _id
+        },
+        {
+          $set: {
+            factors: newFactors
+          }
+        },
+        {
+          new: true
+        }
+      );
+
+      res.status(200).json({
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        likes: updatedUser.likes,
+        dislikes: updatedUser.dislikes,
+        factors: updatedUser.factors
+      });
+    } else {
+      res.status(400).json({
+        message: "User does not exist."
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "Error retrieving user from database."
+    });
+  }
+});
+
+// ===== End of factors =====
+
 router.post("/profile/cities", tokenAuthentication, async (req, res) => {
   const _id = req.decodedToken._id;
   const { city_name, city_id, city_photo } = req.body;
@@ -431,8 +479,6 @@ router.post("/login", async (req, res) => {
     });
   }
 });
-
-// Register Handle
 
 // Register Handle
 router.post("/register", async (req, res) => {
