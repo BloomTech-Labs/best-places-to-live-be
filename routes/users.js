@@ -245,8 +245,8 @@ router.post("/login", async (req, res) => {
 // Register Handle
 router.post("/register", async (req, res) => {
   const { name,email,password,location} = req.body;
-  console.log({name,email,password,location})
   // check required fields
+  console.log(name,email,password,location);
   if (!name || !email || !password || !location) {
 
     res.status(400).json({
@@ -295,13 +295,11 @@ router.post("/register", async (req, res) => {
         });
       }
     } catch (error) {
-      console.log(error);
       res.status(500).json({
         message: "Error registering."
       });
     }
   }
  });
-
 
  module.exports = router;

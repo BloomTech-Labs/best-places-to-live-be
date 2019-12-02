@@ -12,23 +12,34 @@ const authCheck = (req, res, next) => {
 
 //send a request to google to have or see if user is logged in
 router.get(
-  "/login/google",
+  "/google",
   passport.authenticate("google", {
     scope: ["profile", "email"]
   }),
-  (req, res) => {
-    res.send("login");
-  }
+ 
 );
-router.get(
-  "/login/facebook",
-  passport.authenticate("facebook", {
-    scope: ["email"]
-  }),
-  (req, res) => {
-    res.send("login");
-  }
-);
+
+// callback route for google to redirect to
+router.get('/google/redirect', passport.authenticate('google', {
+  successRedirect : '/profile',
+  failureRedirect : '/'
+  
+}));
+
+
+
+
+
+router.get('/facebook', passport.authenticate('facebook', { scope : 'email' }));
+
+	// handle the callback after facebook has authenticated the user
+	router.get('/facebook/callback',
+		passport.authenticate('facebook', {
+			successRedirect : '/profile',
+			failureRedirect : '/'
+		}));
+
+
 
 //clear all sessions of cookies etc
 router.get("/logout", (req, res) => {
@@ -38,31 +49,32 @@ router.get("/logout", (req, res) => {
 });
 
 //Redirect url for user
-router.get("/redirect/google", passport.authenticate("google"), (req, res) => {
-  console.log(req.cookies["letsmovehomie"]);
-  res.cookie("letsmovehomie", req.cookies["letsmovehomie"], {
-    domain: "letsmovehomie.com"
-  });
-  res.cookie("letsmovehomie.sig", req.cookies["letsmovehomie.sig"], {
-    domain: "letsmovehomie.com"
-  });
-  res.status(303).redirect("https://stagefe.letsmovehomie.com/topten");
-});
-//Redirect url for user
-router.get(
-  "/redirect/facebook",
-  passport.authenticate("facebook"),
-  (req, res) => {
-    console.log(req.cookies["letsmovehomie"]);
-    res.cookie("letsmovehomie", req.cookies["letsmovehomie"], {
-      domain: "letsmovehomie.com"
-    });
-    res.cookie("letsmovehomie.sig", req.cookies["letsmovehomie.sig"], {
-      domain: "letsmovehomie.com"
-    });
-    res.status(303).redirect("https://stagefe.letsmovehomie.com/topten");
-  }
-);
+// router.get("/redirect/google", passport.authenticate("google"), (req, res) => {
+//   console.log(req.cookies["letsmovehomie"]);
+//   res.cookie("letsmovehomie", req.cookies["letsmovehomie"], {
+//     domain: "letsmovehomie.com"
+//   });
+//   res.cookie("letsmovehomie.sig", req.cookies["letsmovehomie.sig"], {
+//     domain: "letsmovehomie.com"
+//   });
+//   res.status(303).redirect("https://stagefe.letsmovehomie.com/topten");
+// });
+
+// // Redirect url for user
+// router.get(
+//   "/redirect/facebook",
+//   passport.authenticate("facebook"),
+//   (req, res) => {
+//     console.log(req.cookies["letsmovehomie"]);
+//     res.cookie("letsmovehomie", req.cookies["letsmovehomie"], {
+//       domain: "letsmovehomie.com"
+//     });
+//     res.cookie("letsmovehomie.sig", req.cookies["letsmovehomie.sig"], {
+//       domain: "letsmovehomie.com"
+//     });
+//     res.status(303).redirect("https://stagefe.letsmovehomie.com/topten");
+//   }
+// );
 
 //Check for authentication
 router.get("/validation", authCheck, (req, res) => {
