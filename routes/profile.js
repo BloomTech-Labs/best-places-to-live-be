@@ -4,7 +4,8 @@ const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 //check if a user is in request sent
 const authCheck = (req, res, next) => {
-  if (!req.user) {
+  const user = req.body;
+  if (!user) {
     res.status(401).send(false);
   } else {
     next();
@@ -18,7 +19,7 @@ const authCheck = (req, res, next) => {
 ////////////////////////////////////////////////////
 
 router.get("/", authCheck, async (req, res) => {
-  let user = await User.findById(req.user._id);
+  let user = await User.findBy(req.user._id);
   res.json(user);
 });
 

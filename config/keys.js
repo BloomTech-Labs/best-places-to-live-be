@@ -7,11 +7,14 @@ module.exports = {
   },
   googleAuth: {
     googleClientId: process.env.GOOGLE_CLIENTID,
-    googleClientSecret: process.env.GOOGLE_CLIENTSECRET
+    googleClientSecret: process.env.GOOGLE_CLIENTSECRET,
+    callbackURL: '/auth/google/redirect'
+   
   },
   facebookAuth: {
-    facebookClientId: process.env.FACEBOOK_CLIENTID,
-    facebookClientSecret: process.env.FACEBOOK_CLIENTSECRET
+    facebookClientId: '482046309075252',
+    facebookClientSecret: 'bb6a4796a1ca2d541a2b0d6520ef7d9e',
+    callbackURL: '/auth/facebook/callback'
   },
   jwtAuth: {
     secret: process.env.JWT_SECRET

@@ -4,7 +4,7 @@ const City = require("../models/city");
 
 router.get("/all", async (req, res) => {
   try {
-    const cities = await City.find({}, { name: 1 });
+    const cities = await City.find({}, { name: 1, secure_url: 1 });
     res.status(200).json({
       cities
     });
@@ -99,7 +99,7 @@ router.delete("/", async (req, res) => {
         message: "hello"
       });
     } else throw "You SHALL NOT PASS";
-  } catch {
+  } catch (error) {
     res.status(200).json({
       message: "good bye"
     });

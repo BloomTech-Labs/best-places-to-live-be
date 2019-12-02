@@ -497,6 +497,10 @@ const citySchema = new mongoose.Schema({
     type: String,
     unique: true
   },
+  secure_url: {
+    type: String,
+    default: null
+  },
   "network-download": {
     type: Number,
     default: null
