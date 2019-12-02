@@ -101,6 +101,99 @@ router.put("/profile", tokenAuthentication, async (req, res) => {
   }
 });
 
+// ===== Likes =====
+
+router.post("/likes", tokenAuthentication, async (req, res) => {
+  const _id = req.decodedToken._id;
+  const { city_name, city_id } = req.body;
+
+  const likedCity = {
+    _id: city_id,
+    name: city_name
+  };
+
+  try {
+    const user = await User.findOne({ _id });
+
+    if (user) {
+      const newLike = [...user.likes].concat([likedCity]);
+
+      const updatedUser = await User.findOneAndUpdate(
+        {
+          _id
+        },
+        {
+          $set: {
+            likes: newLike
+          }
+        },
+        {
+          new: true
+        }
+      );
+
+      res.status(200).json({
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        likes: updatedUser.likes
+      });
+    } else {
+      res.status(400).json({
+        message: "User does not exist."
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "Error retrieving user from database."
+    });
+  }
+});
+
+router.delete("/likes", tokenAuthentication, async (req, res) => {
+  const _id = req.decodedToken._id;
+  const { city_id } = req.body;
+
+  try {
+    const user = await User.findOne({ _id });
+
+    if (user) {
+      const newLikes = [...user.likes].filter(city => city._id !== city_id);
+
+      const updatedUser = await User.findOneAndUpdate(
+        {
+          _id
+        },
+        {
+          $set: {
+            likes: newLikes
+          }
+        },
+        {
+          new: true
+        }
+      );
+
+      res.status(200).json({
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        likes: updatedUser.likes
+      });
+    } else {
+      res.status(400).json({
+        message: "User does not exist."
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "Error retrieving user from database."
+    });
+  }
+});
+
+// ===== End of Likes =====
+
 router.post("/profile/cities", tokenAuthentication, async (req, res) => {
   const _id = req.decodedToken._id;
   const { city_name, city_id, city_photo } = req.body;
