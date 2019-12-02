@@ -48,23 +48,42 @@ describe('users', () => {
         });
     });
 });
-describe('profile', () => {
+// describe('profile', () => {
+//     describe('GET /', () => {
+//         it('should get NOT user info', (done) => {
+//             chai.request(server)
+//             .get('/profile')
+//             .end((err, res) => {
+//                 expect(res.status).toEqual(400);
+//                 done();
+//             });
+//         });
+//         it('should not be able to update user information', (done) => {
+//             chai.request(server)
+//             .put('/profile')
+//             .end((err, res) => {
+//                 expect(res.status).toEqual(401);
+//                 done();
+//             });
+//         });
+//     })
+// })
+describe('city', () => {
     describe('GET /', () => {
-        it('should get NOT user info', (done) => {
+        it('should get city info', async (done) => {
             chai.request(server)
-            .get('/profile')
+            .get('/city/all')
             .end((err, res) => {
-                expect(res.status).toEqual(400);
+                expect(res.status).toEqual(200);
                 done();
             });
         });
-        it('should not be able to update user information', (done) => {
-            chai.request(server)
-            .put('/profile')
-            .end((err, res) => {
-                expect(res.status).toEqual(401);
-                done();
-            });
-        });
-    })
-})
+//         it('should get top ten', async (done) => {
+//             chai.request(server)
+//             .get('/city/topten-score_total')
+//             .end((err, res) => {
+//                 expect(res.status).toEqual(200);
+//                 done();
+//             });
+//     });
+})})
