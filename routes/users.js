@@ -31,6 +31,34 @@ const cityCheck = (req, res, next) => {
       }
 }
 
+const cityDoubleCheck = async (req, res, next) => {
+  const _id = req.decodedToken._id;
+  const { city_name, city_id } = req.body;
+  let found = false;
+
+  const likedCity = {
+    _id: city_id,
+    name: city_name
+  };
+
+  const user = await User.findOne({ _id });
+
+    for(var i = 0; i < user.likes.length; i++) {
+      if (user.likes[i]._id === likedCity._id) {
+          found = true;
+          break;
+      }
+    } 
+  
+    // console.log("FOUND:", found)
+
+      if (found === false) {
+          next();
+      } else {
+          res.status(403).json({ message: "Duplicate of city" });
+      }
+}
+
 const factorCheck = (req, res, next) => {
 
   if (req.body.newFactor.length) {
@@ -163,7 +191,7 @@ router.get("/info", tokenAuthentication, async (req, res) => {
 
 // ===== Likes =====
 
-router.post("/likes", tokenAuthentication, cityCheck, async (req, res) => {
+router.post("/likes", tokenAuthentication, cityCheck, cityDoubleCheck, async (req, res) => {
   const _id = req.decodedToken._id;
   const { city_name, city_id } = req.body;
 
@@ -260,7 +288,7 @@ router.delete("/likes", tokenAuthentication, async (req, res) => {
 
 // ===== Dislikes =====
 
-router.post("/dislikes", tokenAuthentication, cityCheck, async (req, res) => {
+router.post("/dislikes", tokenAuthentication, cityCheck, cityDoubleCheck, async (req, res) => {
   const _id = req.decodedToken._id;
   const { city_name, city_id } = req.body;
 
