@@ -222,6 +222,7 @@ router.post("/login", async (req, res) => {
           _id: user._id,
           name: user.name,
           email: user.email,
+          location: user.location,
           token
         });
       } else {
@@ -242,14 +243,12 @@ router.post("/login", async (req, res) => {
 });
 
 // Register Handle
-
-// Register Handle
 router.post("/register", async (req, res) => {
-  console.log(req)
   const { name,email,password,location} = req.body;
-  console.log({name,email,password,location})
   // check required fields
+  console.log(name,email,password,location);
   if (!name || !email || !password || !location) {
+
     res.status(400).json({
       message: "Please fill in all fields."
     });
@@ -268,6 +267,7 @@ router.post("/register", async (req, res) => {
         });
       } else {
         const hashedPassword = bcrypt.hashSync(password, 4);
+
         const newUser = new User({
           name,
           email,
@@ -275,6 +275,7 @@ router.post("/register", async (req, res) => {
           password: hashedPassword
         });
         const userSaved = await newUser.save();
+
         const token = jwt.sign(
           {
             _id: userSaved._id,
@@ -294,7 +295,6 @@ router.post("/register", async (req, res) => {
         });
       }
     } catch (error) {
-      console.log(error);
       res.status(500).json({
         message: "Error registering."
       });
