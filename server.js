@@ -29,6 +29,8 @@ server.use(
   })
 );
 
+
+
 server.use(passport.initialize());
 server.use(passport.session());
 server.use(express.static(__dirname, { dotfiles: "allow" }));

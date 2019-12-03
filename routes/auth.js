@@ -19,8 +19,9 @@ router.get(
  
 );
 
+
 // callback route for google to redirect to
-router.get('/google/redirect', passport.authenticate('google', {
+router.get('/google/callback', passport.authenticate('google', {
   successRedirect : '/profile',
   failureRedirect : '/'
   

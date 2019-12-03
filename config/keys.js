@@ -1,3 +1,5 @@
+
+
 module.exports = {
   mongodb: {
     dbURI: `mongodb://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_HOSTNAME}:${process.env.MONGO_PORT}/${process.env.MONGO_DB}`
@@ -8,8 +10,7 @@ module.exports = {
   googleAuth: {
     googleClientId: process.env.GOOGLE_CLIENTID,
     googleClientSecret: process.env.GOOGLE_CLIENTSECRET,
-    callbackURL: '/auth/google/redirect'
-   
+    callbackURL: '/auth/google/callback' 
   },
   facebookAuth: {
     facebookClientId: '482046309075252',

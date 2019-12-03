@@ -96,7 +96,14 @@ We used:
 | ------ | ----------------------- | ------------------- | -------------------------------------------------- |
 | POST   | `/register`             |   users           | Registers a new user.                   |
 | POST   | `/login`                |   users           | Sign in a user .                        |
+<<<<<<< HEAD
 | GET    | `/auth/facebook`        |   users           | Sign in using facebook. |
+=======
+
+| GET    | `/auth/google`        |   users           | Sign in using google. |                   |
+| GET    | `/auth/facebook`        |   users           | Sign in using facebook.                 |
+
+>>>>>>> a1d94d15fdb0197c85a41e0e5920278e6c207dfc
 
 
 #### 👥  User Profile Routes
