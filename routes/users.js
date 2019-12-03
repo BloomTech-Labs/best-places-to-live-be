@@ -77,6 +77,27 @@ const factorPutCheck = (req, res, next) => {
   }
 }
 
+const factorDoubleCheck = async (req, res, next) => {
+  const _id = req.decodedToken._id;
+  const { newFactor } = req.body;
+  let found = false;
+
+  const user = await User.findOne({ _id });
+
+    for(var i = 0; i < user.factors.length; i++) {
+      if (user.factors[i] === newFactor) {
+          found = true;
+          break;
+      }
+    } 
+  
+      if (found === false) {
+          next();
+      } else {
+          res.status(403).json({ message: "Duplicate of factors" });
+      }
+}
+
 // ===== End of local middleware ====
 
 router.get("/profile", tokenAuthentication, async (req, res) => {
@@ -385,7 +406,7 @@ router.delete("/dislikes", tokenAuthentication, async (req, res) => {
 
 // ===== Factors =====
 
-router.post("/factors", tokenAuthentication, factorCheck, async (req, res) => {
+router.post("/factors", tokenAuthentication, factorCheck, factorDoubleCheck, async (req, res) => {
   const _id = req.decodedToken._id;
   const { newFactor } = req.body;
 
