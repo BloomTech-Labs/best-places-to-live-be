@@ -143,6 +143,7 @@ router.get("/info", tokenAuthentication, async (req, res) => {
         _id: user._id,
         name: user.name,
         email: user.email,
+        location: user.location,
         cities: user.cities,
         likes: user.likes,
         dislikes: user.dislikes,
@@ -610,7 +611,10 @@ router.post("/login", async (req, res) => {
           name: user.name,
           email: user.email,
           location: user.location,
-          token
+          token,
+          likes: user.likes,
+          dislikes: user.dislikes,
+          factors: user.factors
         });
       } else {
         res.status(500).json({
