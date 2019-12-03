@@ -413,6 +413,50 @@ router.delete("/factors", tokenAuthentication, async (req, res) => {
   }
 });
 
+router.put("/factors", tokenAuthentication, async (req, res) => {
+  const _id = req.decodedToken._id;
+  const { putFactors } = req.body;
+
+  try {
+    const user = await User.findOne({ _id });
+
+    if (user) {
+      // const newFactors = [...user.factors].concat([newFactor]);
+      console.log("Ololo", putFactors)
+      const updatedUser = await User.findOneAndUpdate(
+        {
+          _id
+        },
+        {
+          $set: {
+            factors: putFactors
+          }
+        },
+        {
+          new: true
+        }
+      );
+
+      res.status(200).json({
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        likes: updatedUser.likes,
+        dislikes: updatedUser.dislikes,
+        factors: updatedUser.factors
+      });
+    } else {
+      res.status(400).json({
+        message: "User does not exist."
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "Error retrieving user from database."
+    });
+  }
+});
+
 // ===== End of factors =====
 
 router.post("/profile/cities", tokenAuthentication, async (req, res) => {
