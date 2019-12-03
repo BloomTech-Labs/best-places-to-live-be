@@ -82,6 +82,7 @@ module.exports = function(passport) {
         passReqToCallback: true
       },
       async (req, accessToken, refreshToken, profile, done) => {
+          console.log(profile)
         User.findOne({ email: profile._json.email }).then(user => {
           if (user) {
             done(null, user);

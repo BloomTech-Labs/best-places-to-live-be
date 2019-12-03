@@ -19,17 +19,12 @@ const authCheck = (req, res, next) => {
 ////////////////////////////////////////////////////
 
 router.get("/", authCheck, async (req, res) => {
-  // console.log('i m here')
-  console.log(req.params)
-  // console.log("finished")
+  console.log(_id)
   let user = await User.findBy(req.user._id);
   res.json(user);
 });
 
-// router.get('/', authCheck, (req, res) => {
-//   console.log(profile)
-//   res.render('profile', { user: req.user });
-// });
+
 
 router.put("/", authCheck, async (req, res) => {
   let update = {};
