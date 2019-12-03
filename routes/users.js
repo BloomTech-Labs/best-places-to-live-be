@@ -5,6 +5,8 @@ const bcrypt = require("bcryptjs");
 const keys = require("../config/keys");
 const jwt = require("jsonwebtoken");
 
+// ==== Local middleware ====
+
 const tokenAuthentication = (req, res, next) => {
   const token = req.headers.authorization;
 
@@ -19,6 +21,17 @@ const tokenAuthentication = (req, res, next) => {
     }
   });
 };
+
+const cityCheck = (req, res, next) => {
+
+      if (req.body.city_name.length && req.body.city_id.length) {
+          next();
+      } else {
+          res.status(403).json({ message: "Please, include city data" });
+      }
+}
+
+// ===== End of local middleware ====
 
 router.get("/profile", tokenAuthentication, async (req, res) => {
   const _id = req.decodedToken._id;
@@ -131,7 +144,7 @@ router.get("/info", tokenAuthentication, async (req, res) => {
 
 // ===== Likes =====
 
-router.post("/likes", tokenAuthentication, async (req, res) => {
+router.post("/likes", tokenAuthentication, cityCheck, async (req, res) => {
   const _id = req.decodedToken._id;
   const { city_name, city_id } = req.body;
 
@@ -228,7 +241,7 @@ router.delete("/likes", tokenAuthentication, async (req, res) => {
 
 // ===== Dislikes =====
 
-router.post("/dislikes", tokenAuthentication, async (req, res) => {
+router.post("/dislikes", tokenAuthentication, cityCheck, async (req, res) => {
   const _id = req.decodedToken._id;
   const { city_name, city_id } = req.body;
 
