@@ -31,6 +31,24 @@ const cityCheck = (req, res, next) => {
       }
 }
 
+const factorCheck = (req, res, next) => {
+
+  if (req.body.newFactor.length) {
+      next();
+  } else {
+      res.status(403).json({ message: "Please, include factor data" });
+  }
+}
+
+const factorPutCheck = (req, res, next) => {
+
+  if (req.body.putFactors.length) {
+      next();
+  } else {
+      res.status(403).json({ message: "Please, include factors data" });
+  }
+}
+
 // ===== End of local middleware ====
 
 router.get("/profile", tokenAuthentication, async (req, res) => {
@@ -338,7 +356,7 @@ router.delete("/dislikes", tokenAuthentication, async (req, res) => {
 
 // ===== Factors =====
 
-router.post("/factors", tokenAuthentication, async (req, res) => {
+router.post("/factors", tokenAuthentication, factorCheck, async (req, res) => {
   const _id = req.decodedToken._id;
   const { newFactor } = req.body;
 
@@ -426,7 +444,7 @@ router.delete("/factors", tokenAuthentication, async (req, res) => {
   }
 });
 
-router.put("/factors", tokenAuthentication, async (req, res) => {
+router.put("/factors", tokenAuthentication, factorPutCheck, async (req, res) => {
   const _id = req.decodedToken._id;
   const { putFactors } = req.body;
 
@@ -434,8 +452,6 @@ router.put("/factors", tokenAuthentication, async (req, res) => {
     const user = await User.findOne({ _id });
 
     if (user) {
-      // const newFactors = [...user.factors].concat([newFactor]);
-      console.log("Ololo", putFactors)
       const updatedUser = await User.findOneAndUpdate(
         {
           _id
