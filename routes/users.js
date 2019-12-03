@@ -101,6 +101,34 @@ router.put("/profile", tokenAuthentication, async (req, res) => {
   }
 });
 
+router.get("/info", tokenAuthentication, async (req, res) => {
+  const _id = req.decodedToken._id;
+
+  try {
+    const user = await User.findOne({ _id });
+
+    if (user) {
+      res.status(200).json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        cities: user.cities,
+        likes: user.likes,
+        dislikes: user.dislikes,
+        factors: user.factors
+      });
+    } else {
+      res.status(400).json({
+        message: "User does not exist."
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "Error retrieving user from database."
+    });
+  }
+});
+
 // ===== Likes =====
 
 router.post("/likes", tokenAuthentication, async (req, res) => {
@@ -137,7 +165,8 @@ router.post("/likes", tokenAuthentication, async (req, res) => {
         name: updatedUser.name,
         email: updatedUser.email,
         likes: updatedUser.likes,
-        dislikes: updatedUser.dislikes
+        dislikes: updatedUser.dislikes,
+        factors: updatedUser.factors
       });
     } else {
       res.status(400).json({
@@ -180,7 +209,8 @@ router.delete("/likes", tokenAuthentication, async (req, res) => {
         name: updatedUser.name,
         email: updatedUser.email,
         likes: updatedUser.likes,
-        dislikes: updatedUser.dislikes
+        dislikes: updatedUser.dislikes,
+        factors: updatedUser.factors
       });
     } else {
       res.status(400).json({
@@ -232,7 +262,8 @@ router.post("/dislikes", tokenAuthentication, async (req, res) => {
         name: updatedUser.name,
         email: updatedUser.email,
         likes: updatedUser.likes,
-        dislikes: updatedUser.dislikes
+        dislikes: updatedUser.dislikes,
+        factors: updatedUser.factors
       });
     } else {
       res.status(400).json({
@@ -275,7 +306,8 @@ router.delete("/dislikes", tokenAuthentication, async (req, res) => {
         name: updatedUser.name,
         email: updatedUser.email,
         likes: updatedUser.likes,
-        dislikes: updatedUser.dislikes
+        dislikes: updatedUser.dislikes,
+        factors: updatedUser.factors
       });
     } else {
       res.status(400).json({
@@ -302,6 +334,50 @@ router.post("/factors", tokenAuthentication, async (req, res) => {
 
     if (user) {
       const newFactors = [...user.factors].concat([newFactor]);
+
+      const updatedUser = await User.findOneAndUpdate(
+        {
+          _id
+        },
+        {
+          $set: {
+            factors: newFactors
+          }
+        },
+        {
+          new: true
+        }
+      );
+
+      res.status(200).json({
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        likes: updatedUser.likes,
+        dislikes: updatedUser.dislikes,
+        factors: updatedUser.factors
+      });
+    } else {
+      res.status(400).json({
+        message: "User does not exist."
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "Error retrieving user from database."
+    });
+  }
+});
+
+router.delete("/factors", tokenAuthentication, async (req, res) => {
+  const _id = req.decodedToken._id;
+  const { delFactor } = req.body;
+
+  try {
+    const user = await User.findOne({ _id });
+
+    if (user) {
+      const newFactors = [...user.factors].filter(factors => factors !== delFactor);
 
       const updatedUser = await User.findOneAndUpdate(
         {
