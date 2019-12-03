@@ -3,6 +3,9 @@ const server = require('./server');
 const assert = require('assert');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
+const User = require("./models/user");
+const keys = require("./config/keys");
+const jwt = require("jsonwebtoken");
 
 chai.use(chaiHttp);
 chai.should();
@@ -70,7 +73,7 @@ describe('users', () => {
 // })
 describe('city', () => {
     describe('GET /', () => {
-        it('should get city info', async (done) => {
+        it('should get city info',  (done) => {
             chai.request(server)
             .get('/city/all')
             .end((err, res) => {
@@ -87,3 +90,61 @@ describe('city', () => {
 //             });
 //     });
 })})
+const Register = (body) => {
+    const {name, password} = body;
+    if(!name || !password) {
+        res.status(400).json({
+            message: "Please fill in all fields."
+        });
+    }else if(password.length < 6){
+        res.status(500).json({
+            message: "Password must be at least 6 characters"
+        });
+    }else {
+        try {
+            const user =  User.findOne({name});
+            if(user) {
+                res.status(500).json({
+                    message: "User already exists. Please login to continue"
+                });
+            }else {
+                const hashedPassword = bcrypt.hashSync(password, 10);
+                const newUser = new User({
+                    name, 
+                    password: hashedPassword
+                });
+                const userSaved = newUser.save();
+                const token = jwt.sign(
+                    {
+                        name: userSaved.name,
+
+                    },
+                    keys.jwtAuth.secret,
+                    {expiresIn: "10h"}
+
+                );
+                res.status(200).json({
+                    name: userSaved.name,
+                    token
+                });
+            }
+        } catch (error) {
+            res.status(500).json({
+                message: "Error registering."
+            });
+        }
+    }
+};
+describe("Register", () => {
+    test("should successfully register new user", () => {
+        let user = {name: 'JestTest', password: 'testing123'};
+         expect(Register(user)).resolves.toEqual({
+            validted: true,
+            reason: 'You have successfully registered!',
+            user: {
+                password: expect.anything(),
+                name: 'JestTest'
+            }
+        });
+    })
+})
