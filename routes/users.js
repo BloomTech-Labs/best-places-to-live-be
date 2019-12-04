@@ -220,6 +220,7 @@ router.get("/info", tokenAuthentication, async (req, res) => {
         _id: user._id,
         name: user.name,
         email: user.email,
+        appleId: user.appleId,
         location: user.location,
         cities: user.cities,
         likes: user.likes,
@@ -687,6 +688,7 @@ router.post("/login", async (req, res) => {
           _id: user._id,
           name: user.name,
           email: user.email,
+          appleId: user.appleId,
           location: user.location,
           token,
           likes: user.likes,
@@ -712,7 +714,7 @@ router.post("/login", async (req, res) => {
 
 // Register Handle
 router.post("/register", async (req, res) => {
-  const { name,email,password,location} = req.body;
+  const { name,email,password,location,appleId } = req.body;
   // check required fields
   console.log(name,email,password,location);
   if (!name || !email || !password || !location) {
@@ -738,6 +740,7 @@ router.post("/register", async (req, res) => {
           name,
           email,
           location,
+          appleId,
           password: hashedPassword
         });
         const userSaved = await newUser.save();
@@ -755,6 +758,7 @@ router.post("/register", async (req, res) => {
           _id: userSaved._id,
           name: userSaved.name,
           email: userSaved.email,
+          appleId: userSaved.appleId,
           location: userSaved.location,
           token
         });
