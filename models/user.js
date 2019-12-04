@@ -19,6 +19,15 @@ const userSchema = new mongoose.Schema({
   cities: {
     type: Array
   },
+  likes: {
+    type: Array
+  },
+  dislikes: {
+    type: Array
+  },
+  factors: {
+    type: Array
+  },
   userSettings: {
     type: Object
   },
