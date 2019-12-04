@@ -6,7 +6,7 @@ const chaiHttp = require('chai-http');
 const User = require("./models/user");
 const keys = require("./config/keys");
 const jwt = require("jsonwebtoken");
-
+const {MongoClient} = require('mongodb');
 
 chai.use(chaiHttp);
 chai.should();
@@ -97,14 +97,32 @@ describe('users', () => {
 //             });
 //     });
 // })})
-describe('Login', () => {
-    it('succeeds with correct crerdtials', async () => {
-        const response = await post(`login`, demoUser)
-        .expect(200);
-        expect(res.body.user.email).toBe(demoUser.email);
-    });
+describe('insert', () => {
+    let connection;
+    let db;
 
-})
+    beforeAll(async () => {
+        connection = await MongoClient.connect(global._MONGO_URL_, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        });
+        db = await connection.db();
+    });
+    afterAll(async () => {
+        await connection.close();
+        
+    });
+    it('should insert a doc into the collection', async () => {
+        const users = db.collection('users');
+        const mockUser = {_id: 'some-user-id', name: 'John'};
+        await users.insertOne(mockUser);
+        const insertedUser = await users.findOne({_id: 'some-user-id'});
+        expect(insertedUser).toEqual(mockUser);
+    });
+    beforeEach(async () => {
+        await db.collection('COLLECTION_NAME').deleteMany({});
+      });
+});
 
 function post(url, body){
     const httpRequest = request(app).post(url);
