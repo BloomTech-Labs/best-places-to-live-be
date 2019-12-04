@@ -59,6 +59,34 @@ const cityDoubleCheck = async (req, res, next) => {
       }
 }
 
+const cityDoubleCheckDis = async (req, res, next) => {
+  const _id = req.decodedToken._id;
+  const { city_name, city_id } = req.body;
+  let found = false;
+
+  const dislikedCity = {
+    _id: city_id,
+    name: city_name
+  };
+
+  const user = await User.findOne({ _id });
+
+    for(var i = 0; i < user.dislikes.length; i++) {
+      if (user.dislikes[i]._id === dislikedCity._id) {
+          found = true;
+          break;
+      }
+    } 
+  
+    // console.log("FOUND:", found)
+
+      if (found === false) {
+          next();
+      } else {
+          res.status(403).json({ message: "Duplicate of city" });
+      }
+}
+
 const factorCheck = (req, res, next) => {
 
   if (req.body.newFactor.length) {
@@ -309,7 +337,7 @@ router.delete("/likes", tokenAuthentication, async (req, res) => {
 
 // ===== Dislikes =====
 
-router.post("/dislikes", tokenAuthentication, cityCheck, cityDoubleCheck, async (req, res) => {
+router.post("/dislikes", tokenAuthentication, cityCheck, cityDoubleCheckDis, async (req, res) => {
   const _id = req.decodedToken._id;
   const { city_name, city_id } = req.body;
 
