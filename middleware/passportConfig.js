@@ -82,14 +82,15 @@ module.exports = function(passport) {
         passReqToCallback: true
       },
       async (req, accessToken, refreshToken, profile, done) => {
-          console.log(profile)
-        User.findOne({ email: profile._json.email }).then(user => {
-          if (user) {
-            done(null, user);
+        console.log(profile);
+        User.findOne({ googleId: profile.id }).then(existingUser => {
+          if (existingUser) {
+            done(null, existingUser);
           } else {
             new User({
+              googleId: profile.id,
               name: profile.displayName,
-              email: profile._json.email
+              email: profile._json.email,
             })
               .save()
               .then(user => {
@@ -97,6 +98,23 @@ module.exports = function(passport) {
               });
           }
         });
+
+        //Lab15 code
+        //   console.log(profile)
+        // User.findOne({ email: profile._json.email }).then(user => {
+        //   if (user) {
+        //     done(null, user);
+        //   } else {
+        //     new User({
+        //       name: profile.displayName,
+        //       email: profile._json.email
+        //     })
+        //       .save()
+        //       .then(user => {
+        //         done(null, user);
+        //       });
+        //   }
+        // });
       }
     )
   );

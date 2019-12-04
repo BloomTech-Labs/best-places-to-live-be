@@ -28,7 +28,6 @@ router.get(
 );
 
 
-
 router.get("/facebook", passport.authenticate("facebook", { scope: "email" }));
 
 // handle the callback after facebook has authenticated the user
@@ -46,6 +45,8 @@ router.get("/logout", (req, res) => {
   req.session = null;
   res.send("you have logged out");
 });
+
+
 
 // //Redirect url for user
 // router.get("/callback/google", passport.authenticate("google"), (req, res) => {

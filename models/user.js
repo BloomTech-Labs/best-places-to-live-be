@@ -13,6 +13,9 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String
   },
+  googleId: {
+    type: String
+  },
   location: {
     type: String
   },

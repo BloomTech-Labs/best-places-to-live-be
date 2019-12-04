@@ -18,11 +18,10 @@ const authCheck = (req, res, next) => {
 ////////////////////////////////////////////////////
 ////////////////////////////////////////////////////
 
-router.get("/", authCheck, async (req, res) => {
-  console.log(_id)
-  let user = await User.findBy(req.user._id);
-  res.json(user);
-});
+// router.get("/", authCheck, async (req, res) => {
+//   let user = await User.findBy(req.user._id);
+//   res.json(user);
+// });
 
 
 
