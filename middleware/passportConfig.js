@@ -83,7 +83,6 @@ module.exports = function(passport) {
         passReqToCallback: true
       },
       async (req, token, refreshToken, profile, done) => {
-        console.log(req);
         User.findOne({ googleId: profile.id }).then(existingUser => {
           if (existingUser) {
             done(null, existingUser);

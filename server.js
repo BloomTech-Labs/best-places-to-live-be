@@ -34,9 +34,9 @@ server.use(
 
 server.use(express.static(__dirname, { dotfiles: "allow" }));
 server.use(cookieParser());
-server.use(bodyParser());
+// server.use(bodyParser());
 
-server.use(session({ secret: 'thisismysecret' }));
+// server.use(session({ secret: 'thisismysecret' }));
 server.use(passport.initialize());
 server.use(passport.session());
 
