@@ -5,6 +5,7 @@ const facebook = require("passport-facebook");
 const User = require("../models/user");
 const LocalStrategy = require("passport-local");
 
+
 module.exports = function(passport) {
   // =========================================================================
   // passport session setup ==================================================
@@ -81,7 +82,7 @@ module.exports = function(passport) {
         clientSecret: keys.googleAuth.googleClientSecret,
         passReqToCallback: true
       },
-      async (req, accessToken, refreshToken, profile, done) => {
+      async (req, token, refreshToken, profile, done) => {
         console.log(profile);
         User.findOne({ googleId: profile.id }).then(existingUser => {
           if (existingUser) {
@@ -91,6 +92,7 @@ module.exports = function(passport) {
               googleId: profile.id,
               name: profile.displayName,
               email: profile._json.email,
+              token: token
             })
               .save()
               .then(user => {
@@ -99,25 +101,57 @@ module.exports = function(passport) {
           }
         });
 
-        //Lab15 code
-        //   console.log(profile)
-        // User.findOne({ email: profile._json.email }).then(user => {
-        //   if (user) {
-        //     done(null, user);
-        //   } else {
-        //     new User({
-        //       name: profile.displayName,
-        //       email: profile._json.email
-        //     })
-        //       .save()
-        //       .then(user => {
-        //         done(null, user);
-        //       });
-        //   }
-        // });
+        
       }
     )
   );
+
+
+
+ 
+// passport.use(
+//     new googleStrategy(
+//       {
+//         callbackURL: keys.googleAuth.callbackURL,
+//                 clientID: keys.googleAuth.googleClientId,
+//                 clientSecret: keys.googleAuth.googleClientSecret,
+//                 passReqToCallback: true
+//       },
+
+//       // google will send back the token and profile
+//       function(accessToken, refreshToken, profile, done) {
+//         console.log("fired");
+
+//         // asynchronous
+//         process.nextTick(function() {
+//           User.findOne({'google.id': profile.id }, function(err, user) {
+//             if (err) return done(err);
+//             if (user) {
+//               return done(null, user); 
+//             } else {
+//               var newUser = new User();
+//             //   newUser.google.id = profile.id; // set the users google id
+//               newUser.google.token = accessToken; // we will save the token that google provides to the user
+//               newUser.google.name =
+//                 profile.name.givenName + " " + profile.name.familyName; // look at the passport user profile to see how names are returned
+//               newUser.google.email = profile.emails[0].value; // google can return multiple emails so we'll take the first
+
+//               // save our user to the database
+//               newUser.save(function(err) {
+//                 if (err) throw err;
+
+//                 // if successful, return the new user
+//                 return done(null, newUser);
+//               });
+//             }
+//           });
+//         });
+//       }
+//     )
+//   );
+
+
+
 
   // =========================================================================
   // FACEBOOK ================================================================
