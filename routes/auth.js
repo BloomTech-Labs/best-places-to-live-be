@@ -19,13 +19,23 @@ router.get(
 );
 
 //callback route for google to redirect to
+// router.get(
+//   "/google/callback",
+//   passport.authenticate("google", {
+//     successRedirect: "/profile",
+//     failureRedirect: "/"
+//   })
+// );
+
+
 router.get(
   "/google/callback",
-  passport.authenticate("google", {
-    successRedirect: "/profile",
-    failureRedirect: "/"
+  passport.authenticate("google"),(req, res) => {
+    // res.send(req.user)
+    res.redirect('/profile/')
   })
-);
+
+
 
 
 router.get("/facebook", passport.authenticate("facebook", { scope: "email" }));
