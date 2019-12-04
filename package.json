@@ -6,8 +6,12 @@
   "scripts": {
     "start": "node index.js",
     "startnodemon": "nodemon index.js",
-    "test": "jest",
-    "test:watch": "jest --watch"
+    "migrate": "npx sequelize-cli db:migrate",
+    "migrate:reset": "npx sequelize-cli db:migrate:undo:all && npm run migrate",
+    "test": "cross-env NODE_ENV=test jest --testTimeout=10000",
+    "test:watch": "jest --watch",
+    "pretest": "cross-env NODE_ENV=test npm run migrate:reset"
+
   },
   "repository": {
     "type": "git",

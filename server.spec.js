@@ -11,6 +11,12 @@ const jwt = require("jsonwebtoken");
 chai.use(chaiHttp);
 chai.should();
 
+describe('Sample Test', () => {
+    it('should test that true === true', () => {
+        expect(true).toBe(true)
+    })
+})
+
 describe('server.js', () => {
     describe('index route', () => {
         it('should return an OK status code from the index route', async () => {
@@ -72,16 +78,16 @@ describe('users', () => {
 //         });
 //     })
 // })
-describe('city', () => {
-    describe('GET /', () => {
-        it('should get city info',  (done) => {
-            chai.request(server)
-            .get('/city/all')
-            .end((err, res) => {
-                expect(res.status).toEqual(200);
-                done();
-            });
-        });
+// describe('city', () => {
+//     describe('GET /', () => {
+//         it('should get city info',  (done) => {
+//             chai.request(server)
+//             .get('/city/all')
+//             .end((err, res) => {
+//                 expect(res.status).toEqual(200);
+//                 done();
+//             });
+//         });
 //         it('should get top ten', async (done) => {
 //             chai.request(server)
 //             .get('/city/topten-score_total')
@@ -90,8 +96,8 @@ describe('city', () => {
 //                 done();
 //             });
 //     });
-})})
-descibe('Login', () => {
+// })})
+describe('Login', () => {
     it('succeeds with correct crerdtials', async () => {
         const response = await post(`login`, demoUser)
         .expect(200);
@@ -99,3 +105,11 @@ descibe('Login', () => {
     });
 
 })
+
+function post(url, body){
+    const httpRequest = request(app).post(url);
+    httpRequest.send(body);
+    httpRequest.set('Accept', 'application/json')
+    httpRequest.set('Origin', 'http://localhost:300')
+    return httpRequest;
+}
