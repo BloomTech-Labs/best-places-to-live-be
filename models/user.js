@@ -13,6 +13,9 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String
   },
+  appleId: {
+    type: String
+  },
   location: {
     type: String
   },
