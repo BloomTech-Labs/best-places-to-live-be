@@ -28,14 +28,12 @@ server.use(
     name: "letsmovehomie",
     maxAge: 24 * 60 * 60 * 1000, //set cookie to one day exp
     keys: [keys.session.cookieKey],
-    // domain: "letsmovehomie.com"
+    domain: "liveinthebestplace.com"
   })
 );
 
 server.use(express.static(__dirname, { dotfiles: "allow" }));
 server.use(cookieParser());
-// server.use(bodyParser());
-// server.use(session({ secret: 'thisismysecret' }));
 server.use(passport.initialize());
 server.use(passport.session());
 
