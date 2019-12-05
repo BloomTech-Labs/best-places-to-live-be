@@ -60,6 +60,7 @@ router.post("/location", async (req, res) => {
   });
 });
 
+
 router.post("/", async (req, res) => {
   try {
     let list = req.body.ids;
@@ -99,7 +100,7 @@ router.delete("/", async (req, res) => {
         message: "hello"
       });
     } else throw "You SHALL NOT PASS";
-  } catch (error) {
+  } catch (error){
     res.status(200).json({
       message: "good bye"
     });
