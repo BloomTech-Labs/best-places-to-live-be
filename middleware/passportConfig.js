@@ -15,13 +15,14 @@ module.exports = function(passport) {
 
   // used to serialize the user for the session
   passport.serializeUser(function(user, done) {
+    console.log("i am here",user)
     done(null, user.id);
   });
 
   // used to deserialize the user
-  passport.deserializeUser((id, done) => {
-    User.findById(id).then((user) => {
-      done(err, user);
+  passport.deserializeUser(async(id, done) => {
+   await User.findById(id).then((user) => {
+      done(null, user);
     });
   });
 
@@ -83,8 +84,9 @@ module.exports = function(passport) {
         passReqToCallback: true
       },
       async (req, token, refreshToken, profile, done) => {
-        User.findOne({ googleId: profile.id }).then(existingUser => {
+       await User.findOne({ googleId: profile.id }).then(existingUser => {
           if (existingUser) {
+            console.log("here",existingUser);
             done(null, existingUser);
           } else {
             new User({
