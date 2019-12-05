@@ -19,13 +19,22 @@ router.get(
 );
 
 //callback route for google to redirect to
+// router.get(
+//   "/google/callback",
+//   passport.authenticate("google", {
+//     successRedirect: "/profile",
+//     failureRedirect: "/"
+//   })
+// );
+
+
 router.get(
   "/google/callback",
-  passport.authenticate("google", {
-    successRedirect: "/profile",
-    failureRedirect: "/"
+  passport.authenticate("google"),(req, res) => {
+    // res.send(req.user)
+    res.redirect('/profile/')
   })
-);
+
 
 
 
@@ -46,6 +55,8 @@ router.get("/logout", (req, res) => {
   req.session = null;
   res.send("you have logged out");
 });
+
+
 
 // //Redirect url for user
 // router.get("/callback/google", passport.authenticate("google"), (req, res) => {

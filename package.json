@@ -21,6 +21,7 @@
   "homepage": "https://github.com/labs15-best-places/backend#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
     "connect-flash": "^0.1.1",
@@ -31,6 +32,7 @@
     "ejs": "^2.7.1",
     "express": "^4.17.1",
     "express-session": "^1.17.0",
+    "googleapis": "^45.0.0",
     "helmet": "^3.21.2",
     "jsonwebtoken": "^8.5.1",
     "mocha": "^6.2.2",
@@ -40,6 +42,7 @@
     "passport-facebook": "^3.0.0",
     "passport-google-oauth20": "^2.0.0",
     "passport-local": "^1.0.0",
+    "query-string": "^6.9.0",
     "supertest": "^4.0.2"
   },
   "devDependencies": {

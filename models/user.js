@@ -13,6 +13,12 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String
   },
+  googleId:{
+    type:String
+  },
+  token:{
+    type:String
+  },           
   appleId: {
     type: String
   },

@@ -2,6 +2,7 @@ const router = require("express").Router();
 const passport = require("passport");
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
+
 //check if a user is in request sent
 const authCheck = (req, res, next) => {
   const user = req.body;
@@ -12,6 +13,7 @@ const authCheck = (req, res, next) => {
   }
 };
 
+
 ////////////////////////////////////////////////////
 ////////////////////////////////////////////////////
 ///////////////////// USER PROFILE /////////////////
@@ -19,10 +21,11 @@ const authCheck = (req, res, next) => {
 ////////////////////////////////////////////////////
 
 router.get("/", authCheck, async (req, res) => {
-  console.log(_id)
-  let user = await User.findBy(req.user._id);
-  res.json(user);
+  // let user = await User.findBy(req.user._id);
+  // res.json(user);
+  res.send('you are logged in' + " " + req.user)
 });
+
 
 
 

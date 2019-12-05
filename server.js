@@ -3,14 +3,17 @@ const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
 const passport = require("passport");
+const session = require('express-session')
 //Auth not set up how I would like it done but I'm going to leave it for now so that we don't get any bugs in testing.
 //Plan is to have this better organized to my liking by v5
 const cookie = require("cookie-session");
 const cookieParser = require("cookie-parser");
+const bodyParser = require('body-parser')
 const users = require("./routes/users");
 const auth = require("./routes/auth");
 const city = require("./routes/city");
 const profile = require("./routes/profile");
+
 
 //Still not sure what keys are doing
 const keys = require("./config/keys");
@@ -25,18 +28,20 @@ server.use(
     name: "letsmovehomie",
     maxAge: 24 * 60 * 60 * 1000, //set cookie to one day exp
     keys: [keys.session.cookieKey],
-    domain: "letsmovehomie.com"
+    // domain: "letsmovehomie.com"
   })
 );
 
-
-
-server.use(passport.initialize());
-server.use(passport.session());
 server.use(express.static(__dirname, { dotfiles: "allow" }));
+server.use(cookieParser());
+// server.use(bodyParser());
+// server.use(session({ secret: 'thisismysecret' }));
 server.use(passport.initialize());
 server.use(passport.session());
-server.use(cookieParser());
+
+
+const passportConfig = require("./middleware/passportConfig")(passport);
+
 //Routes
 server.use("/city", city);
 server.use("/users", users);
