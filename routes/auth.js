@@ -27,9 +27,9 @@ router.get(
   })
 
   // returns current user info
-router.get('/current_user', (req, res) => {
-  res.send(req.user);
-});
+  router.get('/current_user', (req, res) => {
+    res.send(req.user);
+  });
 
 
 
