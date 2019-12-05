@@ -44,7 +44,7 @@ const cityDoubleCheck = async (req, res, next) => {
   const user = await User.findOne({ _id });
 
     for(var i = 0; i < user.likes.length; i++) {
-      if (user.likes[i]._id === likedCity._id) {
+      if (user.likes[i]._id == likedCity._id) {
           found = true;
           break;
       }
@@ -69,7 +69,7 @@ const cityDoubleCheckDis = async (req, res, next) => {
   const user = await User.findOne({ _id });
 
     for(var i = 0; i < user.dislikes.length; i++) {
-      if (user.dislikes[i]._id === dislikedCity._id) {
+      if (user.dislikes[i]._id == dislikedCity._id) {
           found = true;
           break;
       }
@@ -238,7 +238,7 @@ router.get("/info", tokenAuthentication, async (req, res) => {
 
 // ===== Likes =====
 
-router.post("/likes", tokenAuthentication, cityCheck, async (req, res) => {
+router.post("/likes", tokenAuthentication, cityCheck, cityDoubleCheck, async (req, res) => {
   const _id = req.decodedToken._id;
   const { city_id } = req.body;
 
