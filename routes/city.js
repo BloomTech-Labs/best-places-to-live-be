@@ -1,6 +1,24 @@
 const express = require("express");
 const router = express.Router();
 const City = require("../models/city");
+const User = require("../models/user");
+const keys = require("../config/keys");
+const jwt = require("jsonwebtoken");
+
+const tokenAuthentication = (req, res, next) => {
+  const token = req.headers.authorization;
+
+  jwt.verify(token, keys.jwtAuth.secret, (error, decodedToken) => {
+    if (error) {
+      res.status(403).json({
+        message: "Please login to continue."
+      });
+    } else {
+      req.decodedToken = decodedToken;
+      next();
+    }
+  });
+};
 
 router.get("/all", async (req, res) => {
   try {
@@ -173,6 +191,35 @@ router.post("/search", async (req, res) => {
   const { searchTerm } = req.body;
 
   try {
+    const searchResults = await City.find({
+      $text: { $search: `\"${searchTerm}\"` }
+    }).limit(limit);
+
+    if (searchResults.length) {
+      res.status(200).json({
+        cities: searchResults
+      });
+    } else {
+      res.status(404).json({
+        message: "Could not find any cities with that name."
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "Error searching cities in our database."
+    });
+  }
+});
+
+router.post("/spec-search", tokenAuthentication, async (req, res) => {
+  const _id = req.decodedToken._id;
+  const limit = req.query.limit ? parseInt(req.query.limit) : 50;
+  const { searchTerm } = req.body;
+
+  try {
+
+    console.log("userID", _id)
+
     const searchResults = await City.find({
       $text: { $search: `\"${searchTerm}\"` }
     }).limit(limit);
