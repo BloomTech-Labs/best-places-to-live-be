@@ -136,6 +136,7 @@ router.get("/profile", tokenAuthentication, async (req, res) => {
         _id: user._id,
         name: user.name,
         email: user.email,
+        location: user.location,
         cities: user.cities
       });
     } else {
@@ -165,6 +166,10 @@ router.put("/profile", tokenAuthentication, async (req, res) => {
   if (userUpdates.password === null || userUpdates.password === "") {
     delete userUpdates.password;
   }
+  
+  if (userUpdates.location === null || userUpdates.location === "") {
+    delete userUpdates.location;
+  }
 
   try {
     const user = await User.findById(_id);
@@ -191,6 +196,7 @@ router.put("/profile", tokenAuthentication, async (req, res) => {
         _id: updatedUser._id,
         name: updatedUser.name,
         email: updatedUser.email,
+        location: updatedUser.location,
         cities: updatedUser.cities
       });
     } else {
