@@ -254,8 +254,6 @@ router.post("/likes", tokenAuthentication, cityCheck, async (req, res) => {
       const cities = await City.find(likedCity);
       const newLike = [...user.likes].concat([cities[0]]);
 
-      // console.log("Founded city", cities[0])
-
       const updatedUser = await User.findOneAndUpdate(
         {
           _id
@@ -299,27 +297,7 @@ router.delete("/likes", tokenAuthentication, async (req, res) => {
 
     if (user) {
       
-
-      // let oldLikes = [...user.likes];
-      // const newLikes = [...user.likes].filter(city => city._id !== city_id);
       const newLikes = [...user.likes].filter(city => city._id != city_id);
-      // const superLikes = oldLikes.filter(object => object._id != city_id);
-
-      // console.log('superLikes', superLikes)
-      // console.log('oldLikes', oldLikes[0]._id)
-      // console.log('oldLikes', oldLikes[0].name)
-      // console.log('oldLikes', oldLikes[1]._id)
-      // console.log('oldLikes', oldLikes[1].name)
-      // console.log('city_id)', city_id)
-
-      // for(var i = 0; i < user.likes.length; i++) {
-      //   if (user.likes[i][0]._id == city_id) {
-      //     superLikes = oldLikes.filter(city => city._id !== city_id);
-      //     console.log("Like with _id", city_id, "was deleted")
-      //   }
-      // } 
-
-
 
       const updatedUser = await User.findOneAndUpdate(
         {
@@ -361,18 +339,19 @@ router.delete("/likes", tokenAuthentication, async (req, res) => {
 
 router.post("/dislikes", tokenAuthentication, cityCheck, cityDoubleCheckDis, async (req, res) => {
   const _id = req.decodedToken._id;
-  const { city_name, city_id } = req.body;
+  const { city_id } = req.body;
 
   const dislikedCity = {
-    _id: city_id,
-    name: city_name
+    _id: city_id
   };
 
   try {
     const user = await User.findOne({ _id });
 
     if (user) {
-      const newDislike = [...user.dislikes].concat([dislikedCity]);
+
+      const cities = await City.find(dislikedCity);
+      const newDislike = [...user.dislikes].concat([cities[0]]);
 
       const updatedUser = await User.findOneAndUpdate(
         {
@@ -416,7 +395,7 @@ router.delete("/dislikes", tokenAuthentication, async (req, res) => {
     const user = await User.findOne({ _id });
 
     if (user) {
-      const newDislikes = [...user.dislikes].filter(city => city._id !== city_id);
+      const newDislikes = [...user.dislikes].filter(city => city._id != city_id);
 
       const updatedUser = await User.findOneAndUpdate(
         {
