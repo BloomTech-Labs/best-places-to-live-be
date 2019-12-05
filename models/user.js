@@ -18,11 +18,23 @@ const userSchema = new mongoose.Schema({
   },
   token:{
     type:String
+  },           
+  appleId: {
+    type: String
   },
   location: {
     type: String
   },
   cities: {
+    type: Array
+  },
+  likes: {
+    type: Array
+  },
+  dislikes: {
+    type: Array
+  },
+  factors: {
     type: Array
   },
   userSettings: {
