@@ -5,7 +5,6 @@ const facebook = require("passport-facebook");
 const User = require("../models/user");
 const LocalStrategy = require("passport-local");
 
-
 module.exports = function(passport) {
   // =========================================================================
   // passport session setup ==================================================
@@ -15,13 +14,13 @@ module.exports = function(passport) {
 
   // used to serialize the user for the session
   passport.serializeUser(function(user, done) {
-    console.log("i am here",user)
+    console.log("i am here", user);
     done(null, user.id);
   });
 
   // used to deserialize the user
-  passport.deserializeUser(async(id, done) => {
-   await User.findById(id).then((user) => {
+  passport.deserializeUser(async (id, done) => {
+    await User.findById(id).then(user => {
       done(null, user);
     });
   });
@@ -84,9 +83,9 @@ module.exports = function(passport) {
         passReqToCallback: true
       },
       async (req, token, refreshToken, profile, done) => {
-       await User.findOne({ googleId: profile.id }).then(existingUser => {
+        await User.findOne({ googleId: profile.id }).then(existingUser => {
           if (existingUser) {
-            console.log("here",existingUser);
+            console.log("here", existingUser);
             done(null, existingUser);
           } else {
             new User({
@@ -97,19 +96,14 @@ module.exports = function(passport) {
             })
               .save()
               .then(newUser => {
-                  console.log('new user created' + newUser)
+                console.log("new user created" + newUser);
                 done(null, newUser);
               });
           }
-        });   
+        });
       }
     )
   );
-
-
-
-
-
 
   // =========================================================================
   // FACEBOOK ================================================================

@@ -18,15 +18,6 @@ router.get(
   })
 );
 
-//callback route for google to redirect to
-// router.get(
-//   "/google/callback",
-//   passport.authenticate("google", {
-//     successRedirect: "/profile",
-//     failureRedirect: "/"
-//   })
-// );
-
 
 router.get(
   "/google/callback",
@@ -35,6 +26,10 @@ router.get(
     res.redirect('/profile/')
   })
 
+  // returns current user info
+  router.get('/current_user', (req, res) => {
+    res.send(req.user);
+  });
 
 
 
