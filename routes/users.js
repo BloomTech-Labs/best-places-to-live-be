@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
+const City = require("../models/city");
 const bcrypt = require("bcryptjs");
 const keys = require("../config/keys");
 const jwt = require("jsonwebtoken");
@@ -24,7 +25,7 @@ const tokenAuthentication = (req, res, next) => {
 
 const cityCheck = (req, res, next) => {
 
-      if (req.body.city_name.length && req.body.city_id.length) {
+      if (req.body.city_id.length) {
           next();
       } else {
           res.status(403).json({ message: "Please, include city data" });
@@ -33,12 +34,11 @@ const cityCheck = (req, res, next) => {
 
 const cityDoubleCheck = async (req, res, next) => {
   const _id = req.decodedToken._id;
-  const { city_name, city_id } = req.body;
+  const { city_id } = req.body;
   let found = false;
 
   const likedCity = {
-    _id: city_id,
-    name: city_name
+    _id: city_id
   };
 
   const user = await User.findOne({ _id });
@@ -49,8 +49,6 @@ const cityDoubleCheck = async (req, res, next) => {
           break;
       }
     } 
-  
-    // console.log("FOUND:", found)
 
       if (found === false) {
           next();
@@ -61,12 +59,11 @@ const cityDoubleCheck = async (req, res, next) => {
 
 const cityDoubleCheckDis = async (req, res, next) => {
   const _id = req.decodedToken._id;
-  const { city_name, city_id } = req.body;
+  const { city_id } = req.body;
   let found = false;
 
   const dislikedCity = {
-    _id: city_id,
-    name: city_name
+    _id: city_id
   };
 
   const user = await User.findOne({ _id });
@@ -241,20 +238,23 @@ router.get("/info", tokenAuthentication, async (req, res) => {
 
 // ===== Likes =====
 
-router.post("/likes", tokenAuthentication, cityCheck, cityDoubleCheck, async (req, res) => {
+router.post("/likes", tokenAuthentication, cityCheck, async (req, res) => {
   const _id = req.decodedToken._id;
-  const { city_name, city_id } = req.body;
+  const { city_id } = req.body;
 
   const likedCity = {
-    _id: city_id,
-    name: city_name
+    _id: city_id
   };
 
   try {
     const user = await User.findOne({ _id });
 
     if (user) {
-      const newLike = [...user.likes].concat([likedCity]);
+      
+      const cities = await City.find(likedCity);
+      const newLike = [...user.likes].concat([cities[0]]);
+
+      // console.log("Founded city", cities[0])
 
       const updatedUser = await User.findOneAndUpdate(
         {
@@ -298,7 +298,28 @@ router.delete("/likes", tokenAuthentication, async (req, res) => {
     const user = await User.findOne({ _id });
 
     if (user) {
-      const newLikes = [...user.likes].filter(city => city._id !== city_id);
+      
+
+      // let oldLikes = [...user.likes];
+      // const newLikes = [...user.likes].filter(city => city._id !== city_id);
+      const newLikes = [...user.likes].filter(city => city._id != city_id);
+      // const superLikes = oldLikes.filter(object => object._id != city_id);
+
+      // console.log('superLikes', superLikes)
+      // console.log('oldLikes', oldLikes[0]._id)
+      // console.log('oldLikes', oldLikes[0].name)
+      // console.log('oldLikes', oldLikes[1]._id)
+      // console.log('oldLikes', oldLikes[1].name)
+      // console.log('city_id)', city_id)
+
+      // for(var i = 0; i < user.likes.length; i++) {
+      //   if (user.likes[i][0]._id == city_id) {
+      //     superLikes = oldLikes.filter(city => city._id !== city_id);
+      //     console.log("Like with _id", city_id, "was deleted")
+      //   }
+      // } 
+
+
 
       const updatedUser = await User.findOneAndUpdate(
         {
