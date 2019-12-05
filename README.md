@@ -1,19 +1,18 @@
-
-# ⚠️Development Engineer Git Flow:
-
-- Resolve all merge conflicts locally
-- Compare your `branch` with `Release-Canvas-2-Development`
-- Create PR
-
-# Package manager:
-
-- NPM
+#### Package manager:
+ -  NPM
 
 # ⚙️ API Documentation
 
-#### Backend deployed at [https://stagebe.letsmovehomie.com/city](https://stagebe.letsmovehomie.com/city)
+#### Backend deployed at:
 
-## 💻 Getting started
+#### Contest and Deployment
+#### [https://bestplacesbe-contest.herokuapp.com/] 
+#### [https://bestplacesbe-test.herokuapp.com/]
+
+#### Master 
+####  [https://bestplacesbe.herokuapp.com/]
+
+  💻 Getting started
 
 To get the server running locally:
 
@@ -60,33 +59,68 @@ db.createUser({
 
 - Remember to restart the node server by executing `pm2 restart index` in the terminal
 
-# MongoDB Database Backup:
+ #### MongoDB Database Backup:
+  - To create a backup of the current MongoDB database: mongodump -d production -o ~/mongoBackups/date-of-backup
 
-- To create a backup of the current MongoDB database:
-  `mongodump -d production -o ~/mongoBackups/date-of-backup`
+  - To restore a backup: mongorestore ~/mongoBackups/date-of-backup/
 
-- To restore a backup:
-  `mongorestore ~/mongoBackups/date-of-backup/`
 
-## 🗂 Backend Database:
+## 🗂 BACKEND DATABASE:
 
 - MongoDB
 
-## 📚 Backend Libraries
 
-- Mongoose
-- Express
-- Passport.js
+##  📚  BACKEND FRAMEWORK:
+We used:
+ - NodeJS
+ - Express
+ - Passport.js
+ - Cors(Middleware)
 
-# 🔌 Endpoints
 
-## 🌎 URL: `https://stagebe.letsmovehomie.com/`
+ ##  📚  TESTING LIBRARYS:
+  - Jest
+  - Chai
+  - SuperTest 
+
+
+
+# 🔌 ENDPOINTS
+
+## 🌎 URL: `https://bestplacesbe.herokuapp.com/`
+
+
+#### 🏢 Users Routes
+
+| Method | Endpoint                | Access Control      | Description                                        |
+| ------ | ----------------------- | ------------------- | -------------------------------------------------- |
+| POST   | `/register`             |   users           | Registers a new user.                   |
+| POST   | `/login`                |   users           | Sign in a user .                        |
+
+| GET    | `/auth/google`        |   users           | Sign in using google. |                   |
+| GET    | `/auth/facebook`        |   users           | Sign in using facebook.                 |
+
+
+
+#### 👥  User Profile Routes
+
+| Method | Endpoint                | Access Control      | Description                                        |
+| ------ | ----------------------- | ------------------- | -------------------------------------------------- |
+| GET    | `/profile`              |   users           | See the users profile.                   |
+| PUT    | `/profile`              |   users           | Able to edits the saved saved list       |
+| POST   | `/profile/cities`       |   users           | Able to delete the saved list            |
+| DELETE | `/profile/cities`       |   users           | Deletes cities from your saved list.     |
+   
+
+
 
 #### 🏢 City Routes
 
 | Method | Endpoint           | Access Control | Description                                                       |
 | ------ | ------------------ | -------------- | ----------------------------------------------------------------- |
 | GET    | `/city/all/`       | public         | Returns ***only*** the `_id` and `name` fields of all 5037 cities.|
+
+
 
 #### 🏢 City Search
 
@@ -97,16 +131,7 @@ db.createUser({
 | POST   | `/city/top`    | public         | <details> <summary>Returns The Top cities based on Category</summary>_query_<br/>{<br/>&nbsp;&nbsp;&nbsp;&nbsp;**q: "",** //forced name filter use this to only grab a particluar state.Defaults to null<br/>&nbsp;&nbsp;&nbsp;&nbsp;**filter: "",** //name of the key value of the data model you wanna sort by. Defaults to Score*total<br/>&nbsp;&nbsp;&nbsp;&nbsp;**limit: Number,** //Number of items you want back. Defaults 10<br/>&nbsp;&nbsp;&nbsp;&nbsp;**order:""** //asc for bottom or none for top. Defaults to top<br/>}<br/>\_body*<br/>{<br/>&nbsp;&nbsp;&nbsp;&nbsp;**model: {}** //object with same keyvalues of the data you want in the list of &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;objects<br/>}</details> |
 | POST   | `/city/location` | public         | <details><summary>Return an array of cities sorted by distanec of the passed in location.</summary>_query_<br/>{<br/>&nbsp;&nbsp;&nbsp;&nbsp;**lat: Number,** //latitude of the location<br/>&nbsp;&nbsp;&nbsp;&nbsp;**lng: Number,** //longitude of the location<br/>&nbsp;&nbsp;&nbsp;&nbsp;**zoom: Number,** //google zoom helps determine how far to look<br/>&nbsp;&nbsp;&nbsp;&nbsp;**rand: Number** //Get a random set back, automatically does this if zooom < 7<br/>&nbsp;&nbsp;&nbsp;&nbsp;**limit: Number** // sets the number of elements<br/>}<br/>_body_ <br/> { <br>&nbsp;&nbsp;**"model": Object** // sets the elements you want back from the db <br>}</details>|
 
-#### 👥 User Routes
 
-| Method | Endpoint          | Access Control | Description                     |
-| ------ | ----------------- | -------------- | ------------------------------- |
-| POST   | `/users/register` | public         | Creates a new user in database. |
-| POST   | `/users/login`    | public         | Logs in user.                   |
-
-#### 👥 Profile Routes
-
----
 
 BASE URL
 /profile
@@ -357,16 +382,25 @@ BASE URL
   name: String,
   email: String, UNIQUE
   password: String,
-  cities: Array
+  location:string
 }
 ```
+RETURN
+
+{
+  "_id": "5dcc64cafe92aa0017751599",
+  "name": "Fredo",
+  "email": "fredo12@gmail.com",
+  "location": "Atlanta,GA",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZGNjNjRjYWZlOTJhYTAwMTc3NTE1OTkiLCJuYW1lIjoiQXJ5YSIsImVtYWlsIjoic3Rpbmt5QGJhYnkuY29tIiwibG9jYXRpb24iOiJIaWdobGFuZCwgQ0EiLCJpYXQiOjE1NzM2NzYyMzQsImV4cCI6MTU3Mzc2MjYzNH0.bSuZwNb-azgeiDl5jT7nDGDLhIDOApkjLJ8kzyE0mMA"
+}
 
 </details>
 
 <details>
   <summary>iOS Endpoints - User's favorite cities</summary>
 
-  ## POST `https://stagebe.letsmovehomie.com/users/profile/cities`
+  ## POST `https://bestplacesbe-test.herokuapp.com/users/profile/cities`
 
   REQUIRES:
 
@@ -403,7 +437,7 @@ BASE URL
   }
   ```
 
-  ## DELETE `https://stagebe.letsmovehomie.com/users/profile/cities`
+  ## DELETE `https://bestplacesbe-test.herokuapp.com/users/profile/cities`
 
   REQUIRES:
 
@@ -438,7 +472,7 @@ BASE URL
 <details>
   <summary>iOS Endpoints - Update user's information - password, name, email, etc</summary>
 
-  ## PUT `https://stagebe.letsmovehomie.com/users/profile/`
+  ## PUT `https://bestplacesbe-test.herokuapp.com/users/profile/`
 
   REQUIRES:
 
@@ -554,13 +588,15 @@ Remember that this project is licensed under the MIT license, and by submitting 
 - Include the relevant issue number, if applicable.
 - You may merge the Pull Request in once you have the sign-off of two other developers, or if you do not have permission to do that, you may request the second reviewer to merge it for you.
 
-### 👏 Attribution
 
-These contribution guidelines have been adapted from [this good-Contributing.md-template](https://gist.github.com/PurpleBooth/b24679402957c63ec426).
+#### 👏 Attribution
+
+- These contribution guidelines have been adapted from this good-Contributing.md-template.
+
 
 ## Documentation
 
-### 🖥 [Frontend Documentation](https://github.com/labs15-best-places/front-end) for details on the frontend application of our project.
+### 🖥 [Frontend Documentation](https://github.com/Lambda-School-Labs/best-places-to-live-fe) for details on the frontend application of our project.
 
-### 📱 [iOS Documentation](https://github.com/labs15-best-places/ios) for details on the mobile iOS application of our project.
+### 📱 [iOS Documentation](https://github.com/Lambda-School-Labs/ios) for details on the mobile iOS application of our project.
 
