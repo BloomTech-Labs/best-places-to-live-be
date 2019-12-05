@@ -114,8 +114,8 @@ module.exports = function(passport) {
         // pull in our app id and secret from our auth.js file
       
         callbackURL: keys.facebookAuth.callbackURL,
-        clientID: keys.facebookAuth.googleClientId,
-        clientSecret: keys.facebookAuth.googleClientSecret,
+        clientID: keys.facebookAuth.facebookClientId,
+        clientSecret: keys.facebookAuth.facebookClientSecret,
       },
 
       // facebook will send back the token and profile
