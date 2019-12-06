@@ -13,10 +13,28 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String
   },
+  googleId:{
+    type:String
+  },
+  token:{
+    type:String
+  },           
+  appleId: {
+    type: String
+  },
   location: {
     type: String
   },
   cities: {
+    type: Array
+  },
+  likes: {
+    type: Array
+  },
+  dislikes: {
+    type: Array
+  },
+  factors: {
     type: Array
   },
   userSettings: {

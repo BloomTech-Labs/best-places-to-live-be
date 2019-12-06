@@ -2,6 +2,7 @@ const router = require("express").Router();
 const passport = require("passport");
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
+
 //check if a user is in request sent
 const authCheck = (req, res, next) => {
   const user = req.header.authorization;
@@ -12,6 +13,7 @@ const authCheck = (req, res, next) => {
   }
 };
 
+
 ////////////////////////////////////////////////////
 ////////////////////////////////////////////////////
 ///////////////////// USER PROFILE /////////////////
@@ -19,9 +21,13 @@ const authCheck = (req, res, next) => {
 ////////////////////////////////////////////////////
 
 router.get("/", authCheck, async (req, res) => {
-  let user = await User.findBy(req.user._id);
-  res.json(user);
+  // let user = await User.findBy(req.user._id);
+  // res.json(user);
+  res.send('you are logged in' + " " + req.user.name)
 });
+
+
+
 
 router.put("/", authCheck, async (req, res) => {
   let update = {};
@@ -50,6 +56,7 @@ router.get("/cities", authCheck, async (req, res) => {
   let cities = await User.findById(req.user._id);
   res.json(cities.saveCities);
 });
+
 router.post("/cities", authCheck, async (req, res) => {
   //find user
   await User.findById(req.user._id).then(userbefore => {

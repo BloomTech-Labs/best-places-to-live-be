@@ -13,8 +13,8 @@ module.exports = {
     callbackURL: '/auth/google/callback' 
   },
   facebookAuth: {
-    facebookClientId: '482046309075252',
-    facebookClientSecret: 'bb6a4796a1ca2d541a2b0d6520ef7d9e',
+    facebookClientId: process.env.FACEBOOK_CLIENTID,
+    facebookClientSecret: process.env.FACEBOOK_CLIENTSECRET,
     callbackURL: '/auth/facebook/callback'
   },
   jwtAuth: {

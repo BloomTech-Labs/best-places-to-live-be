@@ -15,32 +15,34 @@ router.get(
   "/google",
   passport.authenticate("google", {
     scope: ["profile", "email"]
-  }),
- 
+  })
 );
 
 
-// callback route for google to redirect to
-router.get('/google/callback', passport.authenticate('google', {
-  successRedirect : '/profile',
-  failureRedirect : '/'
-  
-}));
+router.get(
+  "/google/callback",
+  passport.authenticate("google"),(req, res) => {
+    // res.send(req.user)
+    res.redirect('/profile/')
+  })
+
+  // returns current user info
+  router.get('/current_user', (req, res) => {
+    res.send(req.user);
+  });
 
 
 
+router.get("/facebook", passport.authenticate("facebook", { scope: "email" }));
 
-
-router.get('/facebook', passport.authenticate('facebook', { scope : 'email' }));
-
-	// handle the callback after facebook has authenticated the user
-	router.get('/facebook/callback',
-		passport.authenticate('facebook', {
-			successRedirect : '/profile',
-			failureRedirect : '/'
-		}));
-
-
+// handle the callback after facebook has authenticated the user
+router.get(
+  "/facebook/callback",
+  passport.authenticate("facebook", {
+    successRedirect: "/profile",
+    failureRedirect: "/"
+  })
+);
 
 //clear all sessions of cookies etc
 router.get("/logout", (req, res) => {
@@ -49,16 +51,18 @@ router.get("/logout", (req, res) => {
   res.send("you have logged out");
 });
 
-//Redirect url for user
-// router.get("/redirect/google", passport.authenticate("google"), (req, res) => {
+
+
+// //Redirect url for user
+// router.get("/callback/google", passport.authenticate("google"), (req, res) => {
 //   console.log(req.cookies["letsmovehomie"]);
 //   res.cookie("letsmovehomie", req.cookies["letsmovehomie"], {
-//     domain: "letsmovehomie.com"
+//     domain: "liveinthebestplace.com"
 //   });
 //   res.cookie("letsmovehomie.sig", req.cookies["letsmovehomie.sig"], {
-//     domain: "letsmovehomie.com"
+//     domain: "liveinthebestplace.com"
 //   });
-//   res.status(303).redirect("https://stagefe.letsmovehomie.com/topten");
+//   res.status(303).redirect("liveinthebestplace.com/profile");
 // });
 
 // // Redirect url for user
