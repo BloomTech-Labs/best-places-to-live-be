@@ -688,7 +688,7 @@ router.post("/login", async (req, res) => {
           },
           keys.jwtAuth.secret,
           { expiresIn: "24h" }
-        );
+        );ƒ
 
         res.status(200).json({
           _id: user._id,
@@ -717,6 +717,11 @@ router.post("/login", async (req, res) => {
     });
   }
 });
+
+//login for IOS
+router.post("/login", async (req,res) => {
+  const{appleId,password} = req.body;
+})
 
 // Register Handle
 router.post("/register", async (req, res) => {
