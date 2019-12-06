@@ -715,12 +715,20 @@ router.post("/login", async (req, res) => {
     res.status(500).json({
       message: "Error logging in."
     });
+    
   }
 });
 
 //login for IOS
 router.post("/login", async (req,res) => {
   const{appleId,password} = req.body;
+  //check required fields
+  if(!appleId || !password){
+    res.status(500).json({
+      message:"Please fill in the all fields"
+    })
+    
+  }
 })
 
 // Register Handle
