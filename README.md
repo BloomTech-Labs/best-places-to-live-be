@@ -97,8 +97,12 @@ We used:
 | POST   | `/register`             |   users           | Registers a new user.                   |
 | POST   | `/login`                |   users           | Sign in a user .                        |
 
+
 | GET    | `/auth/google`        |   users           | Sign in using google. |                   |
 | GET    | `/auth/facebook`        |   users           | Sign in using facebook.                 |
+
+=======
+| GET    | `/auth/facebook`        |   users           | Sign in using facebook. |
 
 
 
@@ -119,7 +123,7 @@ We used:
 | Method | Endpoint           | Access Control | Description                                                       |
 | ------ | ------------------ | -------------- | ----------------------------------------------------------------- |
 | GET    | `/city/all/`       | public         | Returns ***only*** the `_id` and `name` fields of all 5037 cities.|
-
+| GET    | `/city/topten-score_total`| public  | Returns top ten cities with all of their data. |
 
 
 #### 🏢 City Search
