@@ -217,8 +217,15 @@ router.post("/spec-search", tokenAuthentication, async (req, res) => {
   const { searchTerm } = req.body;
 
   try {
+    const user = await User.findOne({ _id });
+    let disID = [];
 
-    console.log("userID", _id)
+    for(var i = 0; i < user.dislikes.length; i++) {
+      disID.push(user.dislikes[i]._id)
+    } 
+
+    // console.log("user dislikes", user.dislikes[0]._id)
+    console.log("user dislikes", disID)
 
     const searchResults = await City.find({
       $text: { $search: `\"${searchTerm}\"` }
