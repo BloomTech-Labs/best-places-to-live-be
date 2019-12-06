@@ -34,6 +34,7 @@
     "helmet": "^3.21.2",
     "jsonwebtoken": "^8.5.1",
     "mocha": "^6.2.2",
+    "mongodb": "^3.3.5",
     "mongoose": "^5.7.9",
     "mongoose-data-seed": "^2.1.4",
     "passport": "^0.4.0",
@@ -55,6 +56,9 @@
   },
   "jest": {
     "testEnvironment": "node",
-    "preset": "@shelf/jest-mongodb"
+    "preset": "@shelf/jest-mongodb",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
   }
 }
