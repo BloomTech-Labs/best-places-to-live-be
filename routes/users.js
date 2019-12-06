@@ -673,7 +673,6 @@ router.post("/login", async (req, res) => {
       message: "Please fill in all fields."
     });
   }
-
   try {
     const user = await User.findOne({ email });
     if (user) {
@@ -720,16 +719,56 @@ router.post("/login", async (req, res) => {
 });
 
 //login for IOS
-router.post("/login", async (req,res) => {
-  const{appleId,password} = req.body;
-  //check required fields
-  if(!appleId || !password){
-    res.status(500).json({
-      message:"Please fill in the all fields"
-    })
-    
+router.post("/signin", async (req, res) => {
+  const { appleId, password } = req.body;
+  // check required fields
+  if (!appleId || !password) {
+    res.status(400).json({
+      message: "Please fill in all fields."
+    });
   }
-})
+  try {
+    const user = await User.findOne({ appleId });
+    if (user) {
+      const comparePasswords = bcrypt.compareSync(password, user.password);
+      if (comparePasswords) {
+        const token = jwt.sign(
+          {
+            _id: user._id,
+            name: user.name,
+            appleId:user.appleId
+          },
+          keys.jwtAuth.secret,
+          { expiresIn: "24h" }
+        );
+        res.status(200).json({
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          appleId: user.appleId,
+          location: user.location,
+          token,
+          likes: user.likes,
+          dislikes: user.dislikes,
+          factors: user.factors
+        });
+      } else {
+        res.status(500).json({
+          message: "Invalid password"
+        });
+      }
+    } else {
+      res.status(400).json({
+        message: "User not found."
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "Error logging in."
+    });
+  }
+});
+
 
 // Register Handle
 router.post("/register", async (req, res) => {
