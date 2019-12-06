@@ -225,34 +225,13 @@ router.post("/spec-search", tokenAuthentication, async (req, res) => {
       disID.push(user.dislikes[i]._id)
     } 
   
-    console.log('newSearch', disID)
-
-    // console.log("disID", disID[0])
-    // console.log("search result", searchResults[0]._id)
-
+    console.log('New search with next filter:', disID, 'with length', disID.length)
     const searchResults = await City.find({
       $text: { $search: `\"${searchTerm}\"` }
     }).limit(limit);
 
-
-    // let newSearch = [...searchResults].filter(city => city._id == disNNN)
-
-    // var filteredSearch =  searchResults.filter(function(city) {
-    //   return city._id != `${disID[0]}`;
-    // });
-
     let filteredSearch = searchResults;
-
-    console.log('Here is length', disID.length)
-
     var exitData = [];
-
-    // for(var i = 0; i < disID.length; i++) {
-    //   console.log("time", i)
-    //   test = filteredSearch.filter(function(city) {
-    //     return city._id != `${disID[i]}`;
-    //   });
-    // } 
     
     for(var i = 0; i < disID.length; i++) {
       if ( i==0 ) {
@@ -268,10 +247,6 @@ router.post("/spec-search", tokenAuthentication, async (req, res) => {
 
     console.log('Was founded', searchResults.length)
     console.log('After filter', exitData.length)
-    // console.log('filteredSearch', filteredSearch)
-
-    
-    // console.log("us_city", newSecSearch[5]._id)
 
     if (exitData.length) {
       res.status(200).json({
