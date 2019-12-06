@@ -1,12 +1,9 @@
 const request = require('supertest');
 const server = require('./server');
-const assert = require('assert');
+
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const User = require("./models/user");
-const keys = require("./config/keys");
-const jwt = require("jsonwebtoken");
-const {MongoClient} = require('mongodb');
+
 
 
 chai.use(chaiHttp);
