@@ -765,7 +765,7 @@ router.post("/register", async (req, res) => {
   const { name, email, password, location, appleId } = req.body;
   // check required fields
   console.log(name, email, password, location);
-  if (!name || !email || !password || !location || appleId) {
+  if (!name || !email || !password || !location || !appleId) {
     res.status(400).json({
       message: "Please fill in all fields."
     });
