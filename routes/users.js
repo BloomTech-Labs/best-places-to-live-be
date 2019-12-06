@@ -721,6 +721,7 @@ router.post("/login", async (req, res) => {
 //login for IOS
 router.post("/signin", async (req, res) => {
   const { appleId, password } = req.body;
+  console.log(appleId, password)
   // check required fields
   if (!appleId || !password) {
     res.status(400).json({
@@ -775,7 +776,7 @@ router.post("/register", async (req, res) => {
   const { name,email,password,location,appleId } = req.body;
   // check required fields
   console.log(name,email,password,location);
-  if (!name || !email || !password || !location) {
+  if (!name || !email || !password || !location || appleId) {
 
     res.status(400).json({
       message: "Please fill in all fields."
