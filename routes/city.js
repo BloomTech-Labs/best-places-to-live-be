@@ -225,9 +225,9 @@ router.post("/spec-search", tokenAuthentication, async (req, res) => {
       disID.push(user.dislikes[i]._id)
     } 
   
-    // console.log("user dislikes", disID)
-  
-    console.log("disID", disID[0])
+    console.log('newSearch', disID)
+
+    // console.log("disID", disID[0])
     // console.log("search result", searchResults[0]._id)
 
     const searchResults = await City.find({
@@ -237,18 +237,45 @@ router.post("/spec-search", tokenAuthentication, async (req, res) => {
 
     // let newSearch = [...searchResults].filter(city => city._id == disNNN)
 
-    var newSearch =  searchResults.filter(function(city) {
-      return city._id == `${disID[0]}`;
-    });
+    // var filteredSearch =  searchResults.filter(function(city) {
+    //   return city._id != `${disID[0]}`;
+    // });
 
-    console.log('newSearch', newSearch)
+    let filteredSearch = searchResults;
+
+    console.log('Here is length', disID.length)
+
+    var exitData = [];
+
+    // for(var i = 0; i < disID.length; i++) {
+    //   console.log("time", i)
+    //   test = filteredSearch.filter(function(city) {
+    //     return city._id != `${disID[i]}`;
+    //   });
+    // } 
+    
+    for(var i = 0; i < disID.length; i++) {
+      if ( i==0 ) {
+        exitData = filteredSearch.filter(function(city) {
+          return city._id != `${disID[i]}`;
+        });
+      } else {
+        exitData = exitData.filter(function(city) {
+          return city._id != `${disID[i]}`;
+        });
+      }
+    } 
+
+    console.log('Was founded', searchResults.length)
+    console.log('After filter', exitData.length)
+    // console.log('filteredSearch', filteredSearch)
 
     
     // console.log("us_city", newSecSearch[5]._id)
 
-    if (searchResults.length) {
+    if (exitData.length) {
       res.status(200).json({
-        cities: searchResults
+        cities: exitData
       });
     } else {
       res.status(404).json({
