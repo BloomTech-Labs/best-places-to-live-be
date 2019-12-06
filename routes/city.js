@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const City = require("../models/city");
 const User = require("../models/user");
+const City = require("../models/city");
 const keys = require("../config/keys");
 const jwt = require("jsonwebtoken");
 
@@ -217,19 +217,34 @@ router.post("/spec-search", tokenAuthentication, async (req, res) => {
   const { searchTerm } = req.body;
 
   try {
+
     const user = await User.findOne({ _id });
     let disID = [];
-
+        
     for(var i = 0; i < user.dislikes.length; i++) {
       disID.push(user.dislikes[i]._id)
     } 
-
-    // console.log("user dislikes", user.dislikes[0]._id)
-    console.log("user dislikes", disID)
+  
+    // console.log("user dislikes", disID)
+  
+    console.log("disID", disID[0])
+    // console.log("search result", searchResults[0]._id)
 
     const searchResults = await City.find({
       $text: { $search: `\"${searchTerm}\"` }
     }).limit(limit);
+
+
+    // let newSearch = [...searchResults].filter(city => city._id == disNNN)
+
+    var newSearch =  searchResults.filter(function(city) {
+      return city._id == `${disID[0]}`;
+    });
+
+    console.log('newSearch', newSearch)
+
+    
+    // console.log("us_city", newSecSearch[5]._id)
 
     if (searchResults.length) {
       res.status(200).json({
