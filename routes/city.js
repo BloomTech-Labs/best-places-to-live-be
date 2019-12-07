@@ -117,18 +117,32 @@ router.post("/spec-location", tokenAuthentication, async (req, res) => {
           }
         }).limit(limit);
 
+  let searchResults = cities;
+  var exitData = [];
+  
+  for(var i = 0; i < disID.length; i++) {
+    if ( i==0 ) {
+      exitData = searchResults.filter(function(city) {
+        return city._id != `${disID[i]}`;
+      });
+    } else {
+      exitData = exitData.filter(function(city) {
+        return city._id != `${disID[i]}`;
+      });
+    }
+  } 
+
+  console.log('Was founded', cities.length)
+  console.log('After filter', exitData.length)
+            
   let data = [];
-
-
-
-
   if (req.body && req.body.model) {
-    cities.map(c => {
+    exitData.map(c => {
       let d = {};
       Object.keys(req.body.model).map(k => (d[k] = c[k]));
       data.push(d);
     });
-  } else data = cities;
+  } else data = exitData;
   if (!data || data.length < 1)
     return res
       .status(200)
