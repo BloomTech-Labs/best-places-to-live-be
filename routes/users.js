@@ -763,7 +763,7 @@ router.post("/signin", async (req, res) => {
 //Register Handle for IOS
 router.post("/signup", async (req, res) => {
   // check required fields
-  console.log(name, email, password, location, appleId);
+  const { name, email, password, location, appleId } = req.body;
   if ((!name || !email || !password || !location || !appleId)) {
     res.status(400).json({
       message: "Please fill in all fields."
@@ -822,7 +822,7 @@ router.post("/signup", async (req, res) => {
 // Register Handle for web
 router.post("/register", async (req, res) => {
   // check required fields
-  console.log(name, email, password, location);
+  const { name, email, password, location } = req.body;
   if (!name || !email || !password || !location) {
     res.status(400).json({
       message: "Please fill in all fields."
