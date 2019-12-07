@@ -760,12 +760,12 @@ router.post("/signin", async (req, res) => {
   }
 });
 
-// Register Handle
+// Register Handle for web
 router.post("/register", async (req, res) => {
-  const { name, email, password, location, appleId } = req.body;
+  const { name, email, password, location} = req.body;
   // check required fields
   console.log(name, email, password, location);
-  if (!name || !email || !password || !location || !appleId) {
+  if (!name || !email || !password || !locatio) {
     res.status(400).json({
       message: "Please fill in all fields."
     });
