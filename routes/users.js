@@ -775,7 +775,38 @@ router.post("/ios/register", async(req,res) => {
     res.status(500).json({
       message: "Password must be at least 6 characters"
     });
+  }else {
+    const hashedPassword = bcrypt.hashSync(password, 4);
+
+    const newUser = new User({
+      name,
+      email,
+      location,
+      appleId,
+      password: hashedPassword
+    });
+    const userSaved = await newUser.save();
+    const token = jwt.sign(
+      {
+        _id: userSaved._id,
+        name: userSaved.name,
+        email: userSaved.email,
+        appleId:userSaved.appleId,
+        location: userSaved.location
+      },
+      keys.jwtAuth.secret,
+      { expiresIn: "24h" }
+    );
+    res.status(200).json({
+      _id: userSaved._id,
+      name: userSaved.name,
+      email: userSaved.email,
+      appleId:userSaved.appleId,
+      location: userSaved.location,
+      token
+    });
   }
+
 })
 
 // Register Handle for web
@@ -806,7 +837,6 @@ router.post("/register", async (req, res) => {
           name,
           email,
           location,
-          appleId,
           password: hashedPassword
         });
         const userSaved = await newUser.save();
@@ -825,7 +855,6 @@ router.post("/register", async (req, res) => {
           _id: userSaved._id,
           name: userSaved.name,
           email: userSaved.email,
-          appleId: userSaved.appleId,
           location: userSaved.location,
           token
         });
