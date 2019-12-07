@@ -760,12 +760,17 @@ router.post("/signin", async (req, res) => {
   }
 });
 
+//Register Handle for web
+router.post("register", async(req,res) => {
+  const {name,email,password,location} = req.body;
+})
+
 // Register Handle for web
 router.post("/register", async (req, res) => {
   const { name, email, password, location} = req.body;
   // check required fields
   console.log(name, email, password, location);
-  if (!name || !email || !password || !locatio) {
+  if (!name || !email || !password || !location) {
     res.status(400).json({
       message: "Please fill in all fields."
     });
