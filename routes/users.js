@@ -761,8 +761,21 @@ router.post("/signin", async (req, res) => {
 });
 
 //Register Handle for web
-router.post("register", async(req,res) => {
+router.post("/ios/register", async(req,res) => {
   const {name,email,password,location} = req.body;
+  // check required fields
+  console.log(name, email, password, location, appleId);
+  if (!name || !email || !password || !location || appleId) {
+    res.status(400).json({
+      message: "Please fill in all fields."
+    });
+  }
+  //check password length
+  else if (password.length < 6) {
+    res.status(500).json({
+      message: "Password must be at least 6 characters"
+    });
+  }
 })
 
 // Register Handle for web
