@@ -760,58 +760,69 @@ router.post("/signin", async (req, res) => {
   }
 });
 
-//Register Handle for web
-router.post("/ios/register", async(req,res) => {
-  const {name,email,password,location} = req.body;
-  // check required fields
+//Register Handle for IOS
+router.post("/signup", async (req, res) => {
+  const { name, email, password, location, appleId } = req.body;
+  // check required fields
   console.log(name, email, password, location, appleId);
-  if (!name || !email || !password || !location || appleId) {
+  if ((!name || !email || !password || !location || !appleId)) {
     res.status(400).json({
-      message: "Please fill in all fields."
-    });
-  }
-  //check password length
-  else if (password.length < 6) {
+      message: "Please fill in all fields."
+    }); // check pass length
+  } else if (password.length < 6) {
+    console.log("I am here", password.length);
     res.status(500).json({
-      message: "Password must be at least 6 characters"
+      message: "Password must be at least 6 characters"
     });
-  }else {
-    const hashedPassword = bcrypt.hashSync(password, 4);
-
-    const newUser = new User({
-      name,
-      email,
-      location,
-      appleId,
-      password: hashedPassword
-    });
-    const userSaved = await newUser.save();
-    const token = jwt.sign(
-      {
-        _id: userSaved._id,
-        name: userSaved.name,
-        email: userSaved.email,
-        appleId:userSaved.appleId,
-        location: userSaved.location
-      },
-      keys.jwtAuth.secret,
-      { expiresIn: "24h" }
-    );
-    res.status(200).json({
-      _id: userSaved._id,
-      name: userSaved.name,
-      email: userSaved.email,
-      appleId:userSaved.appleId,
-      location: userSaved.location,
-      token
-    });
+  } else {
+    try {
+      const user = await User.findOne({ appleId });
+      if (user) {
+        res.status(500).json({
+          message: "User already exists. Please login to continue"
+        });
+      } else {
+        const hashedPassword = bcrypt.hashSync(password, 4);
+        const newUser = new User({
+          name,
+          email,
+          appleId,
+          location,
+          password: hashedPassword
+        });
+        const userSaved = await newUser.save();
+        const token = jwt.sign(
+          {
+            _id: userSaved._id,
+            name: userSaved.name,
+            email: userSaved.email,
+            appleId: userSaved.appleId,
+            location: userSaved.location
+          },
+          keys.jwtAuth.secret,
+          { expiresIn: "24h" }
+        );
+        res.status(200).json({
+          _id: userSaved._id,
+          name: userSaved.name,
+          email: userSaved.email,
+          appleId: userSaved.appleId,
+          location: userSaved.location,
+          token
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        message: "Error registering."
+      });
+    }
   }
-
-})
+});
 
 // Register Handle for web
 router.post("/register", async (req, res) => {
-  const { name, email, password, location} = req.body;
+  const { name, email, password, location } = req.body;
   // check required fields
   console.log(name, email, password, location);
   if (!name || !email || !password || !location) {
