@@ -78,6 +78,66 @@ router.post("/location", async (req, res) => {
   });
 });
 
+router.post("/spec-location", tokenAuthentication, async (req, res) => {
+  const _id = req.decodedToken._id;
+
+  const user = await User.findOne({ _id });
+  let disID = [];
+      
+  for(var i = 0; i < user.dislikes.length; i++) {
+    disID.push(user.dislikes[i]._id)
+  } 
+
+  console.log('New location-search with next filter:', disID, 'with length', disID.length)
+
+  let lat = parseFloat(req.query.lat);
+  let lng = parseFloat(req.query.lng);
+  let zoom = req.query.zoom ? req.query.zoom : 10;
+  let limit = req.query.limit ? parseInt(req.query.limit) : 50;
+  if (!lat || !lng)
+    return res.status(400).json({ message: "Please Enter an area to search" });
+  const cities =
+    req.query.rand === "1" || zoom < 7
+      ? await City.aggregate([
+          {
+            $geoNear: {
+              near: { type: "Point", coordinates: [lng, lat] },
+              spherical: true,
+              distanceField: "calcDistance"
+            }
+          },
+          { $sample: { size: limit } }
+        ]).limit(limit)
+      : await City.find({
+          location: {
+            $near: {
+              $geometry: { type: "Point", coordinates: [lng, lat] }, //yes this is right
+              $maxDistance: parseInt((50000 * 10) / zoom)
+            }
+          }
+        }).limit(limit);
+
+  let data = [];
+
+
+
+
+  if (req.body && req.body.model) {
+    cities.map(c => {
+      let d = {};
+      Object.keys(req.body.model).map(k => (d[k] = c[k]));
+      data.push(d);
+    });
+  } else data = cities;
+  if (!data || data.length < 1)
+    return res
+      .status(200)
+      .json({ message: "There are no cities in this area" });
+  res.status(200).json({
+    data
+  });
+});
+
 router.post("/", async (req, res) => {
   try {
     let list = req.body.ids;
