@@ -83,6 +83,9 @@ We used:
   - Chai
   - SuperTest 
 
+ ##  📚  Third party API
+  ### [https://api.duckduckgo.com/api]
+
 
 
 # 🔌 ENDPOINTS
@@ -90,21 +93,26 @@ We used:
 ## 🌎 URL: `https://bestplacesbe.herokuapp.com/`
 
 
-#### 🏢 Users Routes
+#### 🏢 Users Web Routes
 
 | Method | Endpoint                | Access Control      | Description                                        |
 | ------ | ----------------------- | ------------------- | -------------------------------------------------- |
 | POST   | `/register`             |   users           | Registers a new user.                   |
 | POST   | `/login`                |   users           | Sign in a user .                        |
-<<<<<<< HEAD
-| GET    | `/auth/facebook`        |   users           | Sign in using facebook. |
-=======
+
 | GET    | `/auth/google`        |   users           | Sign in using google. |                   |
+
 | GET    | `/auth/facebook`        |   users           | Sign in using facebook.                 |
 
 
+### 🏢 Users IOS Routes
 
->>>>>>> 6f905f479b0f4c97890f8904682bda5f8fcc2e55
+| Method | Endpoint                | Access Control      | Description                                        |
+| ------ | ----------------------- | ------------------- | -------------------------------------------------- |
+| POST   | `/signup`             |   users           | Registers a new user.                   |
+| POST   | `/signin`             |   users           | Sign in a user .                        |
+
+
 
 
 #### 👥  User Profile Routes
@@ -112,10 +120,27 @@ We used:
 | Method | Endpoint                | Access Control      | Description                                        |
 | ------ | ----------------------- | ------------------- | -------------------------------------------------- |
 | GET    | `/profile`              |   users           | See the users profile.                   |
-| PUT    | `/profile`              |   users           | Able to edits the saved saved list       |
-| POST   | `/profile/cities`       |   users           | Able to delete the saved list            |
+| PUT    | `/profile`              |   users           | Able to edits the saved  list.           |
+| POST   | `/profile/cities`       |   users           | Able to delete the saved list.           |
 | DELETE | `/profile/cities`       |   users           | Deletes cities from your saved list.     |
    
+
+### 🏢 Users Likes/dislikes router
+| Method | Endpoint                | Access Control      | Description                                        |
+| ------ | ----------------------- | ------------------- | -------------------------------------------------- |
+| POST   | `/likes`             |   users           | Save user likes.                        |
+| Delete | `/likes`             |   users           | Delete user likes .                     |
+| POST   | `/dislikes`          |   users           | Save user dislikes.                     |
+| Delete  | `/dislikes`         |   users           | Delete user dislikes .                  |
+
+
+
+### 🏢 Users factors router 
+| Method | Endpoint                | Access Control      | Description                                        |
+| ------ | ----------------------- | ------------------- | -------------------------------------------------- |
+| POST   | `/factors`             |   users           | Save user Factors.                       |
+| Delete | `/factors`             |   users           | Delete user Factors.                     |
+| Put    | `/factors`             |   users           | Put user Factors.                        |
 
 
 
