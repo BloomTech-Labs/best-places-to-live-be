@@ -3,6 +3,7 @@ const includeCoverage = process.env.TESTING_MONGO_DB === 'testing';
 // https://jestjs.io/docs/en/configuration.html
 
 module.exports = {
+  setupFilesAfterEnv: ['./jest.setup.js'],
   // All imported modules in your tests should be mocked automatically
   // automock: false,
 

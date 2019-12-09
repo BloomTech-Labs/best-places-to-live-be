@@ -99,8 +99,11 @@ We used:
 | ------ | ----------------------- | ------------------- | -------------------------------------------------- |
 | POST   | `/register`             |   users           | Registers a new user.                   |
 | POST   | `/login`                |   users           | Sign in a user .                        |
-| GET    | `/auth/google`          |   users             | Sign in using google.                 |
+
+| GET    | `/auth/google`        |   users           | Sign in using google. |                   |
+
 | GET    | `/auth/facebook`        |   users           | Sign in using facebook.                 |
+
 
 ### 🏢 Users IOS Routes
 
