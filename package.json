@@ -39,14 +39,14 @@
     "mongodb": "^3.3.5",
     "mongoose": "^5.7.9",
     "mongoose-data-seed": "^2.1.4",
+    "node-mocks-http": "^1.8.0",
     "passport": "^0.4.0",
     "passport-facebook": "^3.0.0",
     "passport-google-oauth20": "^2.0.0",
     "passport-local": "^1.0.0",
+    "query-string": "^6.9.0",
     "supertest": "^4.0.2",
-    "yarn": "^1.21.0",
-    "query-string": "^6.9.0"
-    
+    "yarn": "^1.21.0"
   },
   "devDependencies": {
     "@shelf/jest-mongodb": "^1.1.3",

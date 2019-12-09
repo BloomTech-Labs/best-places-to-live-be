@@ -21,8 +21,8 @@ const authCheck = (req, res, next) => {
 ////////////////////////////////////////////////////
 
 router.get("/", authCheck, async (req, res) => {
-  // let user = await User.findBy(req.user._id);
-  // res.json(user);
+  let user = await User.findBy(req.user._id);
+  res.json(user);
   res.send('you are logged in' + " " + req.user.name)
 });
 
