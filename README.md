@@ -84,7 +84,7 @@ We used:
   - SuperTest 
 
  ##  📚  Third party API
-  - DuckDuckGo
+  ### [https://api.duckduckgo.com/api]
 
 
 
@@ -99,7 +99,7 @@ We used:
 | ------ | ----------------------- | ------------------- | -------------------------------------------------- |
 | POST   | `/register`             |   users           | Registers a new user.                   |
 | POST   | `/login`                |   users           | Sign in a user .                        |
-| GET    | `/auth/google`        |   users           | Sign in using google. |                   |
+| GET    | `/auth/google`          |   users             | Sign in using google.                 |
 | GET    | `/auth/facebook`        |   users           | Sign in using facebook.                 |
 
 ### 🏢 Users IOS Routes
@@ -107,7 +107,7 @@ We used:
 | Method | Endpoint                | Access Control      | Description                                        |
 | ------ | ----------------------- | ------------------- | -------------------------------------------------- |
 | POST   | `/signup`             |   users           | Registers a new user.                   |
-| POST   | `/signin`                |   users           | Sign in a user .                     |
+| POST   | `/signin`             |   users           | Sign in a user .                        |
 
 
 
@@ -117,18 +117,28 @@ We used:
 | Method | Endpoint                | Access Control      | Description                                        |
 | ------ | ----------------------- | ------------------- | -------------------------------------------------- |
 | GET    | `/profile`              |   users           | See the users profile.                   |
-| PUT    | `/profile`              |   users           | Able to edits the saved saved list       |
-| POST   | `/profile/cities`       |   users           | Able to delete the saved list            |
+| PUT    | `/profile`              |   users           | Able to edits the saved  list.           |
+| POST   | `/profile/cities`       |   users           | Able to delete the saved list.           |
 | DELETE | `/profile/cities`       |   users           | Deletes cities from your saved list.     |
    
 
-### 🏢 Users Likes/dislikes
+### 🏢 Users Likes/dislikes router
 | Method | Endpoint                | Access Control      | Description                                        |
 | ------ | ----------------------- | ------------------- | -------------------------------------------------- |
-| POST   | `/likes`             |   users           | Registers a new user.                   |
-| Delete | `/likes`             |   users           | Sign in a user .                        |
-| POST   | `/dislikes`          |   users           | Sign in a user .                        |
-|Delete  | `/dislikes`          |   users           | Sign in a user .                        |
+| POST   | `/likes`             |   users           | Save user likes.                        |
+| Delete | `/likes`             |   users           | Delete user likes .                     |
+| POST   | `/dislikes`          |   users           | Save user dislikes.                     |
+| Delete  | `/dislikes`         |   users           | Delete user dislikes .                  |
+
+
+
+### 🏢 Users factors router 
+| Method | Endpoint                | Access Control      | Description                                        |
+| ------ | ----------------------- | ------------------- | -------------------------------------------------- |
+| POST   | `/factors`             |   users           | Save user Factors.                       |
+| Delete | `/factors`             |   users           | Delete user Factors.                     |
+| Put    | `/factors`             |   users           | Put user Factors.                        |
+
 
 
 #### 🏢 City Routes
