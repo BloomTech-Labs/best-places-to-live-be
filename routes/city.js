@@ -309,9 +309,9 @@ router.post("/spec-search", tokenAuthentication, async (req, res) => {
     
     for(var i = 0; i < disID.length; i++) {
       if ( i==0 ) {
-        exitData = filteredSearch.filter(function(city) {
-          return city._id != `${disID[i]}`;
-        });
+        exitData =  searchResults
+        
+       
       } else {
         exitData = exitData.filter(function(city) {
           return city._id != `${disID[i]}`;
