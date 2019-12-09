@@ -819,7 +819,7 @@ router.post("/signup", async (req, res) => {
 // Register Handle for web
 router.post("/register", async (req, res) => {
   // check required fields
-  const { name, email, password, location} = req.body;
+  const { name, email, password, location,likes, dislikes,factors} = req.body;
   if (!name || !email || !password || !location) {
     res.status(400).json({
       message: "Please fill in all fields."
