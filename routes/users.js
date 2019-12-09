@@ -822,7 +822,7 @@ router.post("/signup", async (req, res) => {
 // Register Handle for web
 router.post("/register", async (req, res) => {
   // check required fields
-  const { name, email, password, location } = req.body;
+  const { name, email, password, location,likes,dislikes,factors } = req.body;
   if (!name || !email || !password || !location) {
     res.status(400).json({
       message: "Please fill in all fields."
@@ -846,6 +846,9 @@ router.post("/register", async (req, res) => {
           name,
           email,
           location,
+          likes,
+          dislikes,
+          factors,
           password: hashedPassword
         });
         const userSaved = await newUser.save();
@@ -855,7 +858,10 @@ router.post("/register", async (req, res) => {
             _id: userSaved._id,
             name: userSaved.name,
             email: userSaved.email,
-            location: userSaved.location
+            location: userSaved.location,
+            likes:userSaved.likes,
+            dislikes:userSaved.dislikes,
+            factors:userSaved.factors
           },
           keys.jwtAuth.secret,
           { expiresIn: "24h" }
@@ -865,7 +871,10 @@ router.post("/register", async (req, res) => {
           name: userSaved.name,
           email: userSaved.email,
           location: userSaved.location,
-          token
+          token,
+          likes:userSaved.likes,
+          dislikes:userSaved.dislikes,
+          factors:userSaved.factors
         });
       }
     } catch (error) {
