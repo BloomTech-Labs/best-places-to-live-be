@@ -711,7 +711,6 @@ router.post("/login", async (req, res) => {
 //ISO login page
 router.post("/signin", async (req, res) => {
   const { appleId, password } = req.body;
-  console.log(appleId, password);
   // check required fields
   if (!appleId || !password) {
     res.status(400).json({
@@ -769,7 +768,6 @@ router.post("/signup", async (req, res) => {
       message: "Please fill in all fields."
     }); // check pass length
   } else if (password.length < 6) {
-    console.log("I am here", password.length);
     res.status(500).json({
       message: "Password must be at least 6 characters"
     });
@@ -811,7 +809,6 @@ router.post("/signup", async (req, res) => {
         });
       }
     } catch (error) {
-      console.log(error);
       res.status(500).json({
         message: "Error registering."
       });
@@ -822,7 +819,7 @@ router.post("/signup", async (req, res) => {
 // Register Handle for web
 router.post("/register", async (req, res) => {
   // check required fields
-  const { name, email, password, location,likes,dislikes,factors } = req.body;
+  const { name, email, password, location} = req.body;
   if (!name || !email || !password || !location) {
     res.status(400).json({
       message: "Please fill in all fields."
@@ -845,10 +842,11 @@ router.post("/register", async (req, res) => {
         const newUser = new User({
           name,
           email,
-          location,
           likes,
           dislikes,
           factors,
+          location,
+      
           password: hashedPassword
         });
         const userSaved = await newUser.save();
