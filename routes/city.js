@@ -1,6 +1,24 @@
 const express = require("express");
 const router = express.Router();
+const User = require("../models/user");
 const City = require("../models/city");
+const keys = require("../config/keys");
+const jwt = require("jsonwebtoken");
+
+const tokenAuthentication = (req, res, next) => {
+  const token = req.headers.authorization;
+
+  jwt.verify(token, keys.jwtAuth.secret, (error, decodedToken) => {
+    if (error) {
+      res.status(403).json({
+        message: "Please login to continue."
+      });
+    } else {
+      req.decodedToken = decodedToken;
+      next();
+    }
+  });
+};
 
 router.get("/all", async (req, res) => {
   try {
@@ -51,6 +69,80 @@ router.post("/location", async (req, res) => {
       data.push(d);
     });
   } else data = cities;
+  if (!data || data.length < 1)
+    return res
+      .status(200)
+      .json({ message: "There are no cities in this area" });
+  res.status(200).json({
+    data
+  });
+});
+
+router.post("/spec-location", tokenAuthentication, async (req, res) => {
+  const _id = req.decodedToken._id;
+
+  const user = await User.findOne({ _id });
+  let disID = [];
+      
+  for(var i = 0; i < user.dislikes.length; i++) {
+    disID.push(user.dislikes[i]._id)
+  } 
+
+  console.log('New location-search with next filter:', disID, 'with length', disID.length)
+
+  let lat = parseFloat(req.query.lat);
+  let lng = parseFloat(req.query.lng);
+  let zoom = req.query.zoom ? req.query.zoom : 10;
+  let limit = req.query.limit ? parseInt(req.query.limit) : 50;
+  if (!lat || !lng)
+    return res.status(400).json({ message: "Please Enter an area to search" });
+  const cities =
+    req.query.rand === "1" || zoom < 7
+      ? await City.aggregate([
+          {
+            $geoNear: {
+              near: { type: "Point", coordinates: [lng, lat] },
+              spherical: true,
+              distanceField: "calcDistance"
+            }
+          },
+          { $sample: { size: limit } }
+        ]).limit(limit)
+      : await City.find({
+          location: {
+            $near: {
+              $geometry: { type: "Point", coordinates: [lng, lat] }, //yes this is right
+              $maxDistance: parseInt((50000 * 10) / zoom)
+            }
+          }
+        }).limit(limit);
+
+  let searchResults = cities;
+  var exitData = [];
+  
+  for(var i = 0; i < disID.length; i++) {
+    if ( i==0 ) {
+      exitData = searchResults.filter(function(city) {
+        return city._id != `${disID[i]}`;
+      });
+    } else {
+      exitData = exitData.filter(function(city) {
+        return city._id != `${disID[i]}`;
+      });
+    }
+  } 
+
+  console.log('Was founded', cities.length)
+  console.log('After filter', exitData.length)
+            
+  let data = [];
+  if (req.body && req.body.model) {
+    exitData.map(c => {
+      let d = {};
+      Object.keys(req.body.model).map(k => (d[k] = c[k]));
+      data.push(d);
+    });
+  } else data = exitData;
   if (!data || data.length < 1)
     return res
       .status(200)
@@ -180,6 +272,59 @@ router.post("/search", async (req, res) => {
     if (searchResults.length) {
       res.status(200).json({
         cities: searchResults
+      });
+    } else {
+      res.status(404).json({
+        message: "Could not find any cities with that name."
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "Error searching cities in our database."
+    });
+  }
+});
+
+router.post("/spec-search", tokenAuthentication, async (req, res) => {
+  const _id = req.decodedToken._id;
+  const limit = req.query.limit ? parseInt(req.query.limit) : 50;
+  const { searchTerm } = req.body;
+
+  try {
+
+    const user = await User.findOne({ _id });
+    let disID = [];
+        
+    for(var i = 0; i < user.dislikes.length; i++) {
+      disID.push(user.dislikes[i]._id)
+    } 
+  
+    console.log('New search with next filter:', disID, 'with length', disID.length)
+    const searchResults = await City.find({
+      $text: { $search: `\"${searchTerm}\"` }
+    }).limit(limit);
+
+    let filteredSearch = searchResults;
+    var exitData = [];
+    
+    for(var i = 0; i < disID.length; i++) {
+      if ( i==0 ) {
+        exitData = filteredSearch.filter(function(city) {
+          return city._id != `${disID[i]}`;
+        });
+      } else {
+        exitData = exitData.filter(function(city) {
+          return city._id != `${disID[i]}`;
+        });
+      }
+    } 
+
+    console.log('Was founded', searchResults.length)
+    console.log('After filter', exitData.length)
+
+    if (exitData.length) {
+      res.status(200).json({
+        cities: exitData
       });
     } else {
       res.status(404).json({
