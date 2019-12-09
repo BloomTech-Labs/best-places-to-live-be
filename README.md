@@ -83,6 +83,9 @@ We used:
   - Chai
   - SuperTest 
 
+ ##  📚  Third party API
+  - DuckDuckGo
+
 
 
 # 🔌 ENDPOINTS
@@ -90,7 +93,7 @@ We used:
 ## 🌎 URL: `https://bestplacesbe.herokuapp.com/`
 
 
-#### 🏢 Users Routes
+#### 🏢 Users Web Routes
 
 | Method | Endpoint                | Access Control      | Description                                        |
 | ------ | ----------------------- | ------------------- | -------------------------------------------------- |
@@ -99,6 +102,12 @@ We used:
 | GET    | `/auth/google`        |   users           | Sign in using google. |                   |
 | GET    | `/auth/facebook`        |   users           | Sign in using facebook.                 |
 
+### 🏢 Users IOS Routes
+
+| Method | Endpoint                | Access Control      | Description                                        |
+| ------ | ----------------------- | ------------------- | -------------------------------------------------- |
+| POST   | `/signup`             |   users           | Registers a new user.                   |
+| POST   | `/signin`                |   users           | Sign in a user .                     |
 
 
 
@@ -113,6 +122,13 @@ We used:
 | DELETE | `/profile/cities`       |   users           | Deletes cities from your saved list.     |
    
 
+### 🏢 Users Likes/dislikes
+| Method | Endpoint                | Access Control      | Description                                        |
+| ------ | ----------------------- | ------------------- | -------------------------------------------------- |
+| POST   | `/likes`             |   users           | Registers a new user.                   |
+| Delete | `/likes`             |   users           | Sign in a user .                        |
+| POST   | `/dislikes`          |   users           | Sign in a user .                        |
+|Delete  | `/dislikes`          |   users           | Sign in a user .                        |
 
 
 #### 🏢 City Routes
