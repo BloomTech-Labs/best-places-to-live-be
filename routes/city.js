@@ -174,8 +174,6 @@ router.post("/spec-location", tokenAuthentication, async (req, res) => {
   }
 });
 
-
-
 router.post("/", async (req, res) => {
   try {
     let list = req.body.ids;
