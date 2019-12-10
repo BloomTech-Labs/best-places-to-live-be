@@ -326,11 +326,18 @@ router.post("/spec-search", tokenAuthentication, async (req, res) => {
 
     if (exitData.length) {
       res.status(200).json({
+        founded: true,
         cities: exitData
       });
-    } else {
+    } else if (!searchResults.length) {
       res.status(404).json({
+        founded: false,
         message: "Could not find any cities with that name."
+      });
+    } else {
+      res.status(200).json({
+        founded: false,
+        message: "Results was filtered and empty or no results."
       });
     }
   } catch (error) {
