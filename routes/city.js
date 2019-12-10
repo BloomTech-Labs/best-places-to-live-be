@@ -304,22 +304,29 @@ router.post("/spec-search", tokenAuthentication, async (req, res) => {
       $text: { $search: `\"${searchTerm}\"` }
     }).limit(limit);
 
-    let filteredSearch = searchResults;
-    var exitData = [];
-    
-    for(var i = 0; i < disID.length; i++) {
-      if ( i==0 ) {
-        exitData = searchResults.filter(function(city) {
-          return city._id != `${disID[i]}`;
-        });
+    if (disID.length != 0) {
+      let filteredSearch = searchResults;
+      var exitData = [];
+      
+      for(var i = 0; i < disID.length; i++) {
+        if ( i==0 ) {
+          exitData = searchResults.filter(function(city) {
+            return city._id != `${disID[i]}`;
+          });
+        }
+          else {
+          filteredSearch = exitData;
+          exitData = exitData.filter(function(city) {
+            return city._id != `${disID[i]}`;
+          });
+        }
       }
-         else {
-        filteredSearch = exitData;
-        exitData = exitData.filter(function(city) {
-          return city._id != `${disID[i]}`;
-        });
-      }
-    } 
+
+    } else {
+      console.log('ololo')
+      exitData = searchResults
+    }
+
 
     console.log('Was founded', searchResults.length)
     console.log('After filter', exitData.length)
