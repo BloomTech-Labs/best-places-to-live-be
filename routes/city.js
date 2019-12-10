@@ -117,20 +117,26 @@ router.post("/spec-location", tokenAuthentication, async (req, res) => {
           }
         }).limit(limit);
 
-  let searchResults = cities;
-  var exitData = [];
-  
-  for(var i = 0; i < disID.length; i++) {
-    if ( i==0 ) {
-      exitData = searchResults.filter(function(city) {
-        return city._id != `${disID[i]}`;
-      });
+    if (disID.length != 0) {
+      let filteredSearch = cities;
+      var exitData = [];
+      
+      for(var i = 0; i < disID.length; i++) {
+        if ( i==0 ) {
+          exitData = cities.filter(function(city) {
+            return city._id != `${disID[i]}`;
+          });
+        }
+          else {
+          filteredSearch = exitData;
+          exitData = exitData.filter(function(city) {
+            return city._id != `${disID[i]}`;
+          });
+        }
+      }
     } else {
-      exitData = exitData.filter(function(city) {
-        return city._id != `${disID[i]}`;
-      });
+      exitData = cities;
     }
-  } 
 
   console.log('Was founded', cities.length)
   console.log('After filter', exitData.length)
@@ -143,13 +149,29 @@ router.post("/spec-location", tokenAuthentication, async (req, res) => {
       data.push(d);
     });
   } else data = exitData;
-  if (!data || data.length < 1)
-    return res
-      .status(200)
-      .json({ message: "There are no cities in this area" });
-  res.status(200).json({
-    data
-  });
+  if (!data || data.length < 1) {
+    if (disID.length < 0) {
+      res.status(200).json({
+        founded: false,
+        message: "There are no cities in this area"
+      });
+    } else {
+      res.status(200).json({
+        founded: false,
+        message: "No results after filering"
+      });
+    }
+  } else {
+    res.status(200).json({
+      founded: true,
+      results: [ 
+        {wasFiltered: cities.length - exitData.length}, 
+        {beforeFilter: cities.length}, 
+        {afterFilter: exitData.length} 
+      ],
+      data
+    });
+  }
 });
 
 router.post("/", async (req, res) => {
@@ -304,33 +326,50 @@ router.post("/spec-search", tokenAuthentication, async (req, res) => {
       $text: { $search: `\"${searchTerm}\"` }
     }).limit(limit);
 
-    let filteredSearch = searchResults;
-    var exitData = [];
-    
-    for(var i = 0; i < disID.length; i++) {
-      if ( i==0 ) {
-        exitData = searchResults.filter(function(city) {
-          return city._id != `${disID[i]}`;
-        });
+    if (disID.length != 0) {
+      let filteredSearch = searchResults;
+      var exitData = [];
+      
+      for(var i = 0; i < disID.length; i++) {
+        if ( i==0 ) {
+          exitData = searchResults.filter(function(city) {
+            return city._id != `${disID[i]}`;
+          });
+        }
+          else {
+          filteredSearch = exitData;
+          exitData = exitData.filter(function(city) {
+            return city._id != `${disID[i]}`;
+          });
+        }
       }
-         else {
-        filteredSearch = exitData;
-        exitData = exitData.filter(function(city) {
-          return city._id != `${disID[i]}`;
-        });
-      }
-    } 
+    } else {
+      exitData = searchResults
+    }
+
 
     console.log('Was founded', searchResults.length)
     console.log('After filter', exitData.length)
 
     if (exitData.length) {
       res.status(200).json({
+        founded: true,
+        results: [ 
+          {wasFiltered: searchResults.length - exitData.length}, 
+          {beforeFilter: searchResults.length}, 
+          {afterFilter: exitData.length} 
+        ],
         cities: exitData
       });
-    } else {
+    } else if (!searchResults.length) {
       res.status(404).json({
+        founded: false,
         message: "Could not find any cities with that name."
+      });
+    } else {
+      res.status(200).json({
+        founded: false,
+        message: "Results was filtered and empty or no results."
       });
     }
   } catch (error) {
