@@ -737,10 +737,7 @@ router.post("/signin", async (req, res) => {
           email: user.email,
           appleId: user.appleId,
           location: user.location,
-          token,
-          likes: user.likes,
-          dislikes: user.dislikes,
-          factors: user.factors
+          token
         });
       } else {
         res.status(500).json({
