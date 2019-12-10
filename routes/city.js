@@ -488,20 +488,28 @@ router.post("/spec-ds", tokenAuthentication, async (req, res) => {
 
     const final = exitData.slice(0, limit)
 
-    console.log('Was founded', resultPoint.length)
-    console.log('After filter', exitData.length)
-    console.log('Limited to', final.length)
+    console.log('Got results from DS:', resultPoint.length)
+    console.log('After filter:', exitData.length)
+    console.log('Limited to:', final.length)
 
 
     if (final) { res.status(200).json({
+      founded: true,
+      results: [ 
+        {wasFiltered: resultPoint.length - exitData.length}, 
+        {beforeFilter: resultPoint.length}, 
+        {afterFilter: exitData.length} 
+      ],
       final
     }); } else {
       res.status(400).json({
+        founded: false,
         message: "The browser (or proxy) sent a request that this server could not understand."
       });
     }
   } catch (error) {
     res.status(500).json({
+      founded: false,
       message: "Error with fetching data from DS server"
     });
   }
