@@ -117,20 +117,26 @@ router.post("/spec-location", tokenAuthentication, async (req, res) => {
           }
         }).limit(limit);
 
-  let searchResults = cities;
-  var exitData = [];
-  
-  for(var i = 0; i < disID.length; i++) {
-    if ( i==0 ) {
-      exitData = searchResults.filter(function(city) {
-        return city._id != `${disID[i]}`;
-      });
+    if (disID.length != 0) {
+      let filteredSearch = cities;
+      var exitData = [];
+      
+      for(var i = 0; i < disID.length; i++) {
+        if ( i==0 ) {
+          exitData = cities.filter(function(city) {
+            return city._id != `${disID[i]}`;
+          });
+        }
+          else {
+          filteredSearch = exitData;
+          exitData = exitData.filter(function(city) {
+            return city._id != `${disID[i]}`;
+          });
+        }
+      }
     } else {
-      exitData = exitData.filter(function(city) {
-        return city._id != `${disID[i]}`;
-      });
+      exitData = cities;
     }
-  } 
 
   console.log('Was founded', cities.length)
   console.log('After filter', exitData.length)
@@ -144,9 +150,7 @@ router.post("/spec-location", tokenAuthentication, async (req, res) => {
     });
   } else data = exitData;
   if (!data || data.length < 1)
-    return res
-      .status(200)
-      .json({ message: "There are no cities in this area" });
+    return res.status(200).json({ message: "There are no cities in this area" });
   res.status(200).json({
     data
   });
@@ -321,9 +325,7 @@ router.post("/spec-search", tokenAuthentication, async (req, res) => {
           });
         }
       }
-
     } else {
-      console.log('ololo')
       exitData = searchResults
     }
 
