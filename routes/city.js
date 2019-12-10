@@ -404,8 +404,8 @@ router.post("/", async (req, res) => {
 
 router.post("/ds", async (req, res) => {
   const input = req.body;
+  let limit = req.query.limit ? parseInt(req.query.limit) : 20;
 
-  console.log(input)
 
   async function getUser(inputData) {
     try {
@@ -416,7 +416,9 @@ router.post("/ds", async (req, res) => {
     }
   }
 
-  const result = await getUser(input);
+  const resultPoint = await getUser(input);
+  
+  const result = resultPoint.slice(0, limit)
 
   try {
     if (result) { res.status(200).json({
@@ -428,6 +430,86 @@ router.post("/ds", async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({
+      message: "Error with fetching data from DS server"
+    });
+  }
+});
+
+router.post("/spec-ds", tokenAuthentication, async (req, res) => {
+  const input = req.body;
+  const _id = req.decodedToken._id;
+  let limit = req.query.limit ? parseInt(req.query.limit) : 20;
+
+
+  async function getUser(inputData) {
+    try {
+      const response = await axios.post('https://best-places-api.herokuapp.com/api', inputData);
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const resultPoint = await getUser(input);
+  
+  // const result = resultPoint.slice(0, limit)
+
+  try {
+
+    const user = await User.findOne({ _id });
+    let disID = [];
+        
+    for(var i = 0; i < user.dislikes.length; i++) {
+      disID.push(user.dislikes[i]._id)
+    } 
+  
+    console.log('New DS request with next filter:', disID, 'with length', disID.length)
+
+    if (disID.length != 0) {
+      let filteredSearch = resultPoint;
+      var exitData = [];
+      
+      for(var i = 0; i < disID.length; i++) {
+        if ( i==0 ) {
+          exitData = resultPoint.filter(function(city) {
+            return city._id != `${disID[i]}`;
+          });
+        }
+          else {
+          filteredSearch = exitData;
+          exitData = exitData.filter(function(city) {
+            return city._id != `${disID[i]}`;
+          });
+        }
+      }
+    } else {
+      exitData = resultPoint
+    }
+
+    const final = exitData.slice(0, limit)
+
+    console.log('Got results from DS:', resultPoint.length)
+    console.log('After filter:', exitData.length)
+    console.log('Limited to:', final.length)
+
+
+    if (final) { res.status(200).json({
+      founded: true,
+      results: [ 
+        {wasFiltered: resultPoint.length - exitData.length}, 
+        {beforeFilter: resultPoint.length}, 
+        {afterFilter: exitData.length} 
+      ],
+      final
+    }); } else {
+      res.status(400).json({
+        founded: false,
+        message: "The browser (or proxy) sent a request that this server could not understand."
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      founded: false,
       message: "Error with fetching data from DS server"
     });
   }
