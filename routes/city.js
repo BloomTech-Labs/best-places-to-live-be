@@ -149,12 +149,32 @@ router.post("/spec-location", tokenAuthentication, async (req, res) => {
       data.push(d);
     });
   } else data = exitData;
-  if (!data || data.length < 1)
-    return res.status(200).json({ message: "There are no cities in this area" });
-  res.status(200).json({
-    data
-  });
+  if (!data || data.length < 1) {
+    if (disID.length < 0) {
+      res.status(200).json({
+        founded: false,
+        message: "There are no cities in this area"
+      });
+    } else {
+      res.status(200).json({
+        founded: false,
+        message: "No results after filering"
+      });
+    }
+  } else {
+    res.status(200).json({
+      founded: true,
+      results: [ 
+        {wasFiltered: cities.length - exitData.length}, 
+        {beforeFilter: cities.length}, 
+        {afterFilter: exitData.length} 
+      ],
+      data
+    });
+  }
 });
+
+
 
 router.post("/", async (req, res) => {
   try {
