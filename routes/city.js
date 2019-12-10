@@ -327,6 +327,11 @@ router.post("/spec-search", tokenAuthentication, async (req, res) => {
     if (exitData.length) {
       res.status(200).json({
         founded: true,
+        results: [ 
+          {wasFiltered: searchResults.length - exitData.length}, 
+          {beforeFilter: searchResults.length}, 
+          {afterFilter: exitData.length} 
+        ],
         cities: exitData
       });
     } else if (!searchResults.length) {
