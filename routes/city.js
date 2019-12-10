@@ -404,8 +404,8 @@ router.post("/", async (req, res) => {
 
 router.post("/ds", async (req, res) => {
   const input = req.body;
+  let limit = req.query.limit ? parseInt(req.query.limit) : 20;
 
-  console.log(input)
 
   async function getUser(inputData) {
     try {
@@ -416,7 +416,9 @@ router.post("/ds", async (req, res) => {
     }
   }
 
-  const result = await getUser(input);
+  const resultPoint = await getUser(input);
+  
+  const result = resultPoint.slice(0, limit)
 
   try {
     if (result) { res.status(200).json({
