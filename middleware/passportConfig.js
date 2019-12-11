@@ -14,7 +14,6 @@ module.exports = function(passport) {
 
   // used to serialize the user for the session
   passport.serializeUser(function(user, done) {
-    console.log("i am here", user);
     done(null, user.id);
   });
 
@@ -73,37 +72,36 @@ module.exports = function(passport) {
   );
 
   //send information to google and add the user to mongodb if they arent already in the system
-  // passport.use(
-  //   new googleStrategy(
-  //     {
-  //       //options for google oauth20
-  //       callbackURL: keys.googleAuth.callbackURL,
-  //       clientID: keys.googleAuth.googleClientId,
-  //       clientSecret: keys.googleAuth.googleClientSecret,
-  //       passReqToCallback: true
-  //     },
-  //     async (req, token, refreshToken, profile, done) => {
-  //       await User.findOne({ googleId: profile.id }).then(existingUser => {
-  //         if (existingUser) {
-  //           console.log("here", existingUser);
-  //           done(null, existingUser);
-  //         } else {
-  //           new User({
-  //             googleId: profile.id,
-  //             name: profile.displayName,
-  //             email: profile._json.email,
-  //             token: token
-  //           })
-  //             .save()
-  //             .then(newUser => {
-  //               console.log("new user created" + newUser);
-  //               done(null, newUser);
-  //             });
-  //         }
-  //       });
-  //     }
-  //   )
-  // );
+  passport.use(
+    new googleStrategy(
+      {
+        //options for google oauth20
+        callbackURL: keys.googleAuth.callbackURL,
+        clientID: keys.googleAuth.googleClientId,
+        clientSecret: keys.googleAuth.googleClientSecret,
+        passReqToCallback: true
+      },
+      async (req, token, refreshToken, profile, done) => {
+        await User.findOne({ googleId: profile.id }).then(existingUser => {
+          if (existingUser) {
+            done(null, existingUser);
+          } else {
+            new User({
+              googleId: profile.id,
+              name: profile.displayName,
+              email: profile._json.email,
+              token: token
+            })
+              .save()
+              .then(newUser => {
+                console.log("new user created" + newUser);
+                done(null, newUser);
+              });
+          }
+        });
+      }
+    )
+  );
 
   // =========================================================================
   // FACEBOOK ================================================================

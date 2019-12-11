@@ -159,7 +159,7 @@ We used:
 | Method | Endpoint           | Access Control | Description                                                       |
 | ------ | ------------------ | -------------- | ----------------------------------------------------------------- |
 | POST   | `/city/ds  `       | public         |Endpoint fetching data from DS side.                               |
-| POST   | `/city/spec-ds`    | public         |  User's [dislikes] to filter results.       |           
+| POST   | `/city/spec-ds`    | public         | User's [dislikes] to filter results.                             |           
 
 
 
