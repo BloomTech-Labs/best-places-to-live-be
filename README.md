@@ -135,8 +135,8 @@ We used:
 | POST   | `/likes`             |   users           | Save user likes.                        |
 | Delete | `/likes`             |   users           | Delete user likes .                     |
 | POST   | `/dislikes`          |   users           | Save user dislikes.                     |
-| Delete  | `/dislikes`         |   users           | Delete user dislikes .                  |
-
+| Delete | `/dislikes`         |   users            | Delete user dislikes .                  |
+| GET    | `/info`             |   users            | Delete user dislikes .                  |
 
 
 ### 🏢 Users factors router 
@@ -154,6 +154,15 @@ We used:
 | ------ | ------------------ | -------------- | ----------------------------------------------------------------- |
 | GET    | `/city/all/`       | public         | Returns ***only*** the `_id` and `name` fields of all 5037 cities.|
 | GET    | `/city/topten-score_total`| public  | Returns top ten cities with all of their data. |
+
+
+#### 🏢  [DS internal] City Routes
+
+| Method | Endpoint           | Access Control | Description                                                       |
+| ------ | ------------------ | -------------- | ----------------------------------------------------------------- |
+| POST   | `/city/ds  `       | public         |Endpoint fetching data from DS side.                               |
+| POST   | `/city/spec-ds`    | public         | This is endpoint using user's [dislikes] to filter results.       |           
+
 
 
 #### 🏢 City Search
