@@ -83,8 +83,12 @@ We used:
   - Chai
   - SuperTest 
 
- ##  📚  Third party API
+ ##  📚 API
+ - DuckDuckGo
   ### [https://api.duckduckgo.com/api]
+  - This API is used to get the summary of the cities.
+-  Cloudanary
+
 
 
 
