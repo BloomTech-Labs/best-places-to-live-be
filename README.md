@@ -82,12 +82,12 @@ We used:
   - Jest
   - Chai
   - SuperTest 
+  - dmibpj3wx
 
  ##  📚 API
  - DuckDuckGo
   ### [https://api.duckduckgo.com/api]
   - This API is used to get the summary of the cities.
--  Cloudanary
 
 
 
@@ -103,9 +103,7 @@ We used:
 | ------ | ----------------------- | ------------------- | -------------------------------------------------- |
 | POST   | `/register`             |   users           | Registers a new user.                   |
 | POST   | `/login`                |   users           | Sign in a user .                        |
-
-| GET    | `/auth/google`        |   users           | Sign in using google. |                   |
-
+| GET    | `/auth/google`        |   users           | Sign in using google.                     |
 | GET    | `/auth/facebook`        |   users           | Sign in using facebook.                 |
 
 
@@ -144,11 +142,11 @@ We used:
 | ------ | ----------------------- | ------------------- | -------------------------------------------------- |
 | POST   | `/factors`             |   users           | Save user Factors.                       |
 | Delete | `/factors`             |   users           | Delete user Factors.                     |
-| Put    | `/factors`             |   users           | Put user Factors.                        |
+| Put    | `/factors`             |   users           | Update user Factors.                     |
 
 
 
-#### 🏢 City Routes
+#### 🏢 City Router
 
 | Method | Endpoint           | Access Control | Description                                                       |
 | ------ | ------------------ | -------------- | ----------------------------------------------------------------- |
@@ -156,12 +154,12 @@ We used:
 | GET    | `/city/topten-score_total`| public  | Returns top ten cities with all of their data. |
 
 
-#### 🏢  [DS internal] City Routes
+#### 🏢  [DS internal] City Router
 
 | Method | Endpoint           | Access Control | Description                                                       |
 | ------ | ------------------ | -------------- | ----------------------------------------------------------------- |
 | POST   | `/city/ds  `       | public         |Endpoint fetching data from DS side.                               |
-| POST   | `/city/spec-ds`    | public         | This is endpoint using user's [dislikes] to filter results.       |           
+| POST   | `/city/spec-ds`    | public         |  User's [dislikes] to filter results.       |           
 
 
 
@@ -173,6 +171,7 @@ We used:
 | POST   | `/city/search` | public         | <details><summary>Returns cities that contain search term</summary>_body_ <br> { <br>&nbsp;&nbsp;"searchTerm": "miami" <br>}</details>|
 | POST   | `/city/top`    | public         | <details> <summary>Returns The Top cities based on Category</summary>_query_<br/>{<br/>&nbsp;&nbsp;&nbsp;&nbsp;**q: "",** //forced name filter use this to only grab a particluar state.Defaults to null<br/>&nbsp;&nbsp;&nbsp;&nbsp;**filter: "",** //name of the key value of the data model you wanna sort by. Defaults to Score*total<br/>&nbsp;&nbsp;&nbsp;&nbsp;**limit: Number,** //Number of items you want back. Defaults 10<br/>&nbsp;&nbsp;&nbsp;&nbsp;**order:""** //asc for bottom or none for top. Defaults to top<br/>}<br/>\_body*<br/>{<br/>&nbsp;&nbsp;&nbsp;&nbsp;**model: {}** //object with same keyvalues of the data you want in the list of &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;objects<br/>}</details> |
 | POST   | `/city/location` | public         | <details><summary>Return an array of cities sorted by distanec of the passed in location.</summary>_query_<br/>{<br/>&nbsp;&nbsp;&nbsp;&nbsp;**lat: Number,** //latitude of the location<br/>&nbsp;&nbsp;&nbsp;&nbsp;**lng: Number,** //longitude of the location<br/>&nbsp;&nbsp;&nbsp;&nbsp;**zoom: Number,** //google zoom helps determine how far to look<br/>&nbsp;&nbsp;&nbsp;&nbsp;**rand: Number** //Get a random set back, automatically does this if zooom < 7<br/>&nbsp;&nbsp;&nbsp;&nbsp;**limit: Number** // sets the number of elements<br/>}<br/>_body_ <br/> { <br>&nbsp;&nbsp;**"model": Object** // sets the elements you want back from the db <br>}</details>|
+
 
 
 
