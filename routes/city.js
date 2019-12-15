@@ -435,6 +435,46 @@ router.post("/ds", async (req, res) => {
   }
 });
 
+router.post("/visual", async (req, res) => {
+  const input = req.body;
+
+  async function getVisualization(inputData) {
+    try {
+      const response = await axios({
+        method: 'post',
+        url: 'https://best-places-api.herokuapp.com/visual',
+        data: inputData,
+        responseType: 'arraybuffer'
+      });
+
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const result = await getVisualization(input);
+
+  try {
+    if (result) { 
+      res.writeHead(200, {
+        'Content-Type': 'image/png',
+        'Content-Length': result.length
+    });
+    res.end(result, 'binary');
+    } else {
+      res.status(400).json({
+        message: "The browser (or proxy) sent a request that this server could not understand."
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "Error with fetching data from DS server"
+    });
+  }
+});
+
+
 router.post("/spec-ds", tokenAuthentication, async (req, res) => {
   const input = req.body;
   const _id = req.decodedToken._id;
