@@ -440,7 +440,13 @@ router.post("/visual", async (req, res) => {
 
   async function getVisualization(inputData) {
     try {
-      const response = await axios.post('https://best-places-api.herokuapp.com/visual', inputData);
+      const response = await axios({
+        method: 'post',
+        url: 'https://best-places-api.herokuapp.com/visual',
+        data: inputData,
+        responseType: 'arraybuffer'
+      });
+
       return response.data;
     } catch (error) {
       console.error(error);
@@ -448,14 +454,14 @@ router.post("/visual", async (req, res) => {
   }
 
   const result = await getVisualization(input);
-  
+
   try {
     if (result) { 
       res.writeHead(200, {
         'Content-Type': 'image/png',
         'Content-Length': result.length
     });
-    res.end(Buffer.from(result, 'binary'));
+    res.end(result, 'binary');
     } else {
       res.status(400).json({
         message: "The browser (or proxy) sent a request that this server could not understand."
@@ -467,6 +473,7 @@ router.post("/visual", async (req, res) => {
     });
   }
 });
+
 
 router.post("/spec-ds", tokenAuthentication, async (req, res) => {
   const input = req.body;
