@@ -91,3 +91,6 @@ typings/
 
 # DynamoDB Local files
 .dynamodb/
+
+# MongoDB binary cache
+./node_modules/.cache/mongodb-memory-server/mongodb-binaries
