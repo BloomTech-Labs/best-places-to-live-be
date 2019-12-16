@@ -89,7 +89,6 @@ router.post("/spec-location", tokenAuthentication, async (req, res) => {
     disID.push(user.dislikes[i]._id)
   } 
 
-  console.log('New location-search with next filter:', disID, 'with length', disID.length)
 
   let lat = parseFloat(req.query.lat);
   let lng = parseFloat(req.query.lng);
@@ -139,8 +138,6 @@ router.post("/spec-location", tokenAuthentication, async (req, res) => {
       exitData = cities;
     }
 
-  console.log('Was founded', cities.length)
-  console.log('After filter', exitData.length)
             
   let data = [];
   if (req.body && req.body.model) {
@@ -322,7 +319,6 @@ router.post("/spec-search", tokenAuthentication, async (req, res) => {
       disID.push(user.dislikes[i]._id)
     } 
   
-    console.log('New search with next filter:', disID, 'with length', disID.length)
     const searchResults = await City.find({
       $text: { $search: `\"${searchTerm}\"` }
     }).limit(limit);
@@ -349,8 +345,6 @@ router.post("/spec-search", tokenAuthentication, async (req, res) => {
     }
 
 
-    console.log('Was founded', searchResults.length)
-    console.log('After filter', exitData.length)
 
     if (exitData.length) {
       res.status(200).json({
@@ -412,7 +406,6 @@ router.post("/ds", async (req, res) => {
       const response = await axios.post('https://best-places-api.herokuapp.com/api', inputData);
       return response.data;
     } catch (error) {
-      console.error(error);
     }
   }
 
@@ -449,7 +442,6 @@ router.post("/visual", async (req, res) => {
 
       return response.data;
     } catch (error) {
-      console.error(error);
     }
   }
 
@@ -486,7 +478,6 @@ router.post("/spec-ds", tokenAuthentication, async (req, res) => {
       const response = await axios.post('https://best-places-api.herokuapp.com/api', inputData);
       return response.data;
     } catch (error) {
-      console.error(error);
     }
   }
 
@@ -503,7 +494,6 @@ router.post("/spec-ds", tokenAuthentication, async (req, res) => {
       disID.push(user.dislikes[i]._id)
     } 
   
-    console.log('New DS request with next filter:', disID, 'with length', disID.length)
 
     if (disID.length != 0) {
       let filteredSearch = resultPoint;
@@ -528,9 +518,6 @@ router.post("/spec-ds", tokenAuthentication, async (req, res) => {
 
     const final = exitData.slice(0, limit)
 
-    console.log('Got results from DS:', resultPoint.length)
-    console.log('After filter:', exitData.length)
-    console.log('Limited to:', final.length)
 
 
     if (final) { res.status(200).json({

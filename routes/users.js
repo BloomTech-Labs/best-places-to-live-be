@@ -74,8 +74,6 @@ const cityDoubleCheckDis = async (req, res, next) => {
     }
   }
 
-  // console.log("FOUND:", found)
-
   if (found === false) {
     next();
   } else {
@@ -202,7 +200,6 @@ router.put("/profile", tokenAuthentication, async (req, res) => {
       });
     }
   } catch (error) {
-    console.log(error);
     res.status(500).json({
       message: "Error updating user in database."
     });
@@ -760,7 +757,7 @@ router.post("/signin", async (req, res) => {
 router.post("/signup", async (req, res) => {
   // check required fields
   const { name, email, password, location, appleId } = req.body;
-  if ((!name || !email || !password || !location || !appleId)) {
+  if (!name || !email || !password || !location || !appleId) {
     res.status(400).json({
       message: "Please fill in all fields."
     }); // check pass length
@@ -816,7 +813,7 @@ router.post("/signup", async (req, res) => {
 // Register Handle for web
 router.post("/register", async (req, res) => {
   // check required fields
-  const { name, email, password, location} = req.body;
+  const { name, email, password, location } = req.body;
   if (!name || !email || !password || !location) {
     res.status(400).json({
       message: "Please fill in all fields."
@@ -849,7 +846,7 @@ router.post("/register", async (req, res) => {
             _id: userSaved._id,
             name: userSaved.name,
             email: userSaved.email,
-            location: userSaved.location,
+            location: userSaved.location
           },
           keys.jwtAuth.secret,
           { expiresIn: "24h" }
@@ -860,13 +857,12 @@ router.post("/register", async (req, res) => {
           email: userSaved.email,
           location: userSaved.location,
           token,
-          likes:userSaved.likes,
-          dislikes:userSaved.dislikes,
-          factors:userSaved.factors
+          likes: userSaved.likes,
+          dislikes: userSaved.dislikes,
+          factors: userSaved.factors
         });
       }
     } catch (error) {
-      console.log(error);
       res.status(500).json({
         message: "Error registering."
       });
