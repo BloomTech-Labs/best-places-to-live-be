@@ -538,7 +538,12 @@ router.post("/spec-ds", tokenAuthentication, async (req, res) => {
 });
 
 router.get("/jobs", async (req, res) => {
-  const input = req.query;
+  const input = req.query; 
+  if(!Object.keys(input).length){
+    res.status(400).json({
+      message: "Please pass at least one req params l=location, q=quries(Eg: Software), country=country"
+    });
+  }
   async function getJobs(params) {
     try {
       const response = await axios.get(
@@ -550,6 +555,7 @@ router.get("/jobs", async (req, res) => {
     } catch (error) {}
   }
   const result = await getJobs(input);
+
   try {
     if (result) {
       res.status(200).json({
