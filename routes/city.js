@@ -84,11 +84,10 @@ router.post("/spec-location", tokenAuthentication, async (req, res) => {
 
   const user = await User.findOne({ _id });
   let disID = [];
-      
-  for(var i = 0; i < user.dislikes.length; i++) {
-    disID.push(user.dislikes[i]._id)
-  } 
 
+  for (var i = 0; i < user.dislikes.length; i++) {
+    disID.push(user.dislikes[i]._id);
+  }
 
   let lat = parseFloat(req.query.lat);
   let lng = parseFloat(req.query.lng);
@@ -117,28 +116,26 @@ router.post("/spec-location", tokenAuthentication, async (req, res) => {
           }
         }).limit(limit);
 
-    if (disID.length != 0) {
-      let filteredSearch = cities;
-      var exitData = [];
-      
-      for(var i = 0; i < disID.length; i++) {
-        if ( i==0 ) {
-          exitData = cities.filter(function(city) {
-            return city._id != `${disID[i]}`;
-          });
-        }
-          else {
-          filteredSearch = exitData;
-          exitData = exitData.filter(function(city) {
-            return city._id != `${disID[i]}`;
-          });
-        }
-      }
-    } else {
-      exitData = cities;
-    }
+  if (disID.length != 0) {
+    let filteredSearch = cities;
+    var exitData = [];
 
-            
+    for (var i = 0; i < disID.length; i++) {
+      if (i == 0) {
+        exitData = cities.filter(function(city) {
+          return city._id != `${disID[i]}`;
+        });
+      } else {
+        filteredSearch = exitData;
+        exitData = exitData.filter(function(city) {
+          return city._id != `${disID[i]}`;
+        });
+      }
+    }
+  } else {
+    exitData = cities;
+  }
+
   let data = [];
   if (req.body && req.body.model) {
     exitData.map(c => {
@@ -162,10 +159,10 @@ router.post("/spec-location", tokenAuthentication, async (req, res) => {
   } else {
     res.status(200).json({
       founded: true,
-      results: [ 
-        {wasFiltered: cities.length - exitData.length}, 
-        {beforeFilter: cities.length}, 
-        {afterFilter: exitData.length} 
+      results: [
+        { wasFiltered: cities.length - exitData.length },
+        { beforeFilter: cities.length },
+        { afterFilter: exitData.length }
       ],
       data
     });
@@ -311,14 +308,13 @@ router.post("/spec-search", tokenAuthentication, async (req, res) => {
   const { searchTerm } = req.body;
 
   try {
-
     const user = await User.findOne({ _id });
     let disID = [];
-        
-    for(var i = 0; i < user.dislikes.length; i++) {
-      disID.push(user.dislikes[i]._id)
-    } 
-  
+
+    for (var i = 0; i < user.dislikes.length; i++) {
+      disID.push(user.dislikes[i]._id);
+    }
+
     const searchResults = await City.find({
       $text: { $search: `\"${searchTerm}\"` }
     }).limit(limit);
@@ -326,14 +322,13 @@ router.post("/spec-search", tokenAuthentication, async (req, res) => {
     if (disID.length != 0) {
       let filteredSearch = searchResults;
       var exitData = [];
-      
-      for(var i = 0; i < disID.length; i++) {
-        if ( i==0 ) {
+
+      for (var i = 0; i < disID.length; i++) {
+        if (i == 0) {
           exitData = searchResults.filter(function(city) {
             return city._id != `${disID[i]}`;
           });
-        }
-          else {
+        } else {
           filteredSearch = exitData;
           exitData = exitData.filter(function(city) {
             return city._id != `${disID[i]}`;
@@ -341,18 +336,16 @@ router.post("/spec-search", tokenAuthentication, async (req, res) => {
         }
       }
     } else {
-      exitData = searchResults
+      exitData = searchResults;
     }
-
-
 
     if (exitData.length) {
       res.status(200).json({
         founded: true,
-        results: [ 
-          {wasFiltered: searchResults.length - exitData.length}, 
-          {beforeFilter: searchResults.length}, 
-          {afterFilter: exitData.length} 
+        results: [
+          { wasFiltered: searchResults.length - exitData.length },
+          { beforeFilter: searchResults.length },
+          { afterFilter: exitData.length }
         ],
         cities: exitData
       });
@@ -400,25 +393,29 @@ router.post("/ds", async (req, res) => {
   const input = req.body;
   let limit = req.query.limit ? parseInt(req.query.limit) : 20;
 
-
   async function getUser(inputData) {
     try {
-      const response = await axios.post('https://best-places-api.herokuapp.com/api', inputData);
+      const response = await axios.post(
+        "https://best-places-api.herokuapp.com/api",
+        inputData
+      );
       return response.data;
-    } catch (error) {
-    }
+    } catch (error) {}
   }
 
   const resultPoint = await getUser(input);
-  
-  const result = resultPoint.slice(0, limit)
+
+  const result = resultPoint.slice(0, limit);
 
   try {
-    if (result) { res.status(200).json({
-      result
-    }); } else {
+    if (result) {
+      res.status(200).json({
+        result
+      });
+    } else {
       res.status(400).json({
-        message: "The browser (or proxy) sent a request that this server could not understand."
+        message:
+          "The browser (or proxy) sent a request that this server could not understand."
       });
     }
   } catch (error) {
@@ -434,29 +431,29 @@ router.post("/visual", async (req, res) => {
   async function getVisualization(inputData) {
     try {
       const response = await axios({
-        method: 'post',
-        url: 'https://best-places-api.herokuapp.com/visual',
+        method: "post",
+        url: "https://best-places-api.herokuapp.com/visual",
         data: inputData,
-        responseType: 'arraybuffer'
+        responseType: "arraybuffer"
       });
 
       return response.data;
-    } catch (error) {
-    }
+    } catch (error) {}
   }
 
   const result = await getVisualization(input);
 
   try {
-    if (result) { 
+    if (result) {
       res.writeHead(200, {
-        'Content-Type': 'image/png',
-        'Content-Length': result.length
-    });
-    res.end(result, 'binary');
+        "Content-Type": "image/png",
+        "Content-Length": result.length
+      });
+      res.end(result, "binary");
     } else {
       res.status(400).json({
-        message: "The browser (or proxy) sent a request that this server could not understand."
+        message:
+          "The browser (or proxy) sent a request that this server could not understand."
       });
     }
   } catch (error) {
@@ -466,46 +463,43 @@ router.post("/visual", async (req, res) => {
   }
 });
 
-
 router.post("/spec-ds", tokenAuthentication, async (req, res) => {
   const input = req.body;
   const _id = req.decodedToken._id;
   let limit = req.query.limit ? parseInt(req.query.limit) : 20;
 
-
   async function getUser(inputData) {
     try {
-      const response = await axios.post('https://best-places-api.herokuapp.com/api', inputData);
+      const response = await axios.post(
+        "https://best-places-api.herokuapp.com/api",
+        inputData
+      );
       return response.data;
-    } catch (error) {
-    }
+    } catch (error) {}
   }
 
   const resultPoint = await getUser(input);
-  
+
   // const result = resultPoint.slice(0, limit)
 
   try {
-
     const user = await User.findOne({ _id });
     let disID = [];
-        
-    for(var i = 0; i < user.dislikes.length; i++) {
-      disID.push(user.dislikes[i]._id)
-    } 
-  
+
+    for (var i = 0; i < user.dislikes.length; i++) {
+      disID.push(user.dislikes[i]._id);
+    }
 
     if (disID.length != 0) {
       let filteredSearch = resultPoint;
       var exitData = [];
-      
-      for(var i = 0; i < disID.length; i++) {
-        if ( i==0 ) {
+
+      for (var i = 0; i < disID.length; i++) {
+        if (i == 0) {
           exitData = resultPoint.filter(function(city) {
             return city._id != `${disID[i]}`;
           });
-        }
-          else {
+        } else {
           filteredSearch = exitData;
           exitData = exitData.filter(function(city) {
             return city._id != `${disID[i]}`;
@@ -513,31 +507,63 @@ router.post("/spec-ds", tokenAuthentication, async (req, res) => {
         }
       }
     } else {
-      exitData = resultPoint
+      exitData = resultPoint;
     }
 
-    const final = exitData.slice(0, limit)
+    const final = exitData.slice(0, limit);
 
-
-
-    if (final) { res.status(200).json({
-      founded: true,
-      results: [ 
-        {wasFiltered: resultPoint.length - exitData.length}, 
-        {beforeFilter: resultPoint.length}, 
-        {afterFilter: exitData.length} 
-      ],
-      final
-    }); } else {
+    if (final) {
+      res.status(200).json({
+        founded: true,
+        results: [
+          { wasFiltered: resultPoint.length - exitData.length },
+          { beforeFilter: resultPoint.length },
+          { afterFilter: exitData.length }
+        ],
+        final
+      });
+    } else {
       res.status(400).json({
         founded: false,
-        message: "The browser (or proxy) sent a request that this server could not understand."
+        message:
+          "The browser (or proxy) sent a request that this server could not understand."
       });
     }
   } catch (error) {
     res.status(500).json({
       founded: false,
       message: "Error with fetching data from DS server"
+    });
+  }
+});
+
+router.get("/jobs", async (req, res) => {
+  const input = req.query;
+  async function getJobs(params) {
+    try {
+      const response = await axios.get(
+        `https://indreed.herokuapp.com/api/jobs`, {
+          params
+        }
+      );
+      return response.data;
+    } catch (error) {}
+  }
+  const result = await getJobs(input);
+  try {
+    if (result) {
+      res.status(200).json({
+        result
+      });
+    } else {
+      res.status(400).json({
+        message:
+          "The browser (or proxy) sent a request that this server could not understand."
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "Error with fetching data from API"
     });
   }
 });
