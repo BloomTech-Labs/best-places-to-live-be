@@ -184,39 +184,60 @@ describe("signup router", () => {
 });
 
 describe("signin router /signin", () => {
-    it('should response with 200 ok ', () => {
-        const data = {
-            appleId:"1234567890",
-            password:"testing"
-        }
-        supertest(router)
-        .post("/signin")
-        .send(data)
-        .expect(200)
-        .expect("Content-Type",/json/i);
-    })
-    it('should response with 400 bad response', () => {
-        const data = {
-            appleId:"",
-            password:"testing"
-        }
-        supertest(router)
-        .post('/signin')
-        .send(data)
-        .expect(400)
-        .expect("Contest-Type", /json/i);
-    })
-    it('should response with 400 bad response', () => {
-        const data = {
-            appleId:"",
-            password:""
-        }
-        supertest(router)
-        .post('/signin')
-        .send(data)
-        .expect(400)
-        .expect("contest-Type", /json/i)
-    })
+  it("should response with 200 ok ", () => {
+    const data = {
+      appleId: "1234567890",
+      password: "testing"
+    };
+    supertest(router)
+      .post("/signin")
+      .send(data)
+      .expect(200)
+      .expect("Content-Type", /json/i);
+  });
+  it("should response with 400 bad response", () => {
+    const data = {
+      appleId: "",
+      password: "testing"
+    };
+    supertest(router)
+      .post("/signin")
+      .send(data)
+      .expect(400)
+      .expect("Contest-Type", /json/i);
+  });
+  it("should response with 400 bad response", () => {
+    const data = {
+      appleId: "",
+      password: ""
+    };
+    supertest(router)
+      .post("/signin")
+      .send(data)
+      .expect(400)
+      .expect("contest-Type", /json/i);
+  });
+});
 
-})
-
+describe("Post require to /factors", () => {
+  it("should response with 200 ok", () => {
+    const data = {
+      newFactor: "Schools"
+    };
+    supertest(router)
+      .post("/factors")
+      .send(data)
+      .expect(200)
+      .expect("contest-Type", /json/i);
+  });
+  it("should response with 400 bad request", () => {
+    const data = {
+      newFactor: ""
+    };
+    supertest(router)
+      .post("/factors")
+      .send(data)
+      .expect(400)
+      .expect("contest-Type", /json/i);
+  });
+});
