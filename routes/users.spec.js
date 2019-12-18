@@ -2,7 +2,7 @@ const supertest = require("supertest");
 const router = require("./users");
 
 describe("login router", () => {
-  describe("Post request to /", () => {
+  describe("Post request to /login", () => {
     it("should responds with 200 ok", () => {
       const data = {
         email: "kcmanjuthapa@gmail.com",
@@ -38,21 +38,21 @@ describe("login router", () => {
         .expect("Content-Type", /json/i);
     });
     it("should responds with 400 Bad Request", () => {
-        const data = {
-          email: "",
-          password: ""
-        };
-        supertest(router)
-          .post("/login")
-          .send(data)
-          .expect(400)
-          .expect("Content-Type", /json/i);
-      });
+      const data = {
+        email: "",
+        password: ""
+      };
+      supertest(router)
+        .post("/login")
+        .send(data)
+        .expect(400)
+        .expect("Content-Type", /json/i);
+    });
   });
 });
 
 describe("register router", () => {
-  describe("Post request to /", () => {
+  describe("Post request to /register", () => {
     it("should responds with 200 ok", () => {
       const data = {
         name: "Fredo",
@@ -98,6 +98,24 @@ describe("register router", () => {
         email: "",
         password: "",
         location: ""
+      };
+      supertest(router)
+        .post("/register")
+        .send(data)
+        .expect(400)
+        .expect("Content-Type", /json/i);
+    });
+  });
+});
+
+describe("signup router", () => {
+  describe("Post request to /signup", () => {
+    it("should responds with 200 ok", () => {
+      const data = {
+        name: "Fredo",
+        email: "kcmanjuthapa@gmail.com",
+        password: "testing",
+        location: "Atlanta"
       };
       supertest(router)
         .post("/register")
