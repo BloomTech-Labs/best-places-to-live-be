@@ -11,7 +11,7 @@ describe("login router", () => {
       supertest(router)
         .post("/login")
         .send(data)
-        .expect(201)
+        .expect(200)
         .expect("Content-Type", /json/i);
     });
 
@@ -63,7 +63,7 @@ describe("register router", () => {
       supertest(router)
         .post("/register")
         .send(data)
-        .expect(201)
+        .expect(200)
         .expect("Content-Type", /json/i);
     });
     it("should responds with 400 Bad Request", () => {
@@ -121,7 +121,7 @@ describe("signup router", () => {
       supertest(router)
         .post("/register")
         .send(data)
-        .expect(400)
+        .expect(200)
         .expect("Content-Type", /json/i);
     });
     it("should responds with 400 Bad Response", () => {
@@ -182,3 +182,41 @@ describe("signup router", () => {
     });
   });
 });
+
+describe("signin router /signin", () => {
+    it('should response with 200 ok ', () => {
+        const data = {
+            appleId:"1234567890",
+            password:"testing"
+        }
+        supertest(router)
+        .post("/signin")
+        .send(data)
+        .expect(200)
+        .expect("Content-Type",/json/i);
+    })
+    it('should response with 400 bad response', () => {
+        const data = {
+            appleId:"",
+            password:"testing"
+        }
+        supertest(router)
+        .post('/signin')
+        .send(data)
+        .expect(400)
+        .expect("Contest-Type", /json/i);
+    })
+    it('should response with 400 bad response', () => {
+        const data = {
+            appleId:"",
+            password:""
+        }
+        supertest(router)
+        .post('/signin')
+        .send(data)
+        .expect(400)
+        .expect("contest-Type", /json/i)
+    })
+
+})
+
