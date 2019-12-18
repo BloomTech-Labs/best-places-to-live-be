@@ -393,6 +393,7 @@ router.post("/ds", async (req, res) => {
   const input = req.body;
   let limit = req.query.limit ? parseInt(req.query.limit) : 20;
 
+  // fetching data from DS API
   async function getUser(inputData) {
     try {
       const response = await axios.post(
@@ -468,6 +469,7 @@ router.post("/spec-ds", tokenAuthentication, async (req, res) => {
   const _id = req.decodedToken._id;
   let limit = req.query.limit ? parseInt(req.query.limit) : 20;
 
+  // fetching data from DS API
   async function getUser(inputData) {
     try {
       const response = await axios.post(
@@ -539,11 +541,13 @@ router.post("/spec-ds", tokenAuthentication, async (req, res) => {
 
 router.get("/jobs", async (req, res) => {
   const input = req.query; 
+   // check required field
   if(!Object.keys(input).length){
     res.status(400).json({
       message: "Please pass at least one req params l=location, q=quries(Eg: Software), country=country"
     });
   }
+   // fetching data from other API
   async function getJobs(params) {
     try {
       const response = await axios.get(
