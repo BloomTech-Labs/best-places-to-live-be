@@ -8,7 +8,7 @@ describe("login router", () => {
 
   describe("Post request to /login", () => {
     it("should responds with 200 ok", () => {
-      let token;
+      let token="";
       const data = {
         email: "kcmanjuthapa@gmail.com",
         password: "testing"
@@ -17,7 +17,7 @@ describe("login router", () => {
         .post("/login")
         .send(data)
         .expect(200)
-        .set({ Authorization: token })
+        .set({ Authorization: token="asdew123" })
         .expect("Content-Type", /json/i);
        
         
@@ -48,6 +48,17 @@ describe("login router", () => {
     });
     it("should responds with 400 Bad Request", () => {
       const data = {
+        email: "testing@gmail.com",
+        password: ""
+      };
+      supertest(router)
+        .post("/login")
+        .send(data)
+        .expect(400)
+        .expect("Content-Type", /json/i);
+    });
+    it("should responds with 400 Bad Request", () => {
+      const data = {
         email: "",
         password: ""
       };
@@ -65,7 +76,7 @@ describe("login router", () => {
 describe("register router", () => {
   describe("Post request to /register", () => {
     it("should responds with 200 ok", () => {
-      let token 
+      
       const data = {
         name: "Fredo",
         email: "kcmanjuthapa@gmail.com",
@@ -76,7 +87,6 @@ describe("register router", () => {
         .post("/register")
         .send(data)
         .expect(200)
-        .set({ Authorization: token })
         .expect("Content-Type", /json/i);
     });
     it("should responds with 400 Bad Request", () => {
@@ -124,7 +134,7 @@ describe("register router", () => {
 describe("signup router", () => {
   describe("Post request to /signup", () => {
     it("should responds with 200 ok", () => {
-      let token
+
       const data = {
         name: "Fredo",
         email: "kcmanjuthapa@gmail.com",
@@ -136,7 +146,6 @@ describe("signup router", () => {
         .post("/register")
         .send(data)
         .expect(200)
-        .set({ Authorization: token })
         .expect("Content-Type", /json/i);
     });
     it("should responds with 400 Bad Response", () => {
@@ -200,7 +209,7 @@ describe("signup router", () => {
 
 describe("signin router /signin", () => {
   it("should response with 200 ok ", () => {
-    let token
+    let token=""
     const data = {
       appleId: "1234567890",
       password: "testing"
@@ -209,7 +218,7 @@ describe("signin router /signin", () => {
       .post("/signin")
       .send(data)
       .expect(200)
-      .set({ Authorization: token })
+      .set({ Authorization: token ="asdf12345"})
       .expect("Content-Type", /json/i);
   });
   it("should response with 400 bad response", () => {
