@@ -1,9 +1,14 @@
 const supertest = require("supertest");
 const router = require("./users");
+const Http = require('chai-http');
+
+
 
 describe("login router", () => {
+
   describe("Post request to /login", () => {
     it("should responds with 200 ok", () => {
+      let token;
       const data = {
         email: "kcmanjuthapa@gmail.com",
         password: "testing"
@@ -12,8 +17,12 @@ describe("login router", () => {
         .post("/login")
         .send(data)
         .expect(200)
+        .set({ Authorization: token })
         .expect("Content-Type", /json/i);
+       
+        
     });
+   
 
     it("should responds with 400 Bad Request", () => {
       const data = {
@@ -51,9 +60,12 @@ describe("login router", () => {
   });
 });
 
+
+
 describe("register router", () => {
   describe("Post request to /register", () => {
     it("should responds with 200 ok", () => {
+      let token 
       const data = {
         name: "Fredo",
         email: "kcmanjuthapa@gmail.com",
@@ -64,6 +76,7 @@ describe("register router", () => {
         .post("/register")
         .send(data)
         .expect(200)
+        .set({ Authorization: token })
         .expect("Content-Type", /json/i);
     });
     it("should responds with 400 Bad Request", () => {
@@ -111,6 +124,7 @@ describe("register router", () => {
 describe("signup router", () => {
   describe("Post request to /signup", () => {
     it("should responds with 200 ok", () => {
+      let token
       const data = {
         name: "Fredo",
         email: "kcmanjuthapa@gmail.com",
@@ -122,6 +136,7 @@ describe("signup router", () => {
         .post("/register")
         .send(data)
         .expect(200)
+        .set({ Authorization: token })
         .expect("Content-Type", /json/i);
     });
     it("should responds with 400 Bad Response", () => {
@@ -185,6 +200,7 @@ describe("signup router", () => {
 
 describe("signin router /signin", () => {
   it("should response with 200 ok ", () => {
+    let token
     const data = {
       appleId: "1234567890",
       password: "testing"
@@ -193,6 +209,7 @@ describe("signin router /signin", () => {
       .post("/signin")
       .send(data)
       .expect(200)
+      .set({ Authorization: token })
       .expect("Content-Type", /json/i);
   });
   it("should response with 400 bad response", () => {
@@ -241,3 +258,21 @@ describe("Post require to /factors", () => {
       .expect("contest-Type", /json/i);
   });
 });
+
+describe("Factors router", () => {
+  describe("Put require to /factors" , () => {
+    it("should response with 200 ok", () => {
+      const data = {
+        putFactor: "ololo"
+      };
+      supertest(router)
+        .put("/factors")
+        .send(data)
+        .expect(200)
+        .expect("contest-Type", /json/i);
+    });
+   
+  })
+})
+
+
