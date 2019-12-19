@@ -70,7 +70,6 @@ describe('users', () => {
                 email: "testing@jest.com",
                 password:"1234567"
             })
-            console.log(res._data)
             expect(res._data).toEqual({
                 email: "testing@jest.com",
                 password:"1234567"
