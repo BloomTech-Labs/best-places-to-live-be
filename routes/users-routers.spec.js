@@ -4,7 +4,7 @@ const router = require("./users");
 describe("login router", () => {
   describe("Post request to /login", () => {
     it("should responds with 200 ok", () => {
-      let token = "";
+      let token = "asdewqr123";
       const data = {
         email: "kcmanjuthapa@gmail.com",
         password: "testing"
@@ -67,7 +67,7 @@ describe("login router", () => {
 describe("register router", () => {
   describe("Post request to /register", () => {
     it("should responds with 200 ok", () => {
-      let token
+      let token="asdewxcvfr123"
       const data = {
         name: "Fredo",
         email: "kcmanjuthapa@gmail.com",
@@ -126,7 +126,7 @@ describe("register router", () => {
 describe("signup router", () => {
   describe("Post request to /signup", () => {
     it("should responds with 200 ok", () => {
-      let token
+      let token="12sdecfrt345"
       const data = {
         name: "Fredo",
         email: "kcmanjuthapa@gmail.com",
@@ -202,7 +202,7 @@ describe("signup router", () => {
 
 describe("signin router /signin", () => {
   it("should response with 200 ok ", () => {
-    let token
+    let token="qwsdxws123"
     const data = {
       appleId: "1234567890",
       password: "testing"
@@ -274,5 +274,5 @@ describe("Factors router", () => {
         .expect("contest-Type", /json/i);
     });
   });
-  
+
 });

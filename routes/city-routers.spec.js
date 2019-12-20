@@ -52,7 +52,7 @@ describe("city router", () => {
     };
     it("response with 200 OK", () => {
       supertest(router)
-        .get("/jobs")
+        .get("/jobs?l=atlanata&q=software&country=US")
         .expect(200)
         .expect(params)
         .expect("Contest-Type", /json/i);
@@ -60,7 +60,7 @@ describe("city router", () => {
 
     it("response with 400 error", () => {
       supertest(router)
-        .get("/jobs?l=atlanata&q=software&country=US")
+        .get("/jobs")
         .expect(400)
         .expect()
         .expect(
@@ -81,19 +81,61 @@ describe("city router", () => {
           .expect(data)
           .expect("Contest-Type", /json/i);
       });
-      describe("Post city search without body req",() => {
-         let data = {
-             searchTerm:""
-         };
-         it("should response with 400 bad reequest", () => {
-             supertest(router)
-             .post("/search")
-             .expect(400)
-             .expect(data)
-             .expect("Contest-Type", /json/i)
-         })
+      describe("Post city search without body req", () => {
+        let data = {
+          searchTerm: ""
+        };
+        it("should response with 400 bad reequest", () => {
+          supertest(router)
+            .post("/search")
+            .expect(400)
+            .expect(data)
+            .expect("Contest-Type", /json/i);
+        });
       });
 
+      describe("Post city filter by name ", () => {
+        let token = "qweds12345";
+        let data = {
+          searchTerm: "test"
+        };
+        it("Should response with 200 OK", () => {
+          supertest(router)
+            .post("/spec-search?limit=10")
+            .expect(200)
+            .expect(data)
+            .set({ Authorization: token })
+            .expect("Contest-Type", /json/i);
+        });
+      });
+      describe("Post city filter by name ", () => {
+        let token = "qweds12345";
+        let data = {
+          searchTerm: ""
+        };
+        it("Should response with 400 bad request", () => {
+          supertest(router)
+            .post("/spec-search?limit=10")
+            .expect(400)
+            .expect(data)
+            .set({ Authorization: token })
+            .expect("Contest-Type", /json/i);
+        });
+      });
+      describe("Post city filter by name ", () => {
+        let token = "";
+        let data = {
+          searchTerm: ""
+        };
+        it("Should response with 400 bad request", () => {
+          supertest(router)
+            .post("/spec-search")
+            .expect(400)
+            .expect(data)
+            .set({ Authorization: token })
+            .expect("Contest-Type", /json/i);
+        });
+      });
     });
   });
 });
