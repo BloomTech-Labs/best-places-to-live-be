@@ -15,35 +15,68 @@ describe("city router", () => {
     });
   });
 
-  describe("Post request to /city",() => {
-      it("respone with 200 OK", () => {
-         const data = {      
-	ids: ["5dc9f97b2a65b6af02024aea", "5dc9f97b2a65b6af02024ae7"]  
-         } 
-         supertest(router)
+  describe("Post request to /city", () => {
+    it("respone with 200 OK", () => {
+      const data = {
+        ids: ["5dc9f97b2a65b6af02024aea", "5dc9f97b2a65b6af02024ae7"]
+      };
+      supertest(router)
         .post("/city")
         .send(data)
         .expect(200)
         .expect("Content-Type", /json/i);
+    });
+  });
+
+  describe("Post location request to /location", () => {
+    let params = (lat = "50");
+    lng = "70";
+    zoom = "180";
+    limit = "60";
+    it("response with 200 OK", () => {
+      supertest(router)
+        .get("/location")
+        .expect(200)
+        .expect(params)
+        .expect("Content-Type", /json/i);
+    });
+  });
+
+  describe("Get  city jobs data request to /jobs", () => {
+    let params = (l = ""),
+      q = "",
+      country = "";
+    it("response with 200 OK", () => {
+      supertest(router)
+        .get("/jobs")
+        .expect(200)
+        .expect(params)
+        .expect("Contest-Type", /json/i);
+    });
+
+    it("response with 400 error", () => {
+      supertest(router)
+        .get("/jobs")
+        .expect(400)
+        .expect()
+        .expect(
+          (message =
+            "Please pass at least one req params l=location, q=quries(Eg: Software), country=country")
+        )
+        .expect("Contest-Type", /json/i);
+    });
+
+    describe("Post city search request to /search", () => {
+      let data = {
+        searchTerm: "Highland"
+      };
+      it("should response with 200 OK", () => {
+        supertest(router)
+          .post("/search")
+          .expect(200)
+          .expect(data)
+          .expect("Contest-Type", /json/i);
       });
-      
-  })
-
-  describe("Post location request to /location",() => {
-       let params =  
-       lat = "50";
-       lng = "70";
-       zoom = "180";
-        limit = "60";
-        it("response with 200 OK", () => {
-            supertest(router)
-            .get("/location")
-            .expect(200)
-            .expect(params) 
-            .expect("Content-Type", /json/i);
-      })
-  })
-
+    });
+  });
 });
-
-
