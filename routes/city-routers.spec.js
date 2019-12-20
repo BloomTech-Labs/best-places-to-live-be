@@ -29,13 +29,15 @@ describe("city router", () => {
   });
 
   describe("Post location request to /location", () => {
-    let params = (lat = "50");
-    lng = "70";
-    zoom = "180";
-    limit = "60";
+    let params = {
+      lat: "",
+      lng: "",
+      zoom: "",
+      limit: ""
+    };
     it("response with 200 OK", () => {
       supertest(router)
-        .get("/location")
+        .get("/location?lat=20&lng=70&zoom=30&limit=50")
         .expect(200)
         .expect(params)
         .expect("Content-Type", /json/i);
@@ -43,9 +45,11 @@ describe("city router", () => {
   });
 
   describe("Get  city jobs data request to /jobs", () => {
-    let params = (l = ""),
-      q = "",
-      country = "";
+    let params = {
+      l: "",
+      q: "",
+      country: ""
+    };
     it("response with 200 OK", () => {
       supertest(router)
         .get("/jobs")
@@ -56,7 +60,7 @@ describe("city router", () => {
 
     it("response with 400 error", () => {
       supertest(router)
-        .get("/jobs")
+        .get("/jobs?l=atlanata&q=software&country=US")
         .expect(400)
         .expect()
         .expect(
@@ -77,6 +81,19 @@ describe("city router", () => {
           .expect(data)
           .expect("Contest-Type", /json/i);
       });
+      describe("Post city search without body req",() => {
+         let data = {
+             searchTerm:""
+         };
+         it("should response with 400 bad reequest", () => {
+             supertest(router)
+             .post("/search")
+             .expect(400)
+             .expect(data)
+             .expect("Contest-Type", /json/i)
+         })
+      });
+
     });
   });
 });
