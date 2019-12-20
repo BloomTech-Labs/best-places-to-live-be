@@ -389,9 +389,11 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.post("/ds", async (req, res) => {
+router.post("/ds", tokenAuthentication,async (req, res) => {
+  
   const input = req.body;
   let limit = req.query.limit ? parseInt(req.query.limit) : 20;
+  
 
   // fetching data from DS API
   async function getUser(inputData) {
@@ -405,6 +407,9 @@ router.post("/ds", async (req, res) => {
   }
 
   const resultPoint = await getUser(input);
+
+  // If user
+  //
 
   const result = resultPoint.slice(0, limit);
 
