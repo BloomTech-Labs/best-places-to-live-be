@@ -5,7 +5,7 @@ describe("city router", () => {
   describe("Get city request to /all", () => {
     it("response with 200 OK", () => {
       supertest(router)
-        .get("/all")
+        .get("/city/all")
         .expect(200);
     });
     it("is JSON content", () => {
@@ -28,6 +28,19 @@ describe("city router", () => {
     });
   });
 
+  describe("Post request to /city", () => {
+    it("respone with 400 error", () => {
+      const data = {
+        ids: []
+      };
+      supertest(router)
+        .post("/city")
+        .send(data)
+        .expect(400)
+        .expect("Content-Type", /json/i);
+    });
+  });
+
   describe("Post location request to /location", () => {
     let params = {
       lat: "",
@@ -37,8 +50,56 @@ describe("city router", () => {
     };
     it("response with 200 OK", () => {
       supertest(router)
-        .get("/location?lat=20&lng=70&zoom=30&limit=50")
-        .expect(200)
+        .get("/city/location?lat=20&lng=70&zoom=30&limit=50")
+        .expect(400)
+        .expect(params)
+        .expect("Content-Type", /json/i);
+    });
+  });
+
+  describe("Post location request to /location", () => {
+    let params = {
+      lat: "",
+      lng: "",
+      zoom: "",
+      limit: ""
+    };
+    it("response with 400 error", () => {
+      supertest(router)
+        .get("/city/location?lat=&lng=&zoom=&limit=")
+        .expect(400)
+        .expect(params)
+        .expect("Content-Type", /json/i);
+    });
+  });
+
+  describe("Post location request to /location", () => {
+    let params = {
+      lat: "",
+      lng: "",
+      zoom: "",
+      limit: ""
+    };
+    it("response with 400 error", () => {
+      supertest(router)
+        .get("/city/location?lat=&lng=&zoom=40&limit=")
+        .expect(400)
+        .expect(params)
+        .expect("Content-Type", /json/i);
+    });
+  });
+
+  describe("Post location request to /location", () => {
+    let params = {
+      lat: "",
+      lng: "",
+      zoom: "",
+      limit: ""
+    };
+    it("response with 400 error", () => {
+      supertest(router)
+        .get("/city/location?lat=&lng=&zoom=&limit=50")
+        .expect(400)
         .expect(params)
         .expect("Content-Type", /json/i);
     });
@@ -52,7 +113,7 @@ describe("city router", () => {
     };
     it("response with 200 OK", () => {
       supertest(router)
-        .get("/jobs?l=atlanata&q=software&country=US")
+        .get("/city/jobs?l=atlanata&q=software&country=US")
         .expect(200)
         .expect(params)
         .expect("Contest-Type", /json/i);
@@ -60,7 +121,7 @@ describe("city router", () => {
 
     it("response with 400 error", () => {
       supertest(router)
-        .get("/jobs")
+        .get("/city/jobs")
         .expect(400)
         .expect()
         .expect(
@@ -70,13 +131,13 @@ describe("city router", () => {
         .expect("Contest-Type", /json/i);
     });
 
-    describe("Post city search request to /search", () => {
+    describe("Post city search[filter] request to /search", () => {
       let data = {
         searchTerm: "Highland"
       };
       it("should response with 200 OK", () => {
         supertest(router)
-          .post("/search")
+          .post("/city/search")
           .expect(200)
           .expect(data)
           .expect("Contest-Type", /json/i);
@@ -87,7 +148,7 @@ describe("city router", () => {
         };
         it("should response with 400 bad reequest", () => {
           supertest(router)
-            .post("/search")
+            .post("/city/search")
             .expect(400)
             .expect(data)
             .expect("Contest-Type", /json/i);
@@ -101,7 +162,7 @@ describe("city router", () => {
         };
         it("Should response with 200 OK", () => {
           supertest(router)
-            .post("/spec-search?limit=10")
+            .post("/city/spec-search?limit=10")
             .expect(200)
             .expect(data)
             .set({ Authorization: token })
@@ -115,7 +176,7 @@ describe("city router", () => {
         };
         it("Should response with 400 bad request", () => {
           supertest(router)
-            .post("/spec-search?limit=10")
+            .post("/city/spec-search?limit=10")
             .expect(400)
             .expect(data)
             .set({ Authorization: token })
@@ -129,12 +190,36 @@ describe("city router", () => {
         };
         it("Should response with 400 bad request", () => {
           supertest(router)
-            .post("/spec-search")
+            .post("/city/spec-search")
             .expect(400)
             .expect(data)
             .set({ Authorization: token })
             .expect("Contest-Type", /json/i);
         });
+      });
+      describe("Post data getting from ds side ", () => {
+        let data = {
+          input1: ["population", "avg_commute_time"]
+        };
+        it("Should response with 200 OK", () => {
+            supertest(router)
+            .post("/city/ds")
+            .expect(200)
+            .expect(data)
+            .expect("contest-Type", /json/i)
+        })
+      });
+      describe("Post data getting from ds side ", () => {
+        let data = {
+          input1: []
+        };
+        it("Should response with 400 bad request", () => {
+            supertest(router)
+            .post("/city/ds")
+            .expect(400)
+            .expect(data)
+            .expect("contest-Type", /json/i)
+        })
       });
     });
   });
