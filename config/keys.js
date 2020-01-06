@@ -1,3 +1,5 @@
+
+
 module.exports = {
   mongodb: {
     dbURI: `mongodb://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_HOSTNAME}:${process.env.MONGO_PORT}/${process.env.MONGO_DB}`
@@ -8,12 +10,11 @@ module.exports = {
   googleAuth: {
     googleClientId: process.env.GOOGLE_CLIENTID,
     googleClientSecret: process.env.GOOGLE_CLIENTSECRET,
-    callbackURL: '/auth/google/redirect'
-   
+    callbackURL: '/auth/google/callback' 
   },
   facebookAuth: {
-    facebookClientId: '482046309075252',
-    facebookClientSecret: 'bb6a4796a1ca2d541a2b0d6520ef7d9e',
+    facebookClientId: process.env.FACEBOOK_CLIENTID,
+    facebookClientSecret: process.env.FACEBOOK_CLIENTSECRET,
     callbackURL: '/auth/facebook/callback'
   },
   jwtAuth: {
