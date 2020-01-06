@@ -389,8 +389,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.post("/ds", tokenAuthentication,async (req, res) => {
-  
+router.post("/ds",async (req, res) => {
   const input = req.body;
   let limit = req.query.limit ? parseInt(req.query.limit) : 20;
   
