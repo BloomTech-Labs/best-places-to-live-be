@@ -248,6 +248,14 @@ router.post("/top", async function(req, res) {
         data.push(d);
       });
     } else data = cities;
+    let saveCities = []
+    if(req.user) //is logged in
+      saveCities = await User.findById(req.user._id).saveCities;
+
+      data = data.map( x=> {
+        x.saved = saveCities.filter(y=> y === x ).length > 1;
+        return x;
+      });
 
     res.status(200).json({
       cities: data
