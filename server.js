@@ -48,7 +48,7 @@ server.use("/auth", auth);
 server.use("/profile", profile);
 //Informs devs that this is working
 server.get("/", (req, res) => {
-  res.status(200).send("Let's Move Homie is a terrible name");
+  res.status(200).send("Let's Move Homie");
 });
 
 
